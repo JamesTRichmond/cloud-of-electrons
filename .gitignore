@@ -1,0 +1,4 @@
+poems.json
+*.private.*
+cloud-of-electrons.html
+__pycache__/

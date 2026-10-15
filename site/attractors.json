@@ -1,0 +1,7 @@
+{"_note":"PLACEHOLDER spots, names and colors pending J R's yes",
+"attractors":[
+{"id":"brain-fog","name":"Late Night Brain Fog","pos":[-1.2,0.4,0],"radius":0.7,"shape":"haze","hue":270,"root":-12},
+{"id":"agenticubed","name":"AgentiCubed","pos":[1.1,0.6,-0.3],"radius":0.5,"shape":"lattice","hue":190,"root":7},
+{"id":"preincarnation","name":"Preincarnation","pos":[0,-0.9,0.2],"radius":0.6,"shape":"vein","hue":150,"root":9},
+{"id":"verbal-kombat","name":"Verbal Kombat","pos":[-0.8,-0.5,-0.5],"radius":0.5,"shape":"clash","hue":0,"root":6},
+{"id":"habitat","name":"Habitat and Aural Companion","pos":[0.9,-0.3,0.5],"radius":0.4,"shape":"shell","hue":38,"root":4}]}
