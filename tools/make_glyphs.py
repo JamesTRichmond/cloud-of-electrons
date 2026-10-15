@@ -11,13 +11,15 @@ PX=96          # raster size in pixels
 CAP=0.085      # world units per raster em (sets on-screen letter size)
 DENS=0.2      # points per inked pixel at PX
 MAXN=7000
+IND='\x01'     # marks a wrapped continuation line (drawn with a hanging indent)
 WRAP=46       # longer lines wrap so letter size never shrinks
 rng=np.random.default_rng(11)
 font=ImageFont.truetype(FONT,PX)
 def points(lines):
-    lh=int(PX*1.3);w=max(int(font.getlength(l)) for l in lines)+8;h=lh*len(lines)+8
+    lh=int(PX*1.3);w=max(int(font.getlength(l.lstrip(IND)))+(int(1.5*font.getlength('n')) if l.startswith(IND) else 0) for l in lines)+8;h=lh*len(lines)+8
     im=Image.new('L',(w,h),0);d=ImageDraw.Draw(im)
-    for i,l in enumerate(lines):d.text((4,4+i*lh),l,font=font,fill=255)
+    hang=int(1.5*font.getlength('n'))
+    for i,l in enumerate(lines):d.text((4+(hang if l.startswith(IND) else 0),4+i*lh),l.lstrip(IND),font=font,fill=255)
     a=np.array(im)>140;ys,xs=np.nonzero(a)
     n=int(min(MAXN,max(800,len(xs)*DENS)))
     idx=rng.choice(len(xs),n,replace=n>len(xs))
@@ -31,7 +33,7 @@ def main(src):
     for p in P:
         st=[s for s in re.split(r'\n\s*\n',p['text']) if s.strip()];gs=[]
         for s in st:
-            ls=[w for l in s.split('\n') if l.strip() for w in textwrap.wrap(l.strip(),WRAP)]
+            ls=[('' if k==0 else IND)+w for l in s.split('\n') if l.strip() for k,w in enumerate(textwrap.wrap(l.strip(),WRAP))]
             for i in range(0,len(ls),4):gs.append((ls[i:i+4],points(ls[i:i+4])))
         allg.append((p,gs))
     scale=max(float(np.abs(g).max()) for _,gs in allg for _,g in gs)*1.001
@@ -39,7 +41,7 @@ def main(src):
         off=0;groups=[];buf=[]
         for lines,g in gs:
             q=np.round(g/scale*32767).astype('<i2');buf.append(q)
-            groups.append({'lines':lines,'offset':off,'count':len(q)});off+=len(q)
+            groups.append({'lines':[l.lstrip(IND) for l in lines],'offset':off,'count':len(q)});off+=len(q)
         fn=f"glyphs/{p['id']}.bin";np.concatenate(buf).tofile(os.path.join(OUT,os.path.basename(fn)))
         man.append({'id':p['id'],'section':p.get('section'),'file':fn,'groups':groups})
     json.dump({'scale':round(scale,5),'poems':man},open(os.path.join(OUT,'manifest.json'),'w'))
