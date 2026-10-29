@@ -174,7 +174,7 @@ class BrownNoise {
 const OF=await fetch('openfield.json').then(r=>r.json());const BN=new BrownNoise();BN.onChange=on=>{window.coeBrownNoiseOn=on;document.getElementById('of-bn').textContent=on?'Stop brown noise':'Brown noise'};
 const breath=new Audio('forming.mp3');breath.volume=.5;let soundOK=false;const okS=()=>{soundOK=true};addEventListener('pointerdown',okS,{once:true});addEventListener('keydown',okS,{once:true});
 let POEMS_ON=location.hash==='#poem'||new URLSearchParams(location.search).has('poem');window.coePoemsOn=()=>POEMS_ON;let active=null,next=location.hash==='#poem'?0:performance.now()+4000,loading=false;const live=document.getElementById('coe-live');
-let rotA=0;const calmAt=(x,y,z)=>{if(!active||!active.box)return 0;const ra=rotA*.04,qx=x*Math.cos(ra)-z*Math.sin(ra),qz=x*Math.sin(ra)+z*Math.cos(ra)-cam[2],sc=CAMZ/Math.max(.3,-qz),px=(qx-cam[0])*sc+cam[0],py=(y-cam[1])*sc+cam[1],B=active.box,L=active.lh,r=Math.hypot((px-(B[0]+B[1])/2)/((B[1]-B[0])/2+L),(py-(B[2]+B[3])/2)/((B[3]-B[2])/2+L)),u=Math.min(1,Math.max(0,(r-1)/CALM_EDGE)),h=1-u*u*(3-2*u);return h};const SLOW=1,KC_CLOUD=.006,KR_DEPTH=6,RK=new Float32Array(N),PM=new Uint8Array(N),CALM_EDGE=.06;/* CALM_EDGE: falloff beyond the text block, ~12 px at 1280 wide */async function start(now){{const PS0=window.coePoetrySeq;if(PS0&&PS0.on&&PS0.p&&PS0.gi>=PS0.p.groups.length&&!new URLSearchParams(location.search).has('poem')){stopPoetry();return}}/* reading finished: no repeat, back to the pre-Begin state */const ra=rotA*.04+.1,ca=Math.cos(ra),sa=Math.sin(ra);loading=true;const QP=new URLSearchParams(location.search),PS=window.coePoetrySeq,seqOn=!QP.has("poem")&&PS&&PS.on,p=QP.has("poem")?byId[QP.get("poem")]||byId[pick()]:seqOn?(PS.gi>=(PS.p?PS.p.groups.length:0)?(PS.p=byId[pick()],PS.gi=0,PS.p):PS.p):byId[pick()],gi=seqOn?PS.gi++:-1,g=QP.has("poem")?p.groups[+(QP.get("group")||0)]||p.groups[0]:seqOn?p.groups[gi]:p.groups[Math.random()*p.groups.length|0];
+let rotA=0;const calmAt=(x,y,z)=>{if(!active||!active.box)return 0;const ra=rotA*.04,qx=x*Math.cos(ra)-z*Math.sin(ra),qz=x*Math.sin(ra)+z*Math.cos(ra)-cam[2],sc=CAMZ/Math.max(.3,-qz),px=(qx-cam[0])*sc+cam[0],py=(y-cam[1])*sc+cam[1],B=active.box,L=active.lh,r=Math.hypot((px-(B[0]+B[1])/2)/((B[1]-B[0])/2+L),(py-(B[2]+B[3])/2)/((B[3]-B[2])/2+L)),u=Math.min(1,Math.max(0,(r-1)/CALM_EDGE)),h=1-u*u*(3-2*u);return h};const SLOW=1,KC_CLOUD=.006,KR_DEPTH=6,RK=new Float32Array(N),PM=new Uint8Array(N),CALM_EDGE=.06;/* CALM_EDGE: falloff beyond the text block, ~12 px at 1280 wide */async function start(now){{const PS0=window.coePoetrySeq;if(PS0&&PS0.on&&PS0.p&&PS0.gi>=PS0.p.groups.length){stopPoetry();return}}/* reading finished: no repeat, back to the pre-Begin state */const ra=rotA*.04+.1,ca=Math.cos(ra),sa=Math.sin(ra);loading=true;const QP=new URLSearchParams(location.search),PS=window.coePoetrySeq,seqOn=!!(PS&&PS.on),p=seqOn?PS.p:(QP.has("poem")?byId[QP.get("poem")]||byId[pick()]:byId[pick()]),gi=seqOn?PS.gi++:(QP.has("poem")?+(QP.get("group")||0):Math.random()*p.groups.length|0),g=p.groups[gi]||p.groups[0];
 let ox=0,oy=0;for(let tr=0;tr<40;tr++){ox=(Math.random()-.5)*Math.max(.1,3.6-(g.w||2));oy=(Math.random()-.5)*.8;if(A.every(a=>Math.hypot(a.pos[0]-ox*ca,a.pos[1]-oy,a.pos[2]+ox*sa)>1.2*a.radius))break}
 const dimIds=new Set(A.filter(a=>Math.hypot(a.pos[0]-ox*ca,a.pos[1]-oy,a.pos[2]+ox*sa)<2*a.radius+.6).map(a=>a.id)),idx=[];mark.fill(0);let x0=1e9,x1=-1e9,y0=1e9,y1=-1e9;
 ox=0;oy=0;const tt=textTargets(g.lines,.6,'left',null,capPx(p));x0=tt.box[0];x1=tt.box[1];y0=tt.box[2];y1=tt.box[3];{const R=recruit(tt.pts,0,0);R.forEach((i,k)=>{idx.push(i);T[i*3]=tt.pts[k][0];T[i*3+1]=tt.pts[k][1];T[i*3+2]=0})}
@@ -221,6 +221,7 @@ function capNext(){const M=window.coeMed;if(!M||!M.plan)return;const P=M.plan,no
 if(i>=P.off.length){capWait=1e12;return}const capAt=P.off[i]-.8;if(now<capAt){capWait=performance.now()/1000+(capAt-now);return}
 M.i=i+1;const st=M.m.steps[i];capStart(st.t);const a=active,n=performance.now()/1000;a.scatterAt=n+(P.off[i]+P.d[i]-now)+Math.min(4,st.p*.4);a.nextAt=i+1<P.off.length?n+(P.off[i+1]-.8-now):n+1e6}
 const capTL=t=>{const e=t-active.t0;if(e<.5)return{phase:'gather',p:e/.5};if(active.scatterAt===null||t<active.scatterAt)return{phase:'read',p:0};const q=(t-active.scatterAt)/(active.fd||.5);return q<1?{phase:'scatter',p:q}:{phase:'done',p:1}};
+const segTL=t=>{const e=t-active.t0,gD=active.gatherD||.5,rD=active.readD||3.,sD=active.scatterD||.35,drift=.012*Math.sin(.4*e),tilt=.018*Math.sin(.25*e),m={offsetX:drift,offsetY:.5*drift,tilt};if(e<gD)return{phase:'gather',p:e/gD,...m};if(e<gD+rD)return{phase:'read',p:(e-gD)/rD,...m};if(e<gD+rD+sD)return{phase:'scatter',p:(e-gD-rD)/sD,...m};return{phase:'done',p:1,...m}};
 const curl=(x,y,z,t)=>[Math.sin(y*1.7+t*.3)-Math.cos(z*1.3),Math.sin(z*1.9+t*.2)-Math.cos(x*1.5),Math.sin(x*1.1+t*.25)-Math.cos(y*1.6)];
 // ===== v23 VOID =====================================================================
 // Wells/ring from modeler/void-orbs.js (verbatim positions); titles/room text only from regions.json (regions.clean.ts).
@@ -477,12 +478,12 @@ C[j]=c[0];C[j+1]=c[1];C[j+2]=c[2];if(FD[i]<1){const f=FD[i];C[j]*=f;C[j+1]*=f;C[
 function frame(nowMs){const dt=Math.min(.05,(nowMs-last)/1000);last=nowMs;const t=nowMs/1000;/* scene clock: advances only by the clamped frame dt, so a hidden tab (rAF paused) or a stall cannot jump the camera, cloud centre and home rotation away from the dots */if(window.__ST===undefined)window.__ST=t;window.__ST+=dt;/* ?oldclock: diagnostics only, the pre-fix wall-clock scene */const st=OLDCLOCK?t:window.__ST;window.coeDT=dt;
 const vres=voidTick(t,dt);if(vres===true){gl.clearColor(...VD.bg,1);gl.clear(gl.COLOR_BUFFER_BIT);drawVoid(t);fpsN++;if(nowMs-fpsT>1000){window.coeFps=fpsN*1000/(nowMs-fpsT);fpsN=0;fpsT=nowMs}requestAnimationFrame(frame);return}
 if(window.coeMed&&!active&&!loading&&capWait<=t){capWait=1e12;capNext()}
-if(VD.mode==='front'&&POEMS_ON&&!window.coeMed&&!active&&!loading&&nowMs>next&&!(window.coePoetrySeq&&window.coePoetrySeq.on&&window.coePoetrySeq.p&&window.coePoetrySeq.gi>=window.coePoetrySeq.p.groups.length&&window.coeHughPlaying))start(nowMs).catch(e=>{loading=false;console.error(e)});
-let wt=0,dx=0,dy=0,tlt=0;if(active){window.coeLastWasSeg=!!active.seg;const holdD=active.readUntil!=null?Math.max(.3,active.readUntil-active.t0-(SECTIONS[active.section]||{gather:2.4}).gather):Math.min(22,Math.max(3.2,active.text.split(/\s+/).length*.55+2.0));
-const tl=active.cap||active.cut?capTL(t):poemTimeline(active.text,active.t0,active.t0+(t-active.t0)/SLOW,active.section,0,active.seg?holdD:undefined);
+if(VD.mode==='front'&&POEMS_ON&&!window.coeMed&&!active&&!loading&&nowMs>=next&&!(window.coePoetrySeq&&window.coePoetrySeq.on&&window.coePoetrySeq.p&&window.coePoetrySeq.gi>=window.coePoetrySeq.p.groups.length&&window.coeHughPlaying))start(nowMs).catch(e=>{loading=false;console.error(e)});
+let wt=0,dx=0,dy=0,tlt=0;if(active){window.coeLastWasSeg=!!active.seg;
+const tl=active.cap||active.cut?capTL(t):active.seg?segTL(t):poemTimeline(active.text,active.t0,active.t0+(t-active.t0)/SLOW,active.section,0);
 window.coePhase={phase:tl.phase,p:tl.p,t:t-active.t0};if(reduced&&tl.phase!=='done')wt=(tl.phase==='read'||tl.phase==='hold')?1:tl.phase==='gather'?tl.p:1-tl.p;
 else if(tl.phase==='gather')wt=tl.p;else if((tl.phase==='read'||tl.phase==='hold')){if(active.lastPhase==='gather'){window.coeFlashT=t}wt=1;}else if(tl.phase==='scatter'){if(active.lastPhase!=='scatter'&&active.idx){for(const idxDot of active.idx){const jDot=idxDot*3;V[jDot]+=(Math.random()-.5)*.08;V[jDot+1]+=(Math.random()-.5)*.08;}}wt=1-tl.p;}active.lastPhase=tl.phase;
-if(tl.phase==='done'){if(active.cap)capWait=active.nextAt??t;const wasCut=active.cut;active=null;mark.fill(0);next=wasCut?nowMs:(window.coeLastWasSeg?nowMs+400:nowMs+nextGap()*1000)}else{const e=t-active.t0;const [vw,vh]=viewWH(),TC=2*Math.PI/180;tlt=reduced?0:Math.max(-TC,Math.min(TC,tl.tilt||0));
+if(tl.phase==='done'){if(active.cap)capWait=active.nextAt??t;const wasCut=active.cut;active=null;mark.fill(0);next=wasCut?nowMs:(window.coeLastWasSeg?nowMs:nowMs+nextGap()*1000)}else{const e=t-active.t0;const [vw,vh]=viewWH(),TC=2*Math.PI/180;tlt=reduced?0:Math.max(-TC,Math.min(TC,tl.tilt||0));
 const ex=active.hw*Math.cos(tlt)+active.hh*Math.abs(Math.sin(tlt)),ey=active.hw*Math.abs(Math.sin(tlt))+active.hh*Math.cos(tlt),mx=Math.max(0,.42*vw-ex),cy0=active.oy-cam[1],myUp=Math.max(0,.42*vh-ey-cy0),myDn=Math.max(0,.42*vh-ey+cy0);
 const tx=reduced?0:Math.max(-mx,Math.min(mx,(tl.offsetX||0)*active.w)),ty=reduced?0:Math.max(-myDn,Math.min(myUp,(tl.offsetY||0)*active.w)),vmax=.015*vw*dt,clampV=v=>Math.max(-vmax,Math.min(vmax,v));
 active.dxs+=clampV(tx-active.dxs);active.dys+=clampV(ty-active.dys);active.dxs=Math.max(-mx,Math.min(mx,active.dxs));active.dys=Math.max(-myDn,Math.min(myUp,active.dys));dx=active.dxs+cam[0]-active.ox*0;dy=active.dys+cam[1];}}
@@ -517,7 +518,7 @@ modeEls.forEach(e=>{e.onclick=()=>{if(MODE!==e.dataset.m){stopMed();stopPoetry()
 const HUGH_POEM_CLIPS=Object.fromEntries(poems.map(p=>[p.id,'voices/hugh-poems/'+p.id+'.mp3']));window.coeHughPoemClips=HUGH_POEM_CLIPS;
 window.coePoetrySeq={on:false,p:null,gi:0};let hughAu=null,segAu=null,segPoem=null,segTimer=0;window.coeHughPlaying=false;window.coeHughLog=[];
 const duck=on=>{if(BN.playing)BN.setVolume(+$('of-vol').value-(on?6:0),.4)};
-const hughStop=()=>{clearTimeout(segTimer);segTimer=0;if(segAu){segAu.pause();segAu=null;segPoem=null}if(hughAu){hughAu.pause();hughAu=null}if(window.coeHughPlaying){window.coeHughPlaying=false;duck(false)}};
+const hughStop=()=>{clearTimeout(segTimer);segTimer=0;if(segAu){segAu.pause();segAu=null;segPoem=null}if(hughAu){hughAu.pause();hughAu.currentTime=0;hughAu=null}window.coeHughAu=null;if(window.coeHughPlaying){window.coeHughPlaying=false;duck(false)}};
 /* Singing bowl (meditation tracks only): synthesized strikes routed straight to the output, so the noise duck never touches them. */
 let bowlNow=null;window.coeBowlLog=[];
 /* bowl level follows the volume slider so its peak stays well above the noise at every position; capped below clipping */
@@ -568,39 +569,77 @@ window.coeHughCue=id=>{const src=HUGH_POEM_CLIPS[id];if(!src||window.coeHughPlay
 /* v23.6.1: poems with a timed reading play one group's slice of Hugh's clip while that group is readable; the group holds until its slice ends,
    then scatters and the next group forms. Native rate only (no playbackRate / time-stretch). Slices come from poem-segments.json (word-level alignment). */
 fetch('poem-segments.json').then(r=>r.ok?r.json():null).then(j=>{window.coeHughSegs=j?Object.fromEntries(Object.entries(j.poems).map(([k,v])=>[k,v.segs])):null}).catch(()=>{});
-window.coeSegLog=[];const segBlob={};/* whole clip fetched once, so seeks never wait on range requests mid-poem */
+window.coeSegLog=[];const segBlob={};
 const poemAudioCache=new Map();
-function getPoemAudio(id){if(!poemAudioCache.has(id)){const a=new Audio('voices/hugh-poems/'+id+'.mp3');a.preload='auto';poemAudioCache.set(id,a);}return poemAudioCache.get(id);}
-
+async function getPoemAudio(id){
+ if(poemAudioCache.has(id))return poemAudioCache.get(id);
+ let src='voices/hugh-poems/'+id+'.mp3';
+ try{
+  const res=await fetch(src);
+  if(res.ok){
+   const b=await res.blob();
+   segBlob[id]=b;
+   src=URL.createObjectURL(b);
+  }
+ }catch(e){console.warn('Poem blob fetch fallback:',e);}
+ const a=new Audio(src);
+ a.preload='auto';
+ poemAudioCache.set(id,a);
+ return a;
+}
+async function playHughPoem(id){
+ const au=await getPoemAudio(id);
+ hughAu=window.coeHughAu=au;
+ window.coeHughPlaying=true;
+ duck(true);
+ try{
+  au.currentTime=0;
+  await au.play();
+ }catch(err){console.warn('Hugh continuous playback deferred:',err);}
+ au.onended=()=>{stopPoetry();};
+}
 window.coeHughSeg=(id,gi,A)=>{
- const sg=window.coeHughSegs?window.coeHughSegs[id]?.[gi]:null;
- const defHold=Math.min(22,Math.max(3.2,A.text.split(/\s+/).length*.55+2.0));
- A.readUntil=performance.now()/1000+defHold;
- if(!sg)return;
- const t0=performance.now();
- const wait=()=>{if(!window.coePoetrySeq.on||active!==A)return;const ph=window.coePhase;if(!ph||ph.phase!=='read'||performance.now()-t0<300){segTimer=setTimeout(wait,40);return}
-  const au=getPoemAudio(id);if(!au)return;
-  const [s,e]=sg;
-  const playSlice=()=>{
-   try{
-    hughAu=window.coeHughAu=au;
-    au.currentTime=s;window.coeHughPlaying=true;duck(true);
-    au.play().then(()=>{
-     A.readUntil=performance.now()/1000+(e-s)+.6;
-     const poll=()=>{if(active!==A){au.pause();return}if(au.currentTime>=e-.02||au.ended){au.pause();window.coeHughPlaying=false;A.readUntil=performance.now()/1000+.6;return}segTimer=setTimeout(poll,30)};poll();
-    }).catch(err=>{console.warn('Hugh playback deferred:',err);});
-   }catch(err){console.warn('Hugh audio error:',err);}
-  };
-  if(au.readyState>=1){playSlice();}
-  else{au.addEventListener('loadedmetadata',playSlice,{once:true});}
- };wait();};
+ const segs=window.coeHughSegs?.[id];
+ const sg=segs?.[gi];
+ if(!sg){
+  A.gatherD=0.5;
+  A.readD=Math.min(22,Math.max(3.2,A.text.split(/\s+/).length*.55+2.0));
+  A.scatterD=0.35;
+  return;
+ }
+ const [s,e]=sg;
+ let dur=e-s;
+ if(hughAu&&!hughAu.paused){
+  const cur=hughAu.currentTime;
+  if(cur<s)dur=e-cur;
+  else if(cur<e)dur=e-cur;
+ }
+ A.gatherD=0.5;
+ A.readD=Math.max(0.4,dur-0.35);
+ A.scatterD=0.35;
+ A.readUntil=performance.now()/1000+A.gatherD+A.readD;
+};
 const stopPoetry=()=>{window.coePoetrySeq.on=false;window.coePoetrySeq.p=null;hughStop();if(!POEMS_ON)return;POEMS_ON=false;$('of-go').textContent='Begin';if(active&&!active.cap&&active.scatterAt===null)active.scatterAt=performance.now()/1000};
 setMode('poetry');window.coeMode=()=>MODE;
 const KEEP=[["ttcem-bound-ing", "The Choice and the Lesson"], ["ttcem-midnight-orgy", "Midnight Orgy"], ["ttcem-jagged-rocks", "Jagged Rocks"], ["ttcem-machines-are-fighting-for-our-freedom", "Machines Are Fighting for Our Freedom"], ["ttcem-dinosaur-footprints", "Dinosaur Footprints"], ["ttcem-don-t-shit-in-my-christmas-spirit", "Don't Shit in My Christmas Spirit"], ["ttcem-flying-around", "Flying Around"], ["ttcem-fabulous", "Fabulous"], ["ttcem-now-i-don-t-throw-dirt-in-people-s-soup", "Now I Don't Throw Dirt in People's Soup"], ["ttcem-halloween-again", "Halloween Again"]],poemSel=$('of-poem');KEEP.forEach(([id,t])=>byId[id]&&poemSel.add(new Option(t,id)));
 if(poemSel&&poemSel.value)getPoemAudio(poemSel.value);
 const fadeOut=(au,ms)=>new Promise(res=>{if(!au||au.paused){res();return}const v0=au.volume,t0=performance.now();const st=()=>{const k=Math.min(1,(performance.now()-t0)/ms);au.volume=v0*(1-k);if(k<1)requestAnimationFrame(st);else{au.pause();au.volume=v0;window.coeFadeLog.push({ms:performance.now()-t0});res()}};st()});window.coeFadeLog=[];
-const cutPoem=()=>{if(active&&!active.cap&&!active.cut){active.cut=1;active.scatterAt=performance.now()/1000;active.fd=.45;}};
-const beginPoem=()=>{if(active&&!active.cap){active.scatterAt=performance.now()/1000;active.fd=.45;next=performance.now()+460;}else{next=performance.now()+40;}POEMS_ON=true;if(poemSel.value)getPoemAudio(poemSel.value);window.coePoetrySeq={on:true,p:byId[poemSel.value],gi:0,sel:poemSel.value};$('of-go').textContent='End';};
+const cutPoem=()=>{if(active&&!active.cap&&!active.cut){active.cut=1;active.scatterAt=performance.now()/1000;active.fd=.35;}};
+const beginPoem=async()=>{
+ if(active&&!active.cap){
+  active.scatterAt=performance.now()/1000;
+  active.fd=.35;
+ }
+ hughStop();
+ POEMS_ON=true;
+ const pId=poemSel.value;
+ const p=byId[pId];
+ if(!p)return;
+ window.coePoetrySeq={on:true,p,gi:0,sel:pId};
+ $('of-go').textContent='End';
+ await playHughPoem(pId);
+ next=performance.now();
+};
 poemSel.onchange=()=>{if(!POEMS_ON)return;hughStop();beginPoem();};
 med.onchange=async()=>{const M=window.coeMed;if(!M)return;window.coeMed=null;medHalt(M,.3);await new Promise(r=>setTimeout(r,300));if(active&&active.cap)active.scatterAt=Math.min(active.scatterAt??1e12,performance.now()/1000);medStart(OF[+med.value])};
 /* full-title tooltip: only when the closed dropdown's selected title is cut off; shows after ~1 s */
