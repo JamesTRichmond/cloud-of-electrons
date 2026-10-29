@@ -160,18 +160,31 @@ if(ly>3.5&&ly<5.5&&te<.5){
  sa=clamp(z*f*pxu*1.4,1.2,7.0);
 }
 if(ly>=5.5&&te<.5){
- float baseAlpha=0.035*smoothstep(0.08,0.40,d)*exp(-min(R,30.0)*0.025);
- vec3 restingCol=vec3(0.12,0.18,0.32);
+ float baseAlpha=0.045*smoothstep(0.08,0.40,d)*exp(-min(R,30.0)*0.025);
+ vec3 restingCol=vec3(0.14,0.19,0.34);
  float tractDist=abs(c.x-uSynTrack);
- float isCurrentTract=step(tractDist,0.008);
- float sparkDelta=abs(c.y-uSynProg);
- float spark=isCurrentTract*exp(-sparkDelta*sparkDelta*320.0)*step(0.001,uSynProg);
+ float isCurrentTract=step(tractDist,0.016);
+ float isNeighborTract=step(tractDist,0.045);
+
+ float sparkDelta=c.y-uSynProg;
+ float sparkCore=isCurrentTract*exp(-sparkDelta*sparkDelta*420.0)*step(0.001,uSynProg);
+ float sparkTrail=isCurrentTract*exp(-clamp(sparkDelta,0.0,0.35)*18.0)*step(0.001,uSynProg)*0.65;
+ float sparkSymp=isNeighborTract*exp(-sparkDelta*sparkDelta*200.0)*step(0.001,uSynProg)*0.35;
+ float totalSpark=clamp(sparkCore*1.8+sparkTrail+sparkSymp,0.0,2.0);
+
  float distToHub=length(w-uSynCenter);
- float heatSheet=uSynHeat*exp(-distToHub*0.22)*(0.65+0.35*sin(distToHub*1.8-t*2.2));
- vec3 activeCol=mix(restingCol,vec3(0.96,0.98,1.0),spark);
- va=mix(activeCol,vec3(0.98,0.82,0.46),clamp(heatSheet*0.9,0.0,1.0));
- ala=(baseAlpha+spark*0.85+heatSheet*0.32)*smoothstep(0.08,0.35,d);
- sa=clamp(z*f*pxu*0.65*(1.0+spark*1.5+heatSheet*0.45),0.7,3.2);
+ float waveFront=exp(-pow(distToHub-uSynHeat*11.0,2.0)*0.18)*uSynHeat;
+ float hubGlow=uSynHeat*exp(-distToHub*0.14)*(0.75+0.25*sin(distToHub*1.6-t*2.4));
+ float totalHeat=clamp(waveFront*1.4+hubGlow*1.1,0.0,1.8);
+
+ vec3 sparkColor=mix(vec3(0.98,0.72,0.28),vec3(1.0,0.98,0.92),clamp(sparkCore*1.5,0.0,1.0));
+ vec3 heatColor=mix(vec3(0.98,0.74,0.32),vec3(1.0,0.88,0.55),clamp(waveFront,0.0,1.0));
+
+ vec3 activeCol=mix(restingCol,sparkColor,clamp(totalSpark,0.0,1.0));
+ va=mix(activeCol,heatColor,clamp(totalHeat,0.0,1.0));
+
+ ala=(baseAlpha+totalSpark*0.95+totalHeat*0.68)*smoothstep(0.08,0.35,d);
+ sa=clamp(z*f*pxu*0.85*(1.0+totalSpark*2.2+totalHeat*1.2),0.9,4.5);
 }
 if(uFlash>0.0){va=mix(va,vec3(0.96,0.97,1.0)*(1.0+uFlash*1.8),te*uFlash);}
 gl_PointSize=mix(sa,tps*(1.0+uFlash*0.35),te);soft=mix(sfa,0.,te);al=mix(ala,1.,te);vTe=te;vc=mix(va,c*tk,te);al*=fg*(hs2<vth?0.:1.);
@@ -824,22 +837,22 @@ gl.uniform3fv(gl.getUniformLocation(pr,'cam'),cam);{const tp=active?active.ps*TE
 const flashEl=t-(window.coeFlashT||-10),uFlash=flashEl<.25?Math.max(0,1.-flashEl/.25):0;
 let ripRad=0,ripAmp=0;if(window.coeRipple){const el=ac().currentTime-window.coeRipple.t0;if(el<4.2){ripRad=el*3.6;ripAmp=Math.max(0,1.-el/4.2)*window.coeRipple.amp}else{window.coeRipple=null}}
 gl.uniform1f(gl.getUniformLocation(pr,'uFlash'),uFlash);gl.uniform1f(gl.getUniformLocation(pr,'uBreath'),window.coeMed?1.:0.);gl.uniform4f(gl.getUniformLocation(pr,'uRipple'),0,0,ripRad,ripAmp);
-if(!window.coeThoughtT0){window.coeThoughtT0=-20.0;window.coeThoughtNext=7.0;window.coeThoughtTract=0;window.coeThoughtDest=[0,0,0];}
+if(!window.coeThoughtT0){window.coeThoughtT0=-20.0;window.coeThoughtNext=2.2;window.coeThoughtTract=0;window.coeThoughtDest=[0,0,0];}
 if(st>=window.coeThoughtNext){
  window.coeThoughtT0=st;
  const tId=Math.floor(Math.random()*64);
  const tr=window.coeTracts?window.coeTracts[tId]:null;
  window.coeThoughtTract=tId/64.0;
  window.coeThoughtDest=tr?tr.destHub:[0,0,0];
- window.coeThoughtNext=st+10.0+Math.random()*6.0;
+ window.coeThoughtNext=st+6.5+Math.random()*3.0;
  window.COE_EVENTS?.dispatch('coe:lightning-strike',{tractId:tId,hub:window.coeThoughtDest});
 }
 const eTh=st-window.coeThoughtT0;
-const uSynProg=(eTh>=0&&eTh<0.8)?(eTh/0.8):0.0;
+const uSynProg=(eTh>=0&&eTh<0.95)?(eTh/0.95):0.0;
 let uSynHeat=0.0;
-if(eTh>=0.7&&eTh<3.4){
- const uH=(eTh-0.7)/2.7;
- uSynHeat=Math.sin(uH*Math.PI)*Math.exp(-uH*1.6);
+if(eTh>=0.7&&eTh<3.6){
+ const uH=(eTh-0.7)/2.9;
+ uSynHeat=Math.sin(uH*Math.PI)*Math.exp(-uH*1.2);
 }
 gl.uniform1f(gl.getUniformLocation(pr,'uSynTrack'),window.coeThoughtTract);
 gl.uniform1f(gl.getUniformLocation(pr,'uSynProg'),uSynProg);
