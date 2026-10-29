@@ -400,143 +400,276 @@ va=al*gain*(1.-.6*coc)*smoothstep(.35,3.,d)*(1.-smoothstep(2600.,4400.,d));vc=co
 gl.attachShader(pv,sh(gl.FRAGMENT_SHADER,`#version 300 es
 precision mediump float;in vec3 vc;in float va;in vec2 st;in float str;out vec4 o;void main(){vec2 pc=(gl_PointCoord-.5)*2.;pc.y=-pc.y;vec2 q=vec2(dot(pc,st),dot(pc,vec2(-st.y,st.x))*str);float r=length(q);if(r>1.)discard;float core=exp(-r*r*12.);float corona=exp(-r*r*2.2)*(1.-r*r);o=vec4(vc,va*(core*.6+corona*.5));}`));
 gl.linkProgram(pv);if(!gl.getProgramParameter(pv,gl.LINK_STATUS))throw gl.getProgramInfoLog(pv);
-const pj=gl.createProgram();
-gl.attachShader(pj,sh(gl.VERTEX_SHADER,`#version 300 es
+// Continuous Masterpiece Jamestellation 3D Face Program (Photographic Clarity, Zero Rectangular Frame Border, True 3D Relief)
+const pjFace=gl.createProgram();
+gl.attachShader(pjFace,sh(gl.VERTEX_SHADER,`#version 300 es
 precision highp float;
-in vec3 j_pos;in vec2 j_uv;in vec3 j_attr;
-uniform mat3 rot;uniform vec3 cp;uniform float t,asp,uWarp,hpx,uLaugh,uIntegrity;
-out vec2 vUv;out float vDist;out float vIsCME;out float vAlpha;out vec3 vColCustom;
+in vec3 a_pos;in vec2 a_uv;in vec3 a_attr;
+uniform mat3 rot;uniform vec3 cp;uniform float t,asp,uWarp,uLaugh,uIntegrity;
+out vec2 vUv;out float vDist;out vec3 vPos;
 void main(){
- float isCME=j_attr.x;float hairWeight=j_attr.y;float seed=j_attr.z;
- vec3 w=j_pos;
- if(isCME>0.5){
-  float an=seed*6.2832+t*3.0;
-  w+=vec3(sin(an)*4.2,cos(an*1.4)*4.2,sin(seed*18.0+t*2.4)*10.0);
-  vIsCME=1.0;vUv=vec2(-1.0,-1.0);
-  vAlpha=0.94*(0.7+0.3*sin(seed*30.0+t*4.0))*uIntegrity;
-  vColCustom=mix(vec3(1.0,0.98,0.92),vec3(0.98,0.64,0.18),sin(seed*16.0+t*1.5)*0.5+0.5);
- }else{
-  if(hairWeight>0.05){
-   float driftX=sin(t*1.3+j_pos.y*0.04+seed*3.14)*7.5;
-   float driftY=cos(t*0.95+j_pos.x*0.04+seed*2.71)*5.5;
-   float driftZ=sin(t*1.4+j_pos.x*0.05+j_pos.y*0.05)*14.0;
-   w+=vec3(driftX,driftY,driftZ)*hairWeight*(0.55+0.45*uLaugh);
-  }
-  if(uIntegrity<0.999){
-   float decayDisp=(1.0-uIntegrity)*35.0;
-   w+=vec3(sin(seed*45.0)*decayDisp,cos(seed*33.0)*decayDisp,sin(seed*21.0)*decayDisp*1.5);
-  }
-  vIsCME=0.0;vUv=j_uv;vAlpha=uIntegrity;vColCustom=vec3(0.0);
+ vUv=a_uv;
+ float hairWeight=a_attr.y;
+ float seed=a_attr.z;
+ vec3 w=a_pos;
+
+ if(hairWeight>0.05){
+  float waveX=sin(t*1.4+a_uv.y*8.0+a_uv.x*4.0)*4.0;
+  float waveY=cos(t*1.1+a_uv.x*6.0+a_uv.y*5.0)*3.0;
+  float waveZ=sin(t*1.6+a_uv.x*7.0-a_uv.y*5.0)*8.0;
+  w+=vec3(waveX,waveY,waveZ)*(hairWeight*hairWeight)*(0.65+0.35*uLaugh);
+ }
+
+ if(uIntegrity<0.999){
+  float decay=(1.0-uIntegrity)*35.0;
+  w+=vec3(sin(seed*45.0)*decay,cos(seed*33.0)*decay,sin(seed*21.0)*decay*1.5);
+ }
+
+ vec3 v=rot*(w-cp);vDist=-v.z;vPos=v;
+ if(vDist<0.35){gl_Position=vec4(2.,2.,2.,1.);return;}
+ float F=mix(2.0503,1.45,uWarp);
+ gl_Position=vec4(v.x*F/asp,v.y*F,0.0,vDist);
+}`));
+gl.attachShader(pjFace,sh(gl.FRAGMENT_SHADER,`#version 300 es
+precision highp float;
+in vec2 vUv;in float vDist;in vec3 vPos;
+uniform sampler2D uTexStill,uTexVideo;uniform float t,gain,fb,uLaugh,uIntegrity;
+out vec4 o;
+void main(){
+ vec2 uv=clamp(vUv,0.0,1.0);
+ vec3 colStill=texture(uTexStill,uv).rgb;
+ vec3 colVideo=texture(uTexVideo,uv).rgb;
+ float vidLum=dot(colVideo,vec3(0.299,0.587,0.114));
+ vec3 validVideo=mix(colStill,colVideo,step(0.03,vidLum));
+ vec3 col=mix(colStill,validVideo,uLaugh);
+
+ float lum=dot(col,vec3(0.299,0.587,0.114));
+ vec2 cUv=(vUv-vec2(0.485,0.46))*vec2(1.0,0.76);
+ float dAnat=length(cUv);
+
+ // Pure seamless organic silhouette: 100% solid, continuous photographic face, zero frame border
+ float borderFade=1.0-smoothstep(0.36,0.48,dAnat);
+ float al=borderFade*uIntegrity;
+ if(al<0.004)discard;
+
+ // 3D Starlight curvature and dimensional rim lighting as traveler flies around
+ vec3 norm=normalize(vec3(cUv.x*2.4,-cUv.y*2.4,1.0-dAnat*1.4));
+ vec3 viewDir=normalize(-vPos);
+ float rim=pow(1.0-max(0.0,dot(norm,viewDir)),3.0)*0.45;
+ col+=vec3(0.98,0.86,0.62)*rim;
+
+ // Third Eye Ajna diamond star glint anchored between eyes
+ float dAjna=length((vUv-vec2(0.481,0.359))*vec2(1.0,1.35));
+ float ajnaStar=exp(-dAjna*dAjna*5400.0)*(0.85+0.15*sin(t*3.6));
+ float ajnaSpikes=(exp(-abs(vUv.x-0.481)*180.0)*exp(-abs(vUv.y-0.359)*40.0)+
+                   exp(-abs(vUv.y-0.359)*180.0)*exp(-abs(vUv.x-0.481)*40.0))*0.4;
+ vec3 ajnaCol=vec3(0.95,0.98,1.0)*(ajnaStar*1.8+ajnaSpikes);
+ col+=ajnaCol;
+
+ float nearFade=smoothstep(1.0,18.0,vDist),farFade=1.0-smoothstep(2400.0,4200.0,vDist);
+ float finalAlpha=gain*al*nearFade*farFade*(1.0-fb);
+ o=vec4(col*al,finalAlpha);
+}`));
+gl.linkProgram(pjFace);if(!gl.getProgramParameter(pjFace,gl.LINK_STATUS))throw gl.getProgramInfoLog(pjFace);
+
+// Living 3D Coronal Mass Ejections (CME) and Solar Flares (NOT static bars)
+const pjCME=gl.createProgram();
+gl.attachShader(pjCME,sh(gl.VERTEX_SHADER,`#version 300 es
+precision highp float;
+in vec3 cme_pos;in vec3 cme_dir;in vec2 cme_attr;
+uniform mat3 rot;uniform vec3 cp;uniform float t,asp,uWarp,hpx,uIntegrity;
+out float vDist;out float vAlpha;out vec3 vCol;
+void main(){
+ float seed=cme_attr.x;float flareSpeed=cme_attr.y;
+ float cycle=fract(t*flareSpeed+seed*13.71);
+ float arc=sin(cycle*3.14159);
+ vec3 curlNoise=vec3(sin(t*2.1+seed*18.0),cos(t*1.7+seed*14.0),sin(t*2.8+seed*9.0));
+ vec3 w=cme_pos+cme_dir*(arc*48.0)+curlNoise*(arc*16.0);
+ if(uIntegrity<0.999){
+  float decay=(1.0-uIntegrity)*40.0;
+  w+=vec3(sin(seed*55.0)*decay,cos(seed*41.0)*decay,sin(seed*29.0)*decay);
  }
  vec3 v=rot*(w-cp);vDist=-v.z;
  if(vDist<0.35){gl_Position=vec4(2.,2.,2.,1.);gl_PointSize=0.;return;}
  float F=mix(2.0503,1.45,uWarp);
- gl_Position=vec4(v.x*F/asp,v.y*F,0.,vDist);
- float sz=isCME>0.5?2.6:2.2;
- gl_PointSize=clamp(sz*F*hpx/vDist,1.0,16.0);
+ gl_Position=vec4(v.x*F/asp,v.y*F,0.0,vDist);
+ gl_PointSize=clamp(3.2*F*hpx/vDist,1.0,22.0);
+ vAlpha=arc*uIntegrity*0.92;
+ vCol=mix(mix(vec3(1.0,0.98,0.92),vec3(0.98,0.65,0.18),cycle),vec3(0.85,0.30,0.65),cycle*cycle);
 }`));
-gl.attachShader(pj,sh(gl.FRAGMENT_SHADER,`#version 300 es
+gl.attachShader(pjCME,sh(gl.FRAGMENT_SHADER,`#version 300 es
 precision highp float;
-in vec2 vUv;in float vDist;in float vIsCME;in float vAlpha;in vec3 vColCustom;
-uniform sampler2D uTexStill,uTexVideo;uniform float t,gain,fb,uLaugh,uIntegrity;out vec4 o;
+in float vDist;in float vAlpha;in vec3 vCol;
+uniform float gain,fb;out vec4 o;
 void main(){
- vec2 pc=(gl_PointCoord-0.5)*2.0;float rDot=length(pc);if(rDot>1.0)discard;
- float soft=exp(-rDot*rDot*3.4);
- vec3 col;float al=vAlpha;
- if(vIsCME>0.5){
-  col=vColCustom*(1.35+0.35*exp(-rDot*rDot*5.5));
- }else{
-  float dAnat=length((vUv-vec2(0.485,0.46))*vec2(1.0,0.80));
-  float borderFade=1.0-smoothstep(0.38,0.48,dAnat);
-  al*=borderFade;
-
-  vec3 colStill=texture(uTexStill,vUv).rgb;
-  vec3 colVideo=texture(uTexVideo,vUv).rgb;
-  float vidLum=dot(colVideo,vec3(0.299,0.587,0.114));
-  vec3 validVideo=mix(colStill,colVideo,step(0.03,vidLum));
-  col=mix(colStill,validVideo,uLaugh);
-
-  float faceCore=1.0-smoothstep(0.0,0.32,dAnat);
-  col=max(col,vec3(0.18,0.14,0.11)*faceCore);
-
-  float lum=dot(col,vec3(0.299,0.587,0.114));
-  if(borderFade<0.01||(lum<0.02&&dAnat>0.32))discard;
-  al*=mix(smoothstep(0.02,0.06,lum),1.0,faceCore*0.75);
-
-  float dAjna=length((vUv-vec2(0.481,0.359))*vec2(1.0,1.35));
-  float ajnaStar=exp(-dAjna*dAjna*5200.0)*(0.8+0.2*sin(t*3.4));
-  float ajnaHalo=exp(-dAjna*dAjna*950.0)*0.30;
-  vec3 ajnaCol=mix(vec3(0.55,0.82,1.0),vec3(0.98,0.96,0.90),ajnaStar)*(ajnaStar*1.5+ajnaHalo);
-  col+=ajnaCol;
-
-  float star=smoothstep(0.65,0.95,lum);
-  col*=1.0+star*0.22*(0.5+0.5*sin(t*4.0+vUv.x*32.0+vUv.y*26.0));
- }
+ vec2 pc=(gl_PointCoord-0.5)*2.0;float r=length(pc);if(r>1.0)discard;
+ float soft=exp(-r*r*3.2);
  float nearFade=smoothstep(1.0,16.0,vDist),farFade=1.0-smoothstep(2400.0,4200.0,vDist);
- o=vec4(col,gain*al*soft*nearFade*farFade*(1.0-fb));
+ o=vec4(vCol*(1.2+0.4*exp(-r*r*6.0)),gain*vAlpha*soft*nearFade*farFade*(1.0-fb));
 }`));
-gl.linkProgram(pj);if(!gl.getProgramParameter(pj,gl.LINK_STATUS))throw gl.getProgramInfoLog(pj);
-const J_PTS=28000;
-const J_POS=new Float32Array(J_PTS*3),J_UV=new Float32Array(J_PTS*2),J_ATTR=new Float32Array(J_PTS*3);
-{
- let jIdx=0;
- const GW=160,GH=160;
- for(let gy=0;gy<GH;gy++){
-  const v=gy/(GH-1);
-  for(let gx=0;gx<GW;gx++){
-   const u=gx/(GW-1);
-   const px=(u-0.5)*150.0+1.10;
-   const py=-(v-0.5)*210.0-9.42;
-   const dNose=Math.hypot((u-0.481)/0.08,(v-0.359)/0.11);
-   const zNose=22.0*Math.exp(-dNose*dNose*2.5);
-   const dCheek=Math.hypot((u-0.481)/0.22,(v-0.42)/0.25);
-   const zCheek=12.0*Math.exp(-dCheek*dCheek*2.0);
-   const dFace=Math.hypot((u-0.485)/0.18,(v-0.45)/0.25);
-   const hairWeight=Math.min(1.0,Math.max(0.0,(dFace-0.70)/0.55));
-   const zHair=-18.0*hairWeight;
-   const pz=RING.center[2]+zNose+zCheek+zHair;
-   J_POS[jIdx*3]=px;J_POS[jIdx*3+1]=py;J_POS[jIdx*3+2]=pz;
-   J_UV[jIdx*2]=u;J_UV[jIdx*2+1]=v;
-   J_ATTR[jIdx*3]=0.0;J_ATTR[jIdx*3+1]=hairWeight;J_ATTR[jIdx*3+2]=Math.random();
-   jIdx++;
-  }
+gl.linkProgram(pjCME);if(!gl.getProgramParameter(pjCME,gl.LINK_STATUS))throw gl.getProgramInfoLog(pjCME);
+
+// 3D Cosmic Web & Dendritic Connectome Lines
+const pNeuro=gl.createProgram();
+gl.attachShader(pNeuro,sh(gl.VERTEX_SHADER,`#version 300 es
+precision highp float;
+in vec3 n_pos;in vec4 n_attr;
+uniform mat3 rot;uniform vec3 cp;uniform float t,asp,uWarp,uNeuroTract,uNeuroProg;
+out float vDist;out float vAlpha;out vec3 vCol;
+void main(){
+ float tractId=n_attr.x;float prog=n_attr.y;float level=n_attr.z;float seed=n_attr.w;
+ vec3 w=n_pos;
+ vec3 v=rot*(w-cp);vDist=-v.z;
+ if(vDist<0.35){gl_Position=vec4(2.,2.,2.,1.);return;}
+ float F=mix(2.0503,1.45,uWarp);
+ gl_Position=vec4(v.x*F/asp,v.y*F,0.0,vDist);
+
+ float isTract=1.0-smoothstep(0.0,0.04,abs(tractId-uNeuroTract));
+ float delta=prog-uNeuroProg;
+ float spark=isTract*exp(-delta*delta*260.0)*step(0.001,uNeuroProg);
+ float trail=isTract*exp(-clamp(delta,0.0,0.40)*14.0)*step(0.001,uNeuroProg)*0.65;
+ float symp=step(abs(tractId-uNeuroTract),0.09)*exp(-delta*delta*120.0)*step(0.001,uNeuroProg)*0.35*(2.0-level);
+ float totalSpark=clamp(spark*2.2+trail+symp,0.0,2.5);
+
+ float restingAlpha=mix(0.18,0.09,level/2.0)*(0.85+0.15*sin(t*1.5+seed*6.28));
+ vAlpha=mix(restingAlpha,0.98,clamp(totalSpark,0.0,1.0));
+
+ vec3 restingCol=mix(vec3(0.32,0.22,0.56),vec3(0.18,0.28,0.52),seed);
+ vec3 sparkCol=mix(vec3(1.0,0.82,0.38),vec3(1.0,1.0,0.98),clamp(spark*1.4,0.0,1.0));
+ vCol=mix(restingCol,sparkCol,clamp(totalSpark,0.0,1.0));
+}`));
+gl.attachShader(pNeuro,sh(gl.FRAGMENT_SHADER,`#version 300 es
+precision highp float;
+in float vDist;in float vAlpha;in vec3 vCol;
+uniform float gain,fb;out vec4 o;
+void main(){
+ float nearFade=smoothstep(0.8,12.0,vDist),farFade=1.0-smoothstep(2200.0,3800.0,vDist);
+ o=vec4(vCol,gain*vAlpha*nearFade*farFade*(1.0-fb));
+}`));
+gl.linkProgram(pNeuro);if(!gl.getProgramParameter(pNeuro,gl.LINK_STATUS))throw gl.getProgramInfoLog(pNeuro);
+
+// Jamestellation Continuous 3D Subdivided Face Mesh (5,184 Vertices, 10,082 Triangles)
+const GW=72,GH=72;
+const J_MESH_VERTS=GW*GH;
+const J_POS=new Float32Array(J_MESH_VERTS*3);
+const J_UV=new Float32Array(J_MESH_VERTS*2);
+const J_ATTR=new Float32Array(J_MESH_VERTS*3);
+let jMeshIdx=0;
+for(let gy=0;gy<GH;gy++){
+ const v=gy/(GH-1);
+ for(let gx=0;gx<GW;gx++){
+  const u=gx/(GW-1);
+  const px=(u-0.5)*150.0+1.10;
+  const py=-(v-0.5)*200.0-9.42;
+  const dNose=Math.hypot((u-0.481)/0.09,(v-0.359)/0.12);
+  const zNose=22.0*Math.exp(-dNose*dNose*2.4);
+  const dCheek=Math.hypot((u-0.481)/0.22,(v-0.42)/0.25);
+  const zCheek=12.0*Math.exp(-dCheek*dCheek*2.0);
+  const dFace=Math.hypot((u-0.485)/0.18,(v-0.45)/0.25);
+  const hairWeight=Math.min(1.0,Math.max(0.0,(dFace-0.65)/0.45));
+  const zHair=-18.0*hairWeight;
+  const pz=-1850.0+zNose+zCheek+zHair;
+
+  J_POS[jMeshIdx*3]=px;J_POS[jMeshIdx*3+1]=py;J_POS[jMeshIdx*3+2]=pz;
+  J_UV[jMeshIdx*2]=u;J_UV[jMeshIdx*2+1]=v;
+  J_ATTR[jMeshIdx*3]=0.0;J_ATTR[jMeshIdx*3+1]=hairWeight;J_ATTR[jMeshIdx*3+2]=Math.random();
+  jMeshIdx++;
  }
- for(let loop=0;loop<16;loop++){
-  const thA=(loop/16)*Math.PI*2.0;
-  const thB=thA+0.42+0.12*Math.sin(loop*1.5);
-  const Rhead=64.0;
-  const pA=[1.10+Math.cos(thA)*Rhead,-9.42+Math.sin(thA)*Rhead*1.22,RING.center[2]];
-  const pB=[1.10+Math.cos(thB)*Rhead,-9.42+Math.sin(thB)*Rhead*1.22,RING.center[2]];
-  const thMid=(thA+thB)*0.5;
-  const normX=Math.cos(thMid),normY=Math.sin(thMid)*1.22;
-  const biX=-Math.sin(thMid),biY=Math.cos(thMid);
-  const Harc=52.0+24.0*Math.sin(loop*1.9);
-  const Wtwist=22.0+14.0*Math.cos(loop*2.3);
-  const Ztwist=32.0*Math.sin(loop*2.7);
-  for(let p=0;p<150;p++){
-   const s=p/149;
-   const arch=Math.sin(s*Math.PI);
-   const twist=Math.sin(s*Math.PI*2.0);
-   const px=(1-s)*pA[0]+s*pB[0]+normX*arch*Harc+biX*twist*Wtwist+(Math.random()-0.5)*3.2;
-   const py=(1-s)*pA[1]+s*pB[1]+normY*arch*Harc+biY*twist*Wtwist+(Math.random()-0.5)*3.2;
-   const pz=RING.center[2]+arch*Ztwist+Math.sin(s*Math.PI*4.0)*12.0+(Math.random()-0.5)*3.2;
-   J_POS[jIdx*3]=px;J_POS[jIdx*3+1]=py;J_POS[jIdx*3+2]=pz;
-   J_UV[jIdx*2]=-1.0;J_UV[jIdx*2+1]=-1.0;
-   J_ATTR[jIdx*3]=1.0;J_ATTR[jIdx*3+1]=0.0;J_ATTR[jIdx*3+2]=Math.random();
-   jIdx++;
+}
+const jIndices=[];
+for(let gy=0;gy<GH-1;gy++){
+ for(let gx=0;gx<GW-1;gx++){
+  const i0=gy*GW+gx,i1=i0+1,i2=(gy+1)*GW+gx,i3=i2+1;
+  jIndices.push(i0,i2,i1);
+  jIndices.push(i1,i2,i3);
+ }
+}
+const J_INDEX_COUNT=jIndices.length;
+
+const jFaceVao=gl.createVertexArray();
+gl.bindVertexArray(jFaceVao);
+const attJF=(name,arr,sz)=>{const b=gl.createBuffer(),l=gl.getAttribLocation(pjFace,name);gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,arr,gl.STATIC_DRAW);gl.enableVertexAttribArray(l);gl.vertexAttribPointer(l,sz,gl.FLOAT,false,0,0);};
+attJF('a_pos',J_POS,3);attJF('a_uv',J_UV,2);attJF('a_attr',J_ATTR,3);
+const jIndexBuf=gl.createBuffer();
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,jIndexBuf);
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,new Uint16Array(jIndices),gl.STATIC_DRAW);
+gl.bindVertexArray(null);
+
+// Jamestellation 3D Coronal Mass Ejection Particles
+const J_CME_COUNT=4000;
+const CME_POS=new Float32Array(J_CME_COUNT*3);
+const CME_DIR=new Float32Array(J_CME_COUNT*3);
+const CME_ATTR=new Float32Array(J_CME_COUNT*2);
+for(let i=0;i<J_CME_COUNT;i++){
+ const th=Math.random()*Math.PI*2.0;
+ const rHead=58.0+Math.random()*12.0;
+ const x=1.10+Math.cos(th)*rHead;
+ const y=-9.42+Math.sin(th)*rHead*1.25;
+ const z=-1850.0+(Math.random()-0.5)*20.0;
+ CME_POS.set([x,y,z],i*3);
+ const dir=[Math.cos(th)+(Math.random()-0.5)*0.4, Math.sin(th)*1.25+(Math.random()-0.5)*0.4, (Math.random()-0.5)*0.8];
+ const len=Math.hypot(...dir);
+ CME_DIR.set([dir[0]/len,dir[1]/len,dir[2]/len],i*3);
+ CME_ATTR.set([Math.random(),0.32+Math.random()*0.45],i*2);
+}
+const jCmeVao=gl.createVertexArray();
+gl.bindVertexArray(jCmeVao);
+const attC=(name,arr,sz)=>{const b=gl.createBuffer(),l=gl.getAttribLocation(pjCME,name);gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,arr,gl.STATIC_DRAW);gl.enableVertexAttribArray(l);gl.vertexAttribPointer(l,sz,gl.FLOAT,false,0,0);};
+attC('cme_pos',CME_POS,3);attC('cme_dir',CME_DIR,3);attC('cme_attr',CME_ATTR,2);
+gl.bindVertexArray(null);
+
+// 3D Neural Connectome Network Generation (Dendritic Arborization across Front Sanctuary & Void)
+const NEURO_HUBS=[
+ [0,16,-22],[-18,8,-28],[20,-10,-24],[-22,-14,-36],[24,15,-32],
+ [-12,24,-45],[16,-18,-48],[-28,6,-54],[26,-6,-58],[0,2,-65],
+ [0,25,-200],[-62,16,-200],[96,48,-280],[-70,72,-30],
+ [120,-35,-550],[-140,60,-780],[45,-80,-950],[-90,-40,-1150],
+ [110,85,-1350],[-40,20,-1550],[0,40,-1750],[80,-30,-1700],
+ [-85,45,-1800],[-1.94,21.6,-1850]
+];
+window.coeNeuroHubs=NEURO_HUBS;
+const neuroLines=[];
+// Build arborization hierarchy connecting hubs
+for(let h=0;h<NEURO_HUBS.length-1;h++){
+ const pA=NEURO_HUBS[h],pB=NEURO_HUBS[h+1];
+ const tractId=h/(NEURO_HUBS.length-1);
+ const mid=[(pA[0]+pB[0])*0.5+(Math.sin(h*2.1)-0.5)*45.0, (pA[1]+pB[1])*0.5+(Math.cos(h*1.7)-0.5)*35.0, (pA[2]+pB[2])*0.5+(Math.sin(h*3.2)-0.5)*50.0];
+ const TRUNK_SEGS=14;
+ for(let s=0;s<TRUNK_SEGS;s++){
+  const t0=s/TRUNK_SEGS,t1=(s+1)/TRUNK_SEGS;
+  const bz=(t)=>{const it=1.0-t;return [it*it*pA[0]+2.0*it*t*mid[0]+t*t*pB[0], it*it*pA[1]+2.0*it*t*mid[1]+t*t*pB[1], it*it*pA[2]+2.0*it*t*mid[2]+t*t*pB[2]];};
+  const v0=bz(t0),v1=bz(t1);
+  neuroLines.push(v0[0],v0[1],v0[2], tractId, t0, 0, Math.random());
+  neuroLines.push(v1[0],v1[1],v1[2], tractId, t1, 0, Math.random());
+
+  // Collateral branch
+  if(s%3===1){
+   const dir=[(Math.random()-0.5)*38.0,(Math.random()-0.5)*32.0,(Math.random()-0.5)*40.0];
+   const cEnd=[v0[0]+dir[0],v0[1]+dir[1],v0[2]+dir[2]];
+   neuroLines.push(v0[0],v0[1],v0[2], tractId, t0, 1, Math.random());
+   neuroLines.push(cEnd[0],cEnd[1],cEnd[2], tractId, Math.min(1.0,t0+0.18), 1, Math.random());
+
+   // Terminal dendritic tendrils
+   for(let k=0;k<3;k++){
+    const tEnd=[cEnd[0]+(Math.random()-0.5)*18.0, cEnd[1]+(Math.random()-0.5)*16.0, cEnd[2]+(Math.random()-0.5)*20.0];
+    neuroLines.push(cEnd[0],cEnd[1],cEnd[2], tractId, Math.min(1.0,t0+0.18), 2, Math.random());
+    neuroLines.push(tEnd[0],tEnd[1],tEnd[2], tractId, Math.min(1.0,t0+0.32), 2, Math.random());
+   }
   }
  }
 }
-const jVao=gl.createVertexArray(),jTexStill=gl.createTexture(),jTexVideo=gl.createTexture();let jReady=false;
-gl.bindVertexArray(jVao);
-const attJ=(name,arr,size)=>{
- const b=gl.createBuffer(),loc=gl.getAttribLocation(pj,name);
- gl.bindBuffer(gl.ARRAY_BUFFER,b);
- gl.bufferData(gl.ARRAY_BUFFER,arr,gl.STATIC_DRAW);
- gl.enableVertexAttribArray(loc);
- gl.vertexAttribPointer(loc,size,gl.FLOAT,false,0,0);
-};
-attJ('j_pos',J_POS,3);attJ('j_uv',J_UV,2);attJ('j_attr',J_ATTR,3);gl.bindVertexArray(null);
+const NEURO_VERT_COUNT=neuroLines.length/7;
+const neuroBufArr=new Float32Array(neuroLines);
+const neuroVao=gl.createVertexArray();
+gl.bindVertexArray(neuroVao);
+const neuroBuf=gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER,neuroBuf);
+gl.bufferData(gl.ARRAY_BUFFER,neuroBufArr,gl.STATIC_DRAW);
+const lNPos=gl.getAttribLocation(pNeuro,'n_pos'),lNAttr=gl.getAttribLocation(pNeuro,'n_attr');
+gl.enableVertexAttribArray(lNPos);gl.vertexAttribPointer(lNPos,3,gl.FLOAT,false,28,0);
+gl.enableVertexAttribArray(lNAttr);gl.vertexAttribPointer(lNAttr,4,gl.FLOAT,false,28,12);
+gl.bindVertexArray(null);
+const jTexStill=gl.createTexture(),jTexVideo=gl.createTexture();let jReady=false;
 {const im=new Image();im.onload=()=>{gl.bindTexture(gl.TEXTURE_2D,jTexStill);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,im);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);jReady=true};im.src='jamestellation_serene.jpg'}
 {gl.bindTexture(gl.TEXTURE_2D,jTexVideo);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);}
 const jVid=document.createElement('video');jVid.muted=true;jVid.loop=true;jVid.playsInline=true;jVid.autoplay=true;jVid.setAttribute('playsinline','');jVid.setAttribute('webkit-playsinline','');jVid.src='jamestellation.mp4';jVid.load();
@@ -625,19 +758,21 @@ const css=document.createElement('style');css.textContent=`#void-door{position:f
 .vlabel{position:fixed;transform:translate(-50%,0);background:none;border:0;color:#EDE6D6;text-align:center;font:18px 'Source Serif 4',serif;text-shadow:0 0 12px rgba(0,0,0,.9),0 0 4px #000;cursor:pointer;opacity:0;pointer-events:none;white-space:nowrap;transition:opacity .4s,transform .4s}.vlabel small{display:block;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#fad685;opacity:.85;margin-bottom:2px}.vlabel span{display:inline-block;border-bottom:1px solid transparent;transition:border-color .3s}.vlabel:hover span{color:#fad685;border-color:rgba(250,214,133,.6)}
 .vlabel .vorbit-tag{display:inline-block;margin-top:4px;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#fad685;background:rgba(250,214,133,.16);border:1px solid rgba(250,214,133,.35);padding:2px 8px;border-radius:9999px;opacity:0;transition:opacity .3s}
 .vlabel:hover .vorbit-tag{opacity:1}
-#void-hud{position:fixed;bottom:24px;right:28px;width:270px;box-sizing:border-box;padding:16px 20px;background:rgba(5,7,13,.76);backdrop-filter:blur(24px) saturate(190%);-webkit-backdrop-filter:blur(24px) saturate(190%);border:1px solid rgba(237,230,214,.16);border-radius:14px;box-shadow:0 16px 48px rgba(0,0,0,.7),inset 0 1px 0 rgba(237,230,214,.18);color:#EDE6D6;font:12px/1.5 'Source Serif 4',serif;opacity:0;pointer-events:none;transform:translateY(12px);transition:opacity .5s cubic-bezier(.16,1,.3,1),transform .5s cubic-bezier(.16,1,.3,1);z-index:15}
+#void-hud{position:fixed;bottom:24px;right:28px;width:290px;box-sizing:border-box;padding:16px 20px;background:rgba(5,7,13,.82);backdrop-filter:blur(24px) saturate(190%);-webkit-backdrop-filter:blur(24px) saturate(190%);border:1px solid rgba(250,214,133,.28);border-radius:14px;box-shadow:0 16px 48px rgba(0,0,0,.8),inset 0 1px 0 rgba(237,230,214,.18);color:#EDE6D6;font:12px/1.5 'Source Serif 4',serif;opacity:0;pointer-events:none;transform:translateY(12px);transition:opacity .5s cubic-bezier(.16,1,.3,1),transform .5s cubic-bezier(.16,1,.3,1);z-index:15}
 #void-hud.active{opacity:1;pointer-events:auto;transform:translateY(0)}
-#void-hud .hud-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;border-bottom:1px solid rgba(237,230,214,.1);padding-bottom:6px}
-#void-hud .hud-callsign{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#fad685}
+#void-hud .hud-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;border-bottom:1px solid rgba(237,230,214,.12);padding-bottom:6px}
+#void-hud .hud-callsign{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#fad685;font-weight:600}
 #void-hud .hud-badge{font-size:9px;letter-spacing:.16em;text-transform:uppercase;padding:2px 7px;border-radius:9999px;background:rgba(237,230,214,.1);color:#EDE6D6;transition:all .3s}
-#void-hud .hud-badge.warp{background:rgba(250,214,133,.3);color:#fad685;box-shadow:0 0 12px rgba(250,214,133,.5)}
-#void-hud .hud-row{display:flex;justify-content:space-between;margin:4px 0;font-size:11px}
-#void-hud .hud-row .k{color:#fad685;font-weight:600}
+#void-hud .hud-badge.warp{background:rgba(250,214,133,.35);color:#fff;box-shadow:0 0 14px rgba(250,214,133,.7)}
+#void-hud .hud-badge.autopilot{background:rgba(96,165,250,.35);color:#93c5fd;box-shadow:0 0 14px rgba(96,165,250,.7)}
+#void-hud .hud-row{display:flex;justify-content:space-between;margin:3.5px 0;font-size:11px;transition:color .15s}
+#void-hud .hud-row.active .k{color:#ffffff;text-shadow:0 0 8px #fad685}
+#void-hud .hud-row .k{color:#fad685;font-weight:600;letter-spacing:.04em}
 #void-hud .hud-row .v{color:#EDE6D6;opacity:.85}
-#void-hud .hud-meter{margin-top:10px}
+#void-hud .hud-meter{margin-top:10px;border-top:1px solid rgba(237,230,214,.08);padding-top:8px}
 #void-hud .hud-meter-label{display:flex;justify-content:space-between;font-size:10px;letter-spacing:.15em;color:#fad685;margin-bottom:3px}
 #void-hud .hud-bar{width:100%;height:4px;background:rgba(237,230,214,.12);border-radius:2px;overflow:hidden}
-#void-hud .hud-bar-fill{width:15%;height:100%;background:linear-gradient(90deg,#fad685,#fff);border-radius:2px;transition:width .15s ease-out}
+#void-hud .hud-bar-fill{width:0%;height:100%;background:linear-gradient(90deg,#fad685,#fff);border-radius:2px;transition:width .15s ease-out}
 #orbit-banner{position:fixed;top:24px;left:50%;transform:translateX(-50%) translateY(-20px);padding:10px 22px;background:rgba(5,7,13,.82);backdrop-filter:blur(24px) saturate(190%);-webkit-backdrop-filter:blur(24px) saturate(190%);border:1px solid rgba(250,214,133,.35);border-radius:9999px;box-shadow:0 12px 40px rgba(0,0,0,.8),inset 0 1px 0 rgba(237,230,214,.2);color:#EDE6D6;display:flex;align-items:center;gap:16px;opacity:0;pointer-events:none;transition:opacity .4s ease,transform .4s cubic-bezier(.16,1,.3,1);z-index:25}
 #orbit-banner.on{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0)}
 #orbit-banner .ob-kicker{font:10px 'Source Serif 4',serif;letter-spacing:.25em;text-transform:uppercase;color:#fad685}
@@ -649,37 +784,119 @@ const css=document.createElement('style');css.textContent=`#void-door{position:f
 #galaxy-prompt:hover{background:rgba(250,214,133,.22);border-color:#fad685;box-shadow:0 12px 40px rgba(0,0,0,.9),0 0 28px rgba(250,214,133,.5)}
 #galaxy-prompt .gp-tag{font:10px 'Source Serif 4',serif;letter-spacing:.22em;text-transform:uppercase;color:#fad685}
 #galaxy-prompt .gp-name{font:15px 'Source Serif 4',serif;color:#ffffff;font-weight:600}
-#galaxy-prompt .gp-action{font:10px 'Source Serif 4',serif;letter-spacing:.14em;text-transform:uppercase;color:#fad685;background:rgba(250,214,133,.18);border:1px solid rgba(250,214,133,.4);padding:3px 10px;border-radius:9999px}`;document.head.appendChild(css);
+#galaxy-prompt .gp-action{font:10px 'Source Serif 4',serif;letter-spacing:.14em;text-transform:uppercase;color:#fad685;background:rgba(250,214,133,.18);border:1px solid rgba(250,214,133,.4);padding:3px 10px;border-radius:9999px}
+#void-map-modal{position:fixed;inset:0;background:rgba(3,5,9,.88);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);z-index:90;display:none;align-items:center;justify-content:center;padding:24px;box-sizing:border-box}
+#void-map-modal.open{display:flex}
+.vmap-card{background:rgba(10,14,24,.92);border:1px solid rgba(250,214,133,.35);border-radius:20px;max-width:880px;width:100%;max-height:85vh;display:flex;flex-direction:column;box-shadow:0 24px 64px rgba(0,0,0,.9),0 0 32px rgba(250,214,133,.15);overflow:hidden}
+.vmap-header{padding:20px 24px 16px;border-bottom:1px solid rgba(250,214,133,.2);display:flex;justify-content:space-between;align-items:flex-start}
+.vmap-title{font:18px 'Source Serif 4',serif;color:#fad685;letter-spacing:.06em;font-weight:600}
+.vmap-sub{font-size:11px;color:#EDE6D6;opacity:.75;margin-top:4px;letter-spacing:.04em}
+.vmap-close{background:none;border:1px solid rgba(237,230,214,.25);color:#EDE6D6;border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:14px;transition:all .2s}
+.vmap-close:hover{border-color:#fad685;color:#fad685}
+.vmap-body{padding:20px 24px;overflow-y:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.vmap-item{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px 14px;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;justify-content:space-between;gap:8px}
+.vmap-item:hover{background:rgba(250,214,133,.12);border-color:rgba(250,214,133,.45);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.6)}
+.vmap-item-name{font:14px 'Source Serif 4',serif;color:#ffffff;font-weight:600}
+.vmap-item-meta{display:flex;justify-content:space-between;font-size:10px;color:#fad685;letter-spacing:.08em;text-transform:uppercase}
+.vmap-item-btn{align-self:flex-start;background:rgba(250,214,133,.15);border:1px solid rgba(250,214,133,.35);color:#fad685;border-radius:9999px;padding:3px 10px;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;transition:all .2s}
+.vmap-item:hover .vmap-item-btn{background:#fad685;color:#0b0f19;font-weight:600}`;document.head.appendChild(css);
 const door=document.createElement('div');door.id='void-door';door.tabIndex=0;door.setAttribute('role','link');door.setAttribute('aria-label','fall in');door.innerHTML='<span>fall in</span>';document.body.appendChild(door);
 const hudEl=document.createElement('div');hudEl.id='void-hud';
-hudEl.innerHTML=`<div class="hud-top"><span class="hud-callsign">NAV · DEEP SPACE SCI-FI DRIFT</span><span id="hud-warp-badge" class="hud-badge">SUBLIGHT</span></div><div class="hud-body"><div class="hud-row"><span class="k">W · S</span><span class="v">Throttle / Retro-Brake</span></div><div class="hud-row"><span class="k">A · D</span><span class="v">Yaw Turn (Left / Right)</span></div><div class="hud-row"><span class="k">X</span><span class="v">Full Stop / Inertial Hover (0 c)</span></div><div class="hud-row"><span class="k">Q · E</span><span class="v">Lateral Strafe</span></div><div class="hud-row"><span class="k">R · F</span><span class="v">Vertical Climb / Dive</span></div><div class="hud-row"><span class="k">SPACE</span><span class="v">Warp Boost [HOLD]</span></div><div class="hud-row"><span class="k">GALAXY RETICLE</span><span class="v">Press [E] or Click to Orbit</span></div></div><div class="hud-meter"><div class="hud-meter-label"><span>VELOCITY</span><span id="hud-vel-val">0.38 c</span></div><div class="hud-bar"><div id="hud-bar-fill" class="hud-bar-fill"></div></div></div>`;
+hudEl.innerHTML=`<div class="hud-top"><span class="hud-callsign">ASTRONAV · SCI-FI FLIGHT DECK</span><span id="hud-warp-badge" class="hud-badge">SUBLIGHT</span></div><div class="hud-body"><div class="hud-row" id="hr-pitch"><span class="k">↑ · ↓</span><span class="v">Climb / Dive</span></div><div class="hud-row" id="hr-yaw"><span class="k">← · →</span><span class="v">Rotate Left / Right</span></div><div class="hud-row" id="hr-strafe"><span class="k">L-SHIFT · R-SHIFT</span><span class="v">Lateral Strafe</span></div><div class="hud-row" id="hr-rev"><span class="k">CMD + ↓</span><span class="v">Reverse Thrust</span></div><div class="hud-row" id="hr-accel"><span class="k">X</span><span class="v">Forward Acceleration</span></div><div class="hud-row" id="hr-warp"><span class="k">X, X (DOUBLE-TAP)</span><span class="v">Lightspeed Warp (1.0 c)</span></div><div class="hud-row" id="hr-stop"><span class="k">CMD + X</span><span class="v">Full Stop / Inertial Brake</span></div><div class="hud-row" id="hr-map"><span class="k">ENTER</span><span class="v">Celestial Map & Autopilot</span></div><div class="hud-row" id="hr-orbit"><span class="k">CLICK GALAXY</span><span class="v">Enter Orbit</span></div></div><div class="hud-meter"><div class="hud-meter-label"><span>VELOCITY</span><span id="hud-vel-val">0.00 c</span></div><div class="hud-bar"><div id="hud-bar-fill" class="hud-bar-fill"></div></div></div>`;
 hudEl.onmouseenter=()=>{VD.hudHover=true;hudShow();};hudEl.onmouseleave=()=>{VD.hudHover=false;};
 document.body.appendChild(hudEl);
 const obBanner=document.createElement('div');obBanner.id='orbit-banner';
 obBanner.innerHTML=`<div class="ob-kicker">ORBITAL OBSERVATORY</div><div id="ob-title" class="ob-title"></div><button id="ob-eject" class="ob-eject" onclick="window.coeBreakOrbit()">Break Orbit (Space / Esc)</button>`;
 document.body.appendChild(obBanner);
 const gpEl=document.createElement('div');gpEl.id='galaxy-prompt';
-gpEl.innerHTML=`<span class="gp-tag">✦ GALAXY IN RANGE</span><span id="gp-name" class="gp-name"></span><span class="gp-action">PRESS [E] OR CLICK TO ENTER ORBIT</span>`;
+gpEl.innerHTML=`<span class="gp-tag">✦ GALAXY IN RANGE</span><span id="gp-name" class="gp-name"></span><span class="gp-action">CLICK OR TAP TO ENTER ORBIT</span>`;
 gpEl.onclick=()=>{if(VD.targetedGalaxy)enterOrbit(VD.targetedGalaxy);};
 document.body.appendChild(gpEl);
+
+// Astronavigation Environment Map Modal
+const mapModal=document.createElement('div');mapModal.id='void-map-modal';
+mapModal.innerHTML=`<div class="vmap-card"><div class="vmap-header"><div><div class="vmap-title">✦ CELESTIAL ENVIRONMENT MAP & AUTOPILOT ✦</div><div class="vmap-sub">SELECT ANY GALAXY TO ENGAGE LIGHTSPEED QUICK TRAVEL (PRESS ENTER OR ESC TO CLOSE)</div></div><button class="vmap-close" id="vmap-close-btn">&times;</button></div><div class="vmap-body" id="vmap-list"></div></div>`;
+document.body.appendChild(mapModal);
+const closeMap=()=>{mapModal.classList.remove('open');};
+const openMap=()=>{
+ const list=document.getElementById('vmap-list');if(!list)return;list.innerHTML='';
+ const curPos=VD.pos;
+ const allDest=[...VOID_WELLS,{id:'jamestellation',name:'Jamestellation Deep Void Portal',pos:[-1.94,21.6,-1850],radius:45}];
+ allDest.forEach(W=>{
+  const d=Math.hypot(W.pos[0]-curPos[0],W.pos[1]-curPos[1],W.pos[2]-curPos[2]);
+  const it=document.createElement('div');it.className='vmap-item';
+  it.innerHTML=`<div><div class="vmap-item-name">${W.name}</div><div class="vmap-item-meta"><span>DIST: ${Math.round(d)} LY</span><span>[${Math.round(W.pos[0])}, ${Math.round(W.pos[1])}, ${Math.round(W.pos[2])}]</span></div></div><button class="vmap-item-btn">ENGAGE AUTOPILOT</button>`;
+  it.onclick=()=>{closeMap();engageAutopilot(W);};
+  list.appendChild(it);
+ });
+ mapModal.classList.add('open');
+};
+document.getElementById('vmap-close-btn').onclick=closeMap;
+
+const AUTOPILOT={active:false,targetPos:null,targetGalaxy:null,phase:'steer'};
+function engageAutopilot(target){
+ AUTOPILOT.active=true;AUTOPILOT.targetPos=target.pos;AUTOPILOT.targetGalaxy=target;AUTOPILOT.phase='steer';
+ hudShow();
+ const badge=document.getElementById('hud-warp-badge');if(badge){badge.textContent='AUTOPILOT';badge.className='hud-badge autopilot';}
+ window.COE_EVENTS?.dispatch('coe:autopilot-engage',{target:target.name,pos:target.pos});
+}
+window.coeAutopilot=engageAutopilot;
+
 const hudShow=()=>{VD.hudTimer=4.0;hudEl.classList.add('active');};
 const labels=VOID_WELLS.map(W=>{const R=REGB[REGION_FOR[W.id]||W.id]||(W.id==='preincarnation'?{kicker:'',name:W.name}:null);if(!R)return null;const b=document.createElement('button');b.className='vlabel';b.innerHTML=`<small></small><span></span><div class="vorbit-tag">✦ ENTER ORBIT</div>`;b.querySelector('small').textContent=R.kicker;b.querySelector('span').textContent=R.name;b.onclick=()=>enterOrbit(W);b.onmouseenter=()=>{VD.hoverId=W.id;hudShow();};b.onmouseleave=()=>{if(VD.hoverId===W.id)VD.hoverId=null;};document.body.appendChild(b);return b});
 function enterOrbit(W){if(!W)return;
- VD.orbitTarget=W;VD.orbitAngle=Math.atan2(VD.pos[2]-W.pos[2],VD.pos[0]-W.pos[0]);
+ AUTOPILOT.active=false;VD.orbitTarget=W;VD.orbitAngle=Math.atan2(VD.pos[2]-W.pos[2],VD.pos[0]-W.pos[0]);
  VD.orbitRadius=W.radius*1.55;VD.orbitT0=performance.now()/1000;VD.mode='orbit';
  const ob=document.getElementById('orbit-banner');if(ob){document.getElementById('ob-title').textContent=W.name;ob.classList.add('on');}
  const promptEl=document.getElementById('galaxy-prompt');if(promptEl)promptEl.classList.remove('active');
  window.COE_EVENTS?.dispatch('coe:orbit-enter',{galaxyId:W.id,name:W.name,pos:W.pos,radius:W.radius});}
 function breakOrbit(){if(VD.mode==='orbit'){VD.mode='fly';VD.sp=46;VD.orbitTarget=null;const ob=document.getElementById('orbit-banner');if(ob)ob.classList.remove('on');hudShow();window.COE_EVENTS?.dispatch('coe:orbit-break');}}
 window.coeBreakOrbit=breakOrbit;window.coeEnterOrbit=enterOrbit;
-const KEYS={KeyW:0,KeyS:0,KeyA:0,KeyD:0,KeyQ:0,KeyE:0,KeyR:0,KeyF:0,KeyX:0,Enter:0,ArrowUp:0,ArrowDown:0,ArrowLeft:0,ArrowRight:0,Space:0};
+
+// Prompter Flight Controls: Arrow Keys, Left/Right Shift, X, Double-Tap X, Cmd+Down, Cmd+X, Enter
+const KEYS={ArrowUp:0,ArrowDown:0,ArrowLeft:0,ArrowRight:0,ShiftLeft:0,ShiftRight:0,KeyX:0,Enter:0,Meta:0,KeyW:0,KeyS:0,KeyA:0,KeyD:0,KeyQ:0,KeyE:0,Space:0};
+let lastTapXTime=0,lightspeedEngaged=false;
+
 addEventListener('keydown',e=>{
- if(e.code in KEYS){KEYS[e.code]=1;hudShow();if(e.code==='Space'&&VD.mode==='fly'){e.preventDefault();}}
- if((e.code==='KeyE'||e.code==='Enter')&&VD.mode==='fly'&&VD.targetedGalaxy){e.preventDefault();enterOrbit(VD.targetedGalaxy);}
+ if(e.key==='Meta'||e.key==='Control')KEYS.Meta=1;
+ if(e.code in KEYS){KEYS[e.code]=1;hudShow();}
+
+ if(e.code==='KeyX'){
+  const now=performance.now();
+  if(e.metaKey||KEYS.Meta){
+   // Cmd + X: Full Stop / Active inertial brake
+   e.preventDefault();
+   VD.sp=0.0;lightspeedEngaged=false;VD.warp=0.0;AUTOPILOT.active=false;
+  }else{
+   if(now-lastTapXTime<280){
+    // Double tap X: Toggle Lightspeed Warp
+    lightspeedEngaged=!lightspeedEngaged;
+    VD.warp=lightspeedEngaged?1.0:0.0;
+   }
+   lastTapXTime=now;
+  }
+ }
+
+ if(e.code==='Enter'){
+  e.preventDefault();
+  if(mapModal.classList.contains('open'))closeMap();
+  else if(VD.mode==='fly')openMap();
+ }
+
+ if(e.code==='Escape'){
+  if(mapModal.classList.contains('open'))closeMap();
+  else if(VD.mode==='orbit')breakOrbit();
+ }
+
  if(e.code==='Space'&&VD.mode==='orbit'){e.preventDefault();breakOrbit();}
- if(e.code==='Escape'&&VD.mode==='orbit'){breakOrbit();}
 });
-addEventListener('keyup',e=>{if(e.code in KEYS){KEYS[e.code]=0;}});
+
+addEventListener('keyup',e=>{
+ if(e.key==='Meta'||e.key==='Control')KEYS.Meta=0;
+ if(e.code in KEYS)KEYS[e.code]=0;
+});
+window.addEventListener('blur',()=>{for(const k in KEYS)KEYS[k]=0;});
+
 addEventListener('pointermove',e=>{
  const now=performance.now(),dtM=Math.max(.001,Math.min(.1,(now-mLastT)/1000));mLastT=now;
  const sx=e.clientX/innerWidth*2-1,sy=-(e.clientY/innerHeight*2-1);
@@ -687,7 +904,7 @@ addEventListener('pointermove',e=>{
  VD.mvx=lerp(VD.mvx||0,vx,.35);VD.mvy=lerp(VD.mvy||0,vy,.35);
  VD.mx=sx;VD.my=sy;VD.stick=[sx,-sy];
 });
-addEventListener('wheel',e=>{if(VD.mode!=='fly')return;VD.sp=Math.max(16,Math.min(140,VD.sp*(e.deltaY>0?.86:1.16)))},{passive:true});
+addEventListener('wheel',e=>{if(VD.mode!=='fly')return;VD.sp=Math.max(0,Math.min(180,VD.sp*(e.deltaY>0?.86:1.16)))},{passive:true});
 const startFall=()=>{if(VD.mode!=='front')return;VD.mode='fall';VD.t0=performance.now()/1000;door.style.display='none';playJamestellation();if(active&&!active.cap){active=null;mark.fill(0)}};
 door.onclick=startFall;door.onmouseenter=()=>VD.doorHover=true;door.onmouseleave=()=>VD.doorHover=false;door.onfocus=()=>VD.doorHover=true;door.onblur=()=>VD.doorHover=false;door.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();startFall()}};
 function enterVoid(t){if(!vao)buildVoid();VD.mode='fly';VD.t0=t;VD.pos=[0,0,110];VD.yaw=0;VD.pitch=0;VD.sp=reduced?14:46;VD.gain=0}
@@ -712,30 +929,79 @@ function voidTick(t,dt){const m=VD.mode;if(m==='front'){VD.frontGain=Math.min(1,
   VD.yaw=lerp(VD.yaw,targetYaw,Math.min(1,dt*3.2));VD.pitch=lerp(VD.pitch,targetPitch,Math.min(1,dt*3.2));return true}
  if(m==='fly'){VD.gain=Math.min(1,VD.gain+dt/1.2);VD.bg=[0,0,0];
   if(VD.hudTimer>0){VD.hudTimer-=dt;const hud=document.getElementById('void-hud');if(hud)hud.classList.toggle('active',VD.hudTimer>0||VD.hudHover);}
-  if(KEYS.KeyX){
-   VD.sp=lerp(VD.sp,0.0,Math.min(1.0,dt*5.0));
-   if(VD.sp<0.2)VD.sp=0.0;
+
+  // Prompter Exact Flight Physics & Autopilot
+  const isCmdDown=(KEYS.ArrowDown&&(KEYS.Meta||KEYS.KeyS));
+  const isCmdX=(KEYS.KeyX&&(KEYS.Meta));
+
+  if(AUTOPILOT.active&&AUTOPILOT.targetPos){
+   const tPos=AUTOPILOT.targetPos;
+   const dx=tPos[0]-VD.pos[0],dy=tPos[1]-VD.pos[1],dz=tPos[2]-VD.pos[2];
+   const dist=Math.hypot(dx,dy,dz);
+   const tYaw=Math.atan2(-dx,-dz),tPitch=Math.atan2(dy,Math.hypot(dx,dz));
+   VD.yaw=lerp(VD.yaw,tYaw,Math.min(1.0,dt*4.0));
+   VD.pitch=lerp(VD.pitch,tPitch,Math.min(1.0,dt*4.0));
+
+   if(dist>90.0){
+    VD.warp=lerp(VD.warp||0,1.0,Math.min(1.0,dt*5.0));
+    VD.sp=lerp(VD.sp,320.0,Math.min(1.0,dt*4.0));
+   }else{
+    // Smooth deceleration to full stop on arrival
+    VD.warp=lerp(VD.warp||0,0.0,Math.min(1.0,dt*8.0));
+    VD.sp=lerp(VD.sp,0.0,Math.min(1.0,dt*5.0));
+    if(dist<45.0||VD.sp<2.0){
+     VD.sp=0.0;AUTOPILOT.active=false;
+     if(AUTOPILOT.targetGalaxy&&AUTOPILOT.targetGalaxy.id!=='jamestellation'){
+      enterOrbit(AUTOPILOT.targetGalaxy);
+     }
+    }
+   }
   }else{
-   if(KEYS.KeyW||KEYS.ArrowUp){VD.sp=Math.min(130.0,VD.sp+36.0*dt);}
-   else if(KEYS.KeyS||KEYS.ArrowDown){VD.sp=Math.max(0.0,VD.sp-40.0*dt);}
+   // Manual Flight
+   if(isCmdX){
+    VD.sp=lerp(VD.sp,0.0,Math.min(1.0,dt*8.0));
+    if(VD.sp<0.2)VD.sp=0.0;
+    lightspeedEngaged=false;VD.warp=0.0;
+   }else if(isCmdDown){
+    // Reverse thrust
+    VD.sp=Math.max(-36.0,VD.sp-40.0*dt);
+   }else if(KEYS.KeyX){
+    // Forward acceleration
+    VD.sp=Math.min(135.0,VD.sp+48.0*dt);
+   }else if(KEYS.KeyW){
+    VD.sp=Math.min(110.0,VD.sp+32.0*dt);
+   }else{
+    // Inertial cruise with gentle drift damping
+    if(VD.sp>0)VD.sp=Math.max(0.0,VD.sp-2.5*dt);
+    else if(VD.sp<0)VD.sp=Math.min(0.0,VD.sp+6.0*dt);
+   }
+
+   const warpWanted=(lightspeedEngaged||KEYS.Space)&&!VD.orbitTarget?1.0:0.0;
+   VD.warp=lerp(VD.warp||0,warpWanted,Math.min(1.0,dt*4.5));
+
+   // Climb / Dive (ArrowUp / ArrowDown)
+   const vertInput=(KEYS.ArrowUp?1:0)-(KEYS.ArrowDown&&!KEYS.Meta?1:0);
+   VD.pitch=Math.max(-1.40,Math.min(1.40,VD.pitch+vertInput*1.35*dt));
+
+   // Rotate Left / Right (ArrowLeft / ArrowRight)
+   const yawTurn=(KEYS.ArrowLeft||KEYS.KeyA?1:0)-(KEYS.ArrowRight||KEYS.KeyD?1:0);
+   VD.yaw+=yawTurn*1.65*dt;
+
+   // Lateral strafe (Left Shift / Right Shift)
+   const strafeThrust=(KEYS.ShiftRight||KEYS.KeyE?1:0)-(KEYS.ShiftLeft||KEYS.KeyQ?1:0);
+   VD.strafe=strafeThrust;
   }
-  const warpWanted=(KEYS.Space&&!VD.orbitTarget)?1.0:0.0;
-  VD.warp=lerp(VD.warp||0,warpWanted,Math.min(1.0,dt*4.2));
-  const curSp=lerp(VD.sp,260.0,VD.warp);
-  const yawTurn=(KEYS.KeyD||KEYS.ArrowRight?1:0)-(KEYS.KeyA||KEYS.ArrowLeft?1:0);
-  const strafeThrust=(KEYS.KeyE?1:0)-(KEYS.KeyQ?1:0);
-  const vertThrust=(KEYS.KeyR?1:0)-(KEYS.KeyF?1:0);
-  const dz=.08,cv2=x=>{const a=Math.max(0,Math.abs(x)-dz)/(1-dz);return Math.sign(x)*a*a};
-  const rr=reduced?.4:1;
-  VD.yaw+=yawTurn*1.45*dt;
-  VD.yaw+=1.35*rr*cv2(VD.stick[0])*dt;
-  VD.pitch=Math.max(-1.40,Math.min(1.40,VD.pitch-1.15*rr*cv2(VD.stick[1])*dt));
+
+  const curSp=lerp(VD.sp,320.0,VD.warp);
   const cy=Math.cos(VD.yaw),sy=Math.sin(VD.yaw),cp=Math.cos(VD.pitch),sp=Math.sin(VD.pitch);
   const fwd=[-sy*cp,sp,-cy*cp],right=[cy,0,-sy],up=[-sy*sp,cp,-cy*sp];
   const step=curSp*dt;
-  VD.pos[0]+=fwd[0]*step+right[0]*strafeThrust*36.0*dt+up[0]*vertThrust*28.0*dt;
-  VD.pos[1]+=fwd[1]*step+right[1]*strafeThrust*36.0*dt+up[1]*vertThrust*28.0*dt;
-  VD.pos[2]+=fwd[2]*step+right[2]*strafeThrust*36.0*dt+up[2]*vertThrust*28.0*dt;
+  const strafeVal=(VD.strafe||0)*42.0*dt;
+
+  VD.pos[0]+=fwd[0]*step+right[0]*strafeVal;
+  VD.pos[1]+=fwd[1]*step+right[1]*strafeVal;
+  VD.pos[2]+=fwd[2]*step+right[2]*strafeVal;
+
   let targetW=null,minDist=1e9;
   for(const W of VOID_WELLS){
    const dist=Math.hypot(W.pos[0]-VD.pos[0],W.pos[1]-VD.pos[1],W.pos[2]-VD.pos[2]);
@@ -749,11 +1015,24 @@ function voidTick(t,dt){const m=VD.mode;if(m==='front'){VD.frontGain=Math.min(1,
    VD.targetedGalaxy=null;
    if(promptEl)promptEl.classList.remove('active');
   }
-  const velC=(VD.sp===0&&VD.warp<0.01)?'0.00':(VD.sp/100.0*0.38+VD.warp*3.82).toFixed(2);
+
+  // HUD Velocity & Key Highlights
+  const velC=(VD.sp===0&&VD.warp<0.01)?'0.00':(Math.abs(VD.sp)/100.0*0.38+VD.warp*3.82).toFixed(2);
   const velEl=document.getElementById('hud-vel-val'),barEl=document.getElementById('hud-bar-fill'),badgeEl=document.getElementById('hud-warp-badge');
-  if(velEl)velEl.textContent=velC+' c'+(VD.sp===0&&VD.warp<0.01?' [INERTIAL HOVER]':VD.warp>0.35?' [WARP BOOST]':'');
-  if(barEl)barEl.style.width=((VD.sp/130.0*40+VD.warp*60).toFixed(0))+'%';
-  if(badgeEl){badgeEl.textContent=VD.sp===0?'HOVER':VD.warp>0.35?'WARP 4':'SUBLIGHT';badgeEl.classList.toggle('warp',VD.warp>0.35);}
+  if(velEl)velEl.textContent=velC+' c'+(VD.sp===0&&VD.warp<0.01?' [INERTIAL HOVER]':VD.sp<0?' [REVERSE THRUST]':VD.warp>0.35?' [WARP 1.0 c]':'');
+  if(barEl)barEl.style.width=((Math.abs(VD.sp)/130.0*40+VD.warp*60).toFixed(0))+'%';
+  if(badgeEl&&!AUTOPILOT.active){badgeEl.textContent=VD.sp===0?'HOVER':VD.sp<0?'REVERSE':VD.warp>0.35?'WARP 1.0 c':'SUBLIGHT';badgeEl.className='hud-badge'+(VD.warp>0.35?' warp':'');}
+
+  // Active Key visual feedback on HUD
+  const setKeyAct=(id,act)=>{const el=document.getElementById(id);if(el)el.classList.toggle('active',!!act);};
+  setKeyAct('hr-pitch',KEYS.ArrowUp||(KEYS.ArrowDown&&!KEYS.Meta));
+  setKeyAct('hr-yaw',KEYS.ArrowLeft||KEYS.ArrowRight);
+  setKeyAct('hr-strafe',KEYS.ShiftLeft||KEYS.ShiftRight);
+  setKeyAct('hr-rev',isCmdDown);
+  setKeyAct('hr-accel',KEYS.KeyX&&!KEYS.Meta);
+  setKeyAct('hr-warp',lightspeedEngaged);
+  setKeyAct('hr-stop',isCmdX);
+
   const z=VD.pos[2];
   if(z<-1620){playJamestellation();const pull=sstep(-1700,-1845,z);
    VD.pos[0]=lerp(VD.pos[0],-1.94,Math.min(1,dt*2.2*pull));VD.pos[1]=lerp(VD.pos[1],21.6,Math.min(1,dt*2.2*pull));
@@ -776,25 +1055,57 @@ function drawVoid(t){if(!vao||VD.gain<=0.001)return;gl.useProgram(pv);gl.bindVer
  const vt=reduced?t*.1:t,U=n=>gl.getUniformLocation(pv,n);gl.uniformMatrix3fv(U('rot'),false,colm);gl.uniform3fv(U('cp'),VD.pos);gl.uniform1f(U('t'),vt);gl.uniform1f(U('asp'),aspect);gl.uniform1f(U('hpx'),cv.height/2);gl.uniform1f(U('focus'),focus);
  gl.uniform1f(U('fb'),VD.fb);gl.uniform1f(U('fspin'),reduced?0:FUN.spin*t);gl.uniform1f(U('gain'),VD.gain);gl.uniform1f(U('ringA'),0);gl.uniform1f(U('uWarp'),VD.warp||0);
  gl.drawArrays(gl.POINTS,0,VN);
+
+ // Render 3D Cosmic Web & Dendritic Connectome Lines
+ if(neuroVao){
+  gl.useProgram(pNeuro);gl.bindVertexArray(neuroVao);
+  const N=n=>gl.getUniformLocation(pNeuro,n);
+  gl.uniformMatrix3fv(N('rot'),false,colm);gl.uniform3fv(N('cp'),VD.pos);
+  gl.uniform1f(N('t'),vt);gl.uniform1f(N('asp'),aspect);gl.uniform1f(N('gain'),VD.gain);gl.uniform1f(N('fb'),VD.fb);gl.uniform1f(N('uWarp'),VD.warp||0);
+  gl.uniform1f(N('uNeuroTract'),window.coeThoughtTract||0);
+  gl.uniform1f(N('uNeuroProg'),window.coeThoughtProg||0);
+  gl.drawArrays(gl.LINES,0,NEURO_VERT_COUNT);
+ }
+
+ // Render Continuous High-Resolution Jamestellation Face & 3D Coronal Mass Ejections
  if(jReady){
   if(jVid.readyState>=jVid.HAVE_CURRENT_DATA){gl.activeTexture(gl.TEXTURE1);gl.bindTexture(gl.TEXTURE_2D,jTexVideo);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,jVid)}
-  gl.useProgram(pj);gl.bindVertexArray(jVao);gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,jTexStill);gl.activeTexture(gl.TEXTURE1);gl.bindTexture(gl.TEXTURE_2D,jTexVideo);
-  const J=n=>gl.getUniformLocation(pj,n);gl.uniformMatrix3fv(J('rot'),false,colm);gl.uniform3fv(J('cp'),VD.pos);gl.uniform1f(J('t'),vt);gl.uniform1f(J('asp'),aspect);gl.uniform1f(J('hpx'),cv.height/2);gl.uniform1f(J('gain'),VD.gain);gl.uniform1f(J('fb'),VD.fb);gl.uniform1f(J('uWarp'),VD.warp||0);
-  const uLaugh=sstep(-1630,-1720,VD.pos[2]);gl.uniform1f(J('uLaugh'),uLaugh);
-  gl.uniform1f(J('uIntegrity'),window.coeJamestellationIntegrity!==undefined?window.coeJamestellationIntegrity:1.0);
-  gl.uniform1i(J('uTexStill'),0);gl.uniform1i(J('uTexVideo'),1);
-  gl.drawArrays(gl.POINTS,0,J_PTS)}
+  gl.useProgram(pjFace);gl.bindVertexArray(jFaceVao);
+  gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,jTexStill);
+  gl.activeTexture(gl.TEXTURE1);gl.bindTexture(gl.TEXTURE_2D,jTexVideo);
+  const JF=n=>gl.getUniformLocation(pjFace,n);
+  gl.uniformMatrix3fv(JF('rot'),false,colm);gl.uniform3fv(JF('cp'),VD.pos);
+  gl.uniform1f(JF('t'),vt);gl.uniform1f(JF('asp'),aspect);gl.uniform1f(JF('gain'),VD.gain);gl.uniform1f(JF('fb'),VD.fb);gl.uniform1f(JF('uWarp'),VD.warp||0);
+  const uLaugh=sstep(-1550,-1680,VD.pos[2]);gl.uniform1f(JF('uLaugh'),uLaugh);
+  gl.uniform1f(JF('uIntegrity'),window.coeJamestellationIntegrity!==undefined?window.coeJamestellationIntegrity:1.0);
+  gl.uniform1i(JF('uTexStill'),0);gl.uniform1i(JF('uTexVideo'),1);
+  gl.drawElements(gl.TRIANGLES,J_INDEX_COUNT,gl.UNSIGNED_SHORT,0);
+
+  // Render Living 3D CME Flares in Space
+  gl.useProgram(pjCME);gl.bindVertexArray(jCmeVao);
+  const JC=n=>gl.getUniformLocation(pjCME,n);
+  gl.uniformMatrix3fv(JC('rot'),false,colm);gl.uniform3fv(JC('cp'),VD.pos);
+  gl.uniform1f(JC('t'),vt);gl.uniform1f(JC('asp'),aspect);gl.uniform1f(JC('hpx'),cv.height/2);
+  gl.uniform1f(JC('gain'),VD.gain);gl.uniform1f(JC('fb'),VD.fb);gl.uniform1f(JC('uWarp'),VD.warp||0);
+  gl.uniform1f(JC('uIntegrity'),window.coeJamestellationIntegrity!==undefined?window.coeJamestellationIntegrity:1.0);
+  gl.drawArrays(gl.POINTS,0,J_CME_COUNT);
+ }
  gl.bindVertexArray(null);gl.useProgram(pr);
+
  let hov=null;const px=(VD.stick[0]*.5+.5)*innerWidth,py=(VD.stick[1]*.5+.5)*innerHeight;VD.screen=[];
  labels.forEach((b,i)=>{const W0=VOID_WELLS[i];{const d=[W0.pos[0]-VD.pos[0],W0.pos[1]-VD.pos[1],W0.pos[2]-VD.pos[2]],v=[0,1,2].map(r=>M[r][0]*d[0]+M[r][1]*d[1]+M[r][2]*d[2]);if(v[2]<-1){const sx=(v[0]*2.0503/aspect/(-v[2])*.5+.5)*innerWidth,sy2=(.5-v[1]*2.0503/(-v[2])*.5)*innerHeight,rp=W0.click*2.0503*innerHeight/2/(-v[2]);VD.screen[i]=[sx,sy2,rp];if(Math.hypot(px-sx,py-sy2)<rp&&b&&W0.id!=='preincarnation')hov=W0.id}}if(!b)return;const W=VOID_WELLS[i],d=[W.pos[0]-VD.pos[0],W.pos[1]-VD.pos[1],W.pos[2]-VD.pos[2]];const v=[0,0,0];for(let r=0;r<3;r++)v[r]=M[r][0]*d[0]+M[r][1]*d[1]+M[r][2]*d[2];const L=Math.hypot(...d),dot=-v[2]/L;
   let op=0;if(VD.mode==='fly'&&v[2]<-1&&dot>.4&&L<300){op=Math.min(1-sstep(140,300,L),sstep(.4,.65,dot))*VD.gain}
   if(op>0){const x=(v[0]*2.0503/aspect/(-v[2])*.5+.5)*innerWidth,y=(.5-v[1]*2.0503/(-v[2])*.5)*innerHeight+Math.min(70,((VD.screen[i]&&VD.screen[i][2]*.3)||0))+18;b.style.left=x+'px';b.style.top=y+'px'}
   b.style.opacity=op.toFixed(3);b.style.pointerEvents=op>.45?'auto':'none'});if(!labels.some((b,i)=>b&&b.matches(':hover')))VD.hoverId=hov;}
-cv.addEventListener('click',e=>{if(VD.mode!=='fly')return;
+const handleGalaxyClick=(mx,my)=>{
+ if(VD.mode!=='fly')return;
  if(VD.hoverId){const W=VOID_WELLS.find(w=>w.id===VD.hoverId);if(W){enterOrbit(W);return;}}
- if(VD.screen&&VD.screen.length){const mx=e.clientX,my=e.clientY;
-  for(let i=0;i<VOID_WELLS.length;i++){const scr=VD.screen[i];if(scr){const [sx,sy,rp]=scr;if(Math.hypot(mx-sx,my-sy)<Math.max(32,rp*1.5)){enterOrbit(VOID_WELLS[i]);return;}}}}
-});
+ if(VD.screen&&VD.screen.length){
+  for(let i=0;i<VOID_WELLS.length;i++){const scr=VD.screen[i];if(scr){const [sx,sy,rp]=scr;if(Math.hypot(mx-sx,my-sy)<Math.max(44,rp*1.6)){enterOrbit(VOID_WELLS[i]);return;}}}
+ }
+};
+cv.addEventListener('click',e=>handleGalaxyClick(e.clientX,e.clientY));
+cv.addEventListener('touchend',e=>{if(e.changedTouches&&e.changedTouches[0]){handleGalaxyClick(e.changedTouches[0].clientX,e.changedTouches[0].clientY);}},{passive:true});
 // ===== end VOID ======================================================================
 
 let last=performance.now(),capWait=1e12,frameNo=0,fpsN=0,fpsT=performance.now();window.coeDots=Object.fromEntries(FILL.map(L=>[L.name,L.count]));
@@ -837,27 +1148,47 @@ gl.uniform3fv(gl.getUniformLocation(pr,'cam'),cam);{const tp=active?active.ps*TE
 const flashEl=t-(window.coeFlashT||-10),uFlash=flashEl<.25?Math.max(0,1.-flashEl/.25):0;
 let ripRad=0,ripAmp=0;if(window.coeRipple){const el=ac().currentTime-window.coeRipple.t0;if(el<4.2){ripRad=el*3.6;ripAmp=Math.max(0,1.-el/4.2)*window.coeRipple.amp}else{window.coeRipple=null}}
 gl.uniform1f(gl.getUniformLocation(pr,'uFlash'),uFlash);gl.uniform1f(gl.getUniformLocation(pr,'uBreath'),window.coeMed?1.:0.);gl.uniform4f(gl.getUniformLocation(pr,'uRipple'),0,0,ripRad,ripAmp);
-if(!window.coeThoughtT0){window.coeThoughtT0=-20.0;window.coeThoughtNext=2.2;window.coeThoughtTract=0;window.coeThoughtDest=[0,0,0];}
+if(!window.coeThoughtT0){window.coeThoughtT0=-20.0;window.coeThoughtNext=2.2;window.coeThoughtTract=0;window.coeThoughtDest=[0,0,0];window.coeThoughtProg=0;}
 if(st>=window.coeThoughtNext){
  window.coeThoughtT0=st;
- const tId=Math.floor(Math.random()*64);
- const tr=window.coeTracts?window.coeTracts[tId]:null;
- window.coeThoughtTract=tId/64.0;
- window.coeThoughtDest=tr?tr.destHub:[0,0,0];
- window.coeThoughtNext=st+6.5+Math.random()*3.0;
+ const hubCount=window.coeNeuroHubs?window.coeNeuroHubs.length:14;
+ const tId=Math.floor(Math.random()*(hubCount-1));
+ window.coeThoughtTract=tId/(hubCount-1);
+ window.coeThoughtDest=window.coeNeuroHubs?window.coeNeuroHubs[tId]:[0,0,0];
+ window.coeThoughtNext=st+7.5+Math.random()*4.0;
  window.COE_EVENTS?.dispatch('coe:lightning-strike',{tractId:tId,hub:window.coeThoughtDest});
 }
 const eTh=st-window.coeThoughtT0;
-const uSynProg=(eTh>=0&&eTh<0.95)?(eTh/0.95):0.0;
+const uSynProg=(eTh>=0&&eTh<1.2)?(eTh/1.2):0.0;
+window.coeThoughtProg=uSynProg;
 let uSynHeat=0.0;
-if(eTh>=0.7&&eTh<3.6){
- const uH=(eTh-0.7)/2.9;
- uSynHeat=Math.sin(uH*Math.PI)*Math.exp(-uH*1.2);
+if(eTh>=0.8&&eTh<4.2){
+ const uH=(eTh-0.8)/3.4;
+ uSynHeat=Math.sin(uH*Math.PI)*Math.exp(-uH*1.1)*0.75;
 }
 gl.uniform1f(gl.getUniformLocation(pr,'uSynTrack'),window.coeThoughtTract);
 gl.uniform1f(gl.getUniformLocation(pr,'uSynProg'),uSynProg);
 gl.uniform1f(gl.getUniformLocation(pr,'uSynHeat'),uSynHeat);
 gl.uniform3fv(gl.getUniformLocation(pr,'uSynCenter'),window.coeThoughtDest);
+if(neuroVao && VD.frontGain > 0.01){
+ gl.useProgram(pNeuro);
+ gl.bindVertexArray(neuroVao);
+ const NF=n=>gl.getUniformLocation(pNeuro,n);
+ const cA=Math.cos(rotA*.04),sA=Math.sin(rotA*.04);
+ const frontM=[cA,0,-sA, 0,1,0, sA,0,cA];
+ gl.uniformMatrix3fv(NF('rot'),false,frontM);
+ gl.uniform3fv(NF('cp'),cam);
+ gl.uniform1f(NF('t'),st);
+ gl.uniform1f(NF('asp'),aspect);
+ gl.uniform1f(NF('gain'),VD.frontGain * 0.88);
+ gl.uniform1f(NF('fb'),0.0);
+ gl.uniform1f(NF('uWarp'),0.0);
+ gl.uniform1f(NF('uNeuroTract'),window.coeThoughtTract||0);
+ gl.uniform1f(NF('uNeuroProg'),uSynProg);
+ gl.drawArrays(gl.LINES,0,NEURO_VERT_COUNT);
+ gl.bindVertexArray(null);
+ gl.useProgram(pr);
+}
 gl.drawArrays(gl.POINTS,0,N);
 $('of-btn').classList.toggle('playing',BN.playing||!!window.coeMed||window.coeHughPlaying);
 if(vres==='both')drawVoid(t);
