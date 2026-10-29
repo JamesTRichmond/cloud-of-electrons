@@ -1,0 +1,954 @@
+{
+ "version": 1,
+ "source": "/workspace/coe/v23.5/openfield.json",
+ "weightScale": {
+  "0": "no stretch; keep v23.5 spacing",
+  "1": "short",
+  "2": "medium",
+  "3": "long practice",
+  "4": "primary rest"
+ },
+ "tracks": {
+  "the-usual": {
+   "name": "The Usual",
+   "pauses": [
+    {
+     "boundary": 0,
+     "weight": 3,
+     "clip": "the-usual-short-01.mp3",
+     "note": "after: Sit down and let the chair take your weight. → Keep the eyes open, with a soft gaze."
+    },
+    {
+     "boundary": 1,
+     "weight": 1,
+     "clip": "the-usual-short-02.mp3",
+     "note": "after: Keep the eyes open, with a soft gaze. → Point at something in front of you — a wall, a cup, a window."
+    },
+    {
+     "boundary": 2,
+     "weight": 0,
+     "clip": "the-usual-short-03.mp3",
+     "note": "after: Point at something in front of you — a wall, a cup, a window. → Now turn the finger around, and point at the place where others would see your face."
+    },
+    {
+     "boundary": 3,
+     "weight": 3,
+     "clip": "the-usual-short-04.mp3",
+     "note": "after: Now turn the finger around, and point at the place where others would see your face. → Looking now, not from memory — is there a face here, or open space?"
+    },
+    {
+     "boundary": 4,
+     "weight": 3,
+     "clip": "the-usual-short-05.mp3",
+     "note": "after: Looking now, not from memory — is there a face here, or open space? → Thoughts will arrive. Treat them as trains. You can watch them pass without boarding."
+    },
+    {
+     "boundary": 5,
+     "weight": 2,
+     "clip": "the-usual-short-06.mp3",
+     "note": "after: Thoughts will arrive. Treat them as trains. You can watch them pass without boarding. → If you already got on one, notice that. Step back onto the platform."
+    },
+    {
+     "boundary": 6,
+     "weight": 2,
+     "clip": "the-usual-short-07.mp3",
+     "note": "after: If you already got on one, notice that. Step back onto the platform. → Rest as the space this is all happening in."
+    },
+    {
+     "boundary": 7,
+     "weight": 4,
+     "clip": "the-usual-short-08.mp3",
+     "note": "after: Rest as the space this is all happening in. → When you stand, stand as the same space."
+    }
+   ]
+  },
+  "big-head-mode": {
+   "name": "Big Head Mode",
+   "pauses": [
+    {
+     "boundary": 0,
+     "weight": 2,
+     "clip": "big-head-mode-short-01.mp3",
+     "note": "after: Sit so you can forget the sitting. Eyes open. → Point out at a thing. See it clearly — color, shape, distance."
+    },
+    {
+     "boundary": 1,
+     "weight": 0,
+     "clip": "big-head-mode-short-02.mp3",
+     "note": "after: Point out at a thing. See it clearly — color, shape, distance. → Now point back at where others see your face."
+    },
+    {
+     "boundary": 2,
+     "weight": 3,
+     "clip": "big-head-mode-short-03.mp3",
+     "note": "after: Now point back at where others see your face. → What is here, on this side of the finger?"
+    },
+    {
+     "boundary": 3,
+     "weight": 3,
+     "clip": "big-head-mode-short-04.mp3",
+     "note": "after: What is here, on this side of the finger? → The world is there. Space is here. Both at once."
+    },
+    {
+     "boundary": 4,
+     "weight": 2,
+     "clip": "big-head-mode-short-05.mp3",
+     "note": "after: The world is there. Space is here. Both at once. → Let a thought pass through that space. Do not follow it."
+    },
+    {
+     "boundary": 5,
+     "weight": 2,
+     "clip": "big-head-mode-short-06.mp3",
+     "note": "after: Let a thought pass through that space. Do not follow it. → Check again. Still no face?"
+    },
+    {
+     "boundary": 6,
+     "weight": 4,
+     "clip": "big-head-mode-short-07.mp3",
+     "note": "after: Check again. Still no face? → Rest as that."
+    }
+   ]
+  },
+  "open-focus": {
+   "name": "Open Focus",
+   "pauses": [
+    {
+     "boundary": 0,
+     "weight": 3,
+     "clip": "open-focus-short-01.mp3",
+     "note": "after: Sit easy. Eyes can close, or stay softly open. → Is it possible to imagine the space between your eyes?"
+    },
+    {
+     "boundary": 1,
+     "weight": 2,
+     "clip": "open-focus-short-02.mp3",
+     "note": "after: Is it possible to imagine the space between your eyes? → The space between your ears."
+    },
+    {
+     "boundary": 2,
+     "weight": 0,
+     "clip": "open-focus-short-03.mp3",
+     "note": "continuous scan: ears → mouth/throat belong together"
+    },
+    {
+     "boundary": 3,
+     "weight": 1,
+     "clip": "open-focus-short-04.mp3",
+     "note": "after: The space inside the mouth, and the throat. → Now the space around the body — behind you, above you, below the seat."
+    },
+    {
+     "boundary": 4,
+     "weight": 2,
+     "clip": "open-focus-short-05.mp3",
+     "note": "after: Now the space around the body — behind you, above you, below the seat. → See if inside and outside can be one continuous space."
+    },
+    {
+     "boundary": 5,
+     "weight": 4,
+     "clip": "open-focus-short-06.mp3",
+     "note": "after: See if inside and outside can be one continuous space. → Rest in that. Diffuse is enough."
+    }
+   ]
+  },
+  "just-breathe": {
+   "name": "Just Breathe",
+   "pauses": [
+    {
+     "boundary": 0,
+     "weight": 3,
+     "clip": "just-breathe-short-01.mp3",
+     "note": "after: Sit or lie down. Close the mouth. Breathe through the nose. → Let the breath be light. This is not a performance."
+    },
+    {
+     "boundary": 1,
+     "weight": 2,
+     "clip": "just-breathe-short-02.mp3",
+     "note": "after: Let the breath be light. This is not a performance. → A little slower, only if that is easy."
+    },
+    {
+     "boundary": 2,
+     "weight": 2,
+     "clip": "just-breathe-short-03.mp3",
+     "note": "after: A little slower, only if that is easy. → If the mind runs, let it. Keep the nose breathing."
+    },
+    {
+     "boundary": 3,
+     "weight": 3,
+     "clip": "just-breathe-short-04.mp3",
+     "note": "after: If the mind runs, let it. Keep the nose breathing. → Stay with the next breath only."
+    },
+    {
+     "boundary": 4,
+     "weight": 4,
+     "clip": "just-breathe-short-05.mp3",
+     "note": "after: Stay with the next breath only. → That is the whole practice."
+    }
+   ]
+  },
+  "dzogchen": {
+   "name": "Dzogchen",
+   "pauses": [
+    {
+     "boundary": 0,
+     "weight": 3,
+     "clip": "dzogchen-short-01.mp3",
+     "note": "after: Sit. Eyes open. Leave the view as it is. → There is already knowing here. You do not have to make it."
+    },
+    {
+     "boundary": 1,
+     "weight": 2,
+     "clip": "dzogchen-short-02.mp3",
+     "note": "after: There is already knowing here. You do not have to make it. → A thought appears. Let it be a thought. Do not follow, do not fight."
+    },
+    {
+     "boundary": 2,
+     "weight": 4,
+     "clip": "dzogchen-short-03.mp3",
+     "note": "after: A thought appears. Let it be a thought. Do not follow, do not fight. → Rest as the knowing in which the thought appeared."
+    },
+    {
+     "boundary": 3,
+     "weight": 2,
+     "clip": "dzogchen-short-04.mp3",
+     "note": "after: Rest as the knowing in which the thought appeared. → If you get involved, notice that. That noticing is the same knowing."
+    },
+    {
+     "boundary": 4,
+     "weight": 4,
+     "clip": "dzogchen-short-05.mp3",
+     "note": "after: If you get involved, notice that. That noticing is the same knowing. → Leave it. Already awake is not a future state."
+    }
+   ]
+  },
+  "mahamudra": {
+   "name": "Mahamudra",
+   "pauses": [
+    {
+     "boundary": 0,
+     "weight": 3,
+     "clip": "mahamudra-short-01.mp3",
+     "note": "after: Sit upright, at ease. Eyes open or barely so. → Turn attention around, as if mind were looking at mind."
+    },
+    {
+     "boundary": 1,
+     "weight": 2,
+     "clip": "mahamudra-short-02.mp3",
+     "note": "after: Turn attention around, as if mind were looking at mind. → What does mind look like, when you look directly?"
+    },
+    {
+     "boundary": 2,
+     "weight": 4,
+     "clip": "mahamudra-short-03.mp3",
+     "note": "after: What does mind look like, when you look directly? → If you find no thing there, do not fill the gap. Leave it."
+    },
+    {
+     "boundary": 3,
+     "weight": 2,
+     "clip": "mahamudra-short-04.mp3",
+     "note": "after: If you find no thing there, do not fill the gap. Leave it. → Thoughts can move. Mind remains unstained, like space."
+    },
+    {
+     "boundary": 4,
+     "weight": 4,
+     "clip": "mahamudra-short-05.mp3",
+     "note": "after: Thoughts can move. Mind remains unstained, like space. → Rest. Do not meddle."
+    }
+   ]
+  },
+  "zen": {
+   "name": "Zen",
+   "pauses": [
+    {
+     "boundary": 0,
+     "weight": 3,
+     "clip": "zen-short-01.mp3",
+     "note": "after: Sit upright. Not stiff. Awake. → Eyes lowered. Soft gaze on the floor ahead."
+    },
+    {
+     "boundary": 1,
+     "weight": 0,
+     "clip": "zen-short-02.mp3",
+     "note": "after: Eyes lowered. Soft gaze on the floor ahead. → This is the practice. Nothing extra."
+    },
+    {
+     "boundary": 2,
+     "weight": 3,
+     "clip": "zen-short-03.mp3",
+     "note": "after: This is the practice. Nothing extra. → A thought arrives. Open the hand of thought. Let it go."
+    },
+    {
+     "boundary": 3,
+     "weight": 2,
+     "clip": "zen-short-04.mp3",
+     "note": "after: A thought arrives. Open the hand of thought. Let it go. → Return is not a failure. Return is the practice."
+    },
+    {
+     "boundary": 4,
+     "weight": 4,
+     "clip": "zen-short-05.mp3",
+     "note": "after: Return is not a failure. Return is the practice. → Just sit."
+    }
+   ]
+  },
+  "who-am-i": {
+   "name": "Who Am I",
+   "pauses": [
+    {
+     "boundary": 0,
+     "weight": 3,
+     "clip": "who-am-i-short-01.mp3",
+     "note": "after: Sit. Let the body be quiet. → A thought is here. Ask, gently: who is this appearing to?"
+    },
+    {
+     "boundary": 1,
+     "weight": 1,
+     "clip": "who-am-i-short-02.mp3",
+     "note": "after: A thought is here. Ask, gently: who is this appearing to? → Do not answer with a name, or a story. Look."
+    },
+    {
+     "boundary": 2,
+     "weight": 4,
+     "clip": "who-am-i-short-03.mp3",
+     "note": "after: Do not answer with a name, or a story. Look. → Whatever you find — or fail to find — stay with that."
+    },
+    {
+     "boundary": 3,
+     "weight": 2,
+     "clip": "who-am-i-short-04.mp3",
+     "note": "after: Whatever you find — or fail to find — stay with that. → The one who would finish this practice is another thought."
+    },
+    {
+     "boundary": 4,
+     "weight": 4,
+     "clip": "who-am-i-short-05.mp3",
+     "note": "after: The one who would finish this practice is another thought. → Rest as what does not come and go."
+    }
+   ]
+  },
+  "vipassana": {
+   "name": "Vipassana",
+   "pauses": [
+    {
+     "boundary": 0,
+     "weight": 3,
+     "clip": "vipassana-short-01.mp3",
+     "note": "after: Sit still. Eyes closed if that helps. → Feel the breath at the nostrils, or the belly. That is the home base."
+    },
+    {
+     "boundary": 1,
+     "weight": 3,
+     "clip": "vipassana-short-02.mp3",
+     "note": "after: Feel the breath at the nostrils, or the belly. That is the home base. → When a thought pulls you, note it — thinking — and return."
+    },
+    {
+     "boundary": 2,
+     "weight": 2,
+     "clip": "vipassana-short-03.mp3",
+     "note": "after: When a thought pulls you, note it — thinking — and return. → When a sound appears, note hearing, and return."
+    },
+    {
+     "boundary": 3,
+     "weight": 2,
+     "clip": "vipassana-short-04.mp3",
+     "note": "after: When a sound appears, note hearing, and return. → You are not trying to stop anything. You are seeing it change."
+    },
+    {
+     "boundary": 4,
+     "weight": 4,
+     "clip": "vipassana-short-05.mp3",
+     "note": "after: You are not trying to stop anything. You are seeing it change. → Keep returning. That is the practice."
+    }
+   ]
+  },
+  "samatha": {
+   "name": "Samatha",
+   "pauses": [
+    {
+     "boundary": 0,
+     "weight": 3,
+     "clip": "samatha-short-01.mp3",
+     "note": "after: Sit comfortably. Close the eyes. → Rest attention on the breath, wherever it is easiest to feel."
+    },
+    {
+     "boundary": 1,
+     "weight": 3,
+     "clip": "samatha-short-02.mp3",
+     "note": "after: Rest attention on the breath, wherever it is easiest to feel. → When you wander, come back. No commentary."
+    },
+    {
+     "boundary": 2,
+     "weight": 3,
+     "clip": "samatha-short-03.mp3",
+     "note": "practice after return instruction before ordinary-breath reminder"
+    },
+    {
+     "boundary": 3,
+     "weight": 4,
+     "clip": "samatha-short-04.mp3",
+     "note": "after: The breath does not need to be special. Ordinary breathing is the object. → Stay. Return. Stay."
+    }
+   ]
+  },
+  "metta": {
+   "name": "Metta",
+   "pauses": [
+    {
+     "boundary": 0,
+     "weight": 3,
+     "clip": "metta-short-01.mp3",
+     "note": "after: Sit easy. Soften the face. → Bring to mind yourself, as you are right now. Not the improved version."
+    },
+    {
+     "boundary": 1,
+     "weight": 2,
+     "clip": "metta-short-02.mp3",
+     "note": "after: Bring to mind yourself, as you are right now. Not the improved version. → Quietly: may I be safe. May I be at ease."
+    },
+    {
+     "boundary": 2,
+     "weight": 3,
+     "clip": "metta-short-03.mp3",
+     "note": "after: Quietly: may I be safe. May I be at ease. → If that feels false, do not force it. Offer the wish anyway, like setting a cup down."
+    },
+    {
+     "boundary": 3,
+     "weight": 2,
+     "clip": "metta-short-04.mp3",
+     "note": "after: If that feels false, do not force it. Offer the wish anyway, like setting a cup down. → Now someone easy to care for. May you be safe. May you be at ease."
+    },
+    {
+     "boundary": 4,
+     "weight": 4,
+     "clip": "metta-short-05.mp3",
+     "note": "after: Now someone easy to care for. May you be safe. May you be at ease. → Let that be enough."
+    }
+   ]
+  },
+  "parts": {
+   "name": "Parts",
+   "pauses": [
+    {
+     "boundary": 0,
+     "weight": 3,
+     "clip": "parts-short-01.mp3",
+     "note": "after: Sit. Close the eyes if you like. → Notice who is here. A worried part, a driven part, a tired part. Do not pick a fight."
+    },
+    {
+     "boundary": 1,
+     "weight": 2,
+     "clip": "parts-short-02.mp3",
+     "note": "after: Notice who is here. A worried part, a driven part, a tired part. Do not pick a fight. → Ask, inwardly: how old does this part feel? Then wait."
+    },
+    {
+     "boundary": 2,
+     "weight": 3,
+     "clip": "parts-short-03.mp3",
+     "note": "after: Ask, inwardly: how old does this part feel? Then wait. → You are not the part. You are the space it is appearing in."
+    },
+    {
+     "boundary": 3,
+     "weight": 2,
+     "clip": "parts-short-04.mp3",
+     "note": "after: You are not the part. You are the space it is appearing in. → Thank it for trying to help. You can drive from the platform."
+    },
+    {
+     "boundary": 4,
+     "weight": 4,
+     "clip": "parts-short-05.mp3",
+     "note": "after: Thank it for trying to help. You can drive from the platform. → Rest as that wider space."
+    }
+   ]
+  },
+  "humming": {
+   "name": "Humming",
+   "pauses": [
+    {
+     "boundary": 0,
+     "weight": 2,
+     "clip": "humming-short-01.mp3",
+     "note": "after: Sit or stand. Mouth closed. Breathe in through the nose. → On the next out-breath, hum a single easy tone. Not loud. Just a hum."
+    },
+    {
+     "boundary": 1,
+     "weight": 3,
+     "clip": "humming-short-02.mp3",
+     "note": "after: On the next out-breath, hum a single easy tone. Not loud. Just a hum. → Again. In through the nose. Hum on the way out. Let the chest and face vibrate."
+    },
+    {
+     "boundary": 2,
+     "weight": 2,
+     "clip": "humming-short-03.mp3",
+     "note": "after: Again. In through the nose. Hum on the way out. Let the chest and face vibrate. → If a thought comes, let the tone hold you instead of the thought."
+    },
+    {
+     "boundary": 3,
+     "weight": 1,
+     "clip": "humming-short-04.mp3",
+     "note": "after: If a thought comes, let the tone hold you instead of the thought. → Keep humming. I will be quiet while you do."
+    },
+    {
+     "boundary": 4,
+     "weight": 4,
+     "clip": "humming-short-05.mp3",
+     "note": "after: Keep humming. I will be quiet while you do. → Stop. Feel the silence after the sound."
+    }
+   ]
+  },
+  "chanting": {
+   "name": "Chanting",
+   "pauses": [
+    {
+     "boundary": 0,
+     "weight": 2,
+     "clip": "chanting-short-01.mp3",
+     "note": "after: Sit. Choose one simple sound. Ah, om, or a word you already use. → On the out-breath, say it. Out loud if you can, or under the breath."
+    },
+    {
+     "boundary": 1,
+     "weight": 3,
+     "clip": "chanting-short-02.mp3",
+     "note": "after: On the out-breath, say it. Out loud if you can, or under the breath. → Again. Same sound. No melody required."
+    },
+    {
+     "boundary": 2,
+     "weight": 2,
+     "clip": "chanting-short-03.mp3",
+     "note": "after: Again. Same sound. No melody required. → Let the sound carry the attention. You do not have to think the sound."
+    },
+    {
+     "boundary": 3,
+     "weight": 1,
+     "clip": "chanting-short-04.mp3",
+     "note": "after: Let the sound carry the attention. You do not have to think the sound. → Continue. I will be quiet."
+    },
+    {
+     "boundary": 4,
+     "weight": 4,
+     "clip": "chanting-short-05.mp3",
+     "note": "after: Continue. I will be quiet. → Stop. Hear the room."
+    }
+   ]
+  },
+  "body-scan": {
+   "name": "Body Scan",
+   "pauses": [
+    {
+     "boundary": 0,
+     "weight": 3,
+     "clip": "body-scan-short-01.mp3",
+     "note": "after: Lie down, or sit. Close the eyes if that helps. → Feel the feet. No need to change them. Just the sensation."
+    },
+    {
+     "boundary": 1,
+     "weight": 2,
+     "clip": "body-scan-short-02.mp3",
+     "note": "after: Feel the feet. No need to change them. Just the sensation. → Feel the lower legs, the knees, the thighs."
+    },
+    {
+     "boundary": 2,
+     "weight": 2,
+     "clip": "body-scan-short-03.mp3",
+     "note": "after: Feel the lower legs, the knees, the thighs. → Belly, chest, the small movement of breathing."
+    },
+    {
+     "boundary": 3,
+     "weight": 2,
+     "clip": "body-scan-short-04.mp3",
+     "note": "after: Belly, chest, the small movement of breathing. → Feel the hands, the arms, the shoulders, the face."
+    },
+    {
+     "boundary": 4,
+     "weight": 4,
+     "clip": "body-scan-short-05.mp3",
+     "note": "after: Feel the hands, the arms, the shoulders, the face. → The whole body as one field of sensation. Rest there."
+    }
+   ]
+  },
+  "walking": {
+   "name": "Walking",
+   "pauses": [
+    {
+     "boundary": 0,
+     "weight": 1,
+     "clip": "walking-short-01.mp3",
+     "note": "after: Stand. Phone away. Eyes open. → Feel the weight in both feet."
+    },
+    {
+     "boundary": 1,
+     "weight": 1,
+     "clip": "walking-short-02.mp3",
+     "note": "after: Feel the weight in both feet. → Begin to walk, slower than usual. Heel, then sole, then toes."
+    },
+    {
+     "boundary": 2,
+     "weight": 3,
+     "clip": "walking-short-03.mp3",
+     "note": "after: Begin to walk, slower than usual. Heel, then sole, then toes. → When the mind leaves, it is not a problem. Come back to the next step."
+    },
+    {
+     "boundary": 3,
+     "weight": 2,
+     "clip": "walking-short-04.mp3",
+     "note": "after: When the mind leaves, it is not a problem. Come back to the next step. → Keep walking. The step is the sit."
+    },
+    {
+     "boundary": 4,
+     "weight": 4,
+     "clip": "walking-short-05.mp3",
+     "note": "after: Keep walking. The step is the sit. → Stop. Feel the standing. Then go on with the day."
+    }
+   ]
+  },
+  "the-circle": {
+   "name": "The Circle",
+   "pauses": [
+    {
+     "boundary": 0,
+     "weight": 3,
+     "clip": "the-circle-short-01.mp3",
+     "note": "after: Stand. Feel the floor. → Imagine a simple boundary around this place — a circle, a room, enough space to be in."
+    },
+    {
+     "boundary": 1,
+     "weight": 1,
+     "clip": "the-circle-short-02.mp3",
+     "note": "after: Imagine a simple boundary around this place — a circle, a room, enough space to be in. → Look to one direction. See what is there. Then turn, and see the next."
+    },
+    {
+     "boundary": 2,
+     "weight": 3,
+     "clip": "the-circle-short-03.mp3",
+     "note": "after: Look to one direction. See what is there. Then turn, and see the next. → Four directions, then back to the center. You are the space in the middle."
+    },
+    {
+     "boundary": 3,
+     "weight": 3,
+     "clip": "the-circle-short-04.mp3",
+     "note": "after: Four directions, then back to the center. You are the space in the middle. → Rest as that center. Nothing to banish but distraction."
+    },
+    {
+     "boundary": 4,
+     "weight": 4,
+     "clip": "the-circle-short-05.mp3",
+     "note": "after: Rest as that center. Nothing to banish but distraction. → When you are done, the circle can go. The looking can stay."
+    }
+   ]
+  },
+  "afterglow": {
+   "name": "Afterglow",
+   "pauses": [
+    {
+     "boundary": 0,
+     "weight": 3,
+     "clip": "afterglow-short-01.mp3",
+     "note": "after: Sit. You do not need to hold on to what happened. → If images or feelings are still here, let them be trains. Watch them pass."
+    },
+    {
+     "boundary": 1,
+     "weight": 2,
+     "clip": "afterglow-short-02.mp3",
+     "note": "after: If images or feelings are still here, let them be trains. Watch them pass. → Do not build a religion out of a state. States end."
+    },
+    {
+     "boundary": 2,
+     "weight": 1,
+     "clip": "afterglow-short-03.mp3",
+     "note": "after: Do not build a religion out of a state. States end. → What is here now, without the story of last night or last year?"
+    },
+    {
+     "boundary": 3,
+     "weight": 3,
+     "clip": "afterglow-short-04.mp3",
+     "note": "after: What is here now, without the story of last night or last year? → Rest as the space those leftovers are moving through."
+    },
+    {
+     "boundary": 4,
+     "weight": 4,
+     "clip": "afterglow-short-05.mp3",
+     "note": "after: Rest as the space those leftovers are moving through. → The ordinary day is the integration."
+    }
+   ]
+  },
+  "focused": {
+   "name": "Focused",
+   "pauses": [
+    {
+     "boundary": 0,
+     "weight": 2,
+     "clip": "focused-short-01.mp3",
+     "note": "after: Sit. Pick one simple object — the breath, a sound, or a spot on the wall. → Rest attention there. When it leaves, you will notice. That noticing is the practice."
+    },
+    {
+     "boundary": 1,
+     "weight": 3,
+     "clip": "focused-short-02.mp3",
+     "note": "after: Rest attention there. When it leaves, you will notice. That noticing is the practice. → Return without a story about how you failed."
+    },
+    {
+     "boundary": 2,
+     "weight": 2,
+     "clip": "focused-short-03.mp3",
+     "note": "after: Return without a story about how you failed. → The object does not have to be interesting. Ordinary is better."
+    },
+    {
+     "boundary": 3,
+     "weight": 1,
+     "clip": "focused-short-04.mp3",
+     "note": "after: The object does not have to be interesting. Ordinary is better. → I will be quiet. Stay, wander, return."
+    },
+    {
+     "boundary": 4,
+     "weight": 4,
+     "clip": "focused-short-05.mp3",
+     "note": "after: I will be quiet. Stay, wander, return. → Let the focus soften. The same attention can go wide."
+    }
+   ]
+  },
+  "transcendental": {
+   "name": "Transcendental",
+   "pauses": [
+    {
+     "boundary": 0,
+     "weight": 3,
+     "clip": "transcendental-short-01.mp3",
+     "note": "after: Sit easy. Close the eyes. → Take a word you already use, or the word one. This is not a secret. It is a vehicle."
+    },
+    {
+     "boundary": 1,
+     "weight": 1,
+     "clip": "transcendental-short-02.mp3",
+     "note": "after: Take a word you already use, or the word one. This is not a secret. It is a vehicle. → Think it easily, on the breath or off it. No force. No concentration contest."
+    },
+    {
+     "boundary": 2,
+     "weight": 3,
+     "clip": "transcendental-short-03.mp3",
+     "note": "after: Think it easily, on the breath or off it. No force. No concentration contest. → If it fades, let it fade. If you remember it, pick it up again. Both are correct."
+    },
+    {
+     "boundary": 3,
+     "weight": 1,
+     "clip": "transcendental-short-04.mp3",
+     "note": "after: If it fades, let it fade. If you remember it, pick it up again. Both are correct. → I will be quiet. Easy repetition. No managing."
+    },
+    {
+     "boundary": 4,
+     "weight": 4,
+     "clip": "transcendental-short-05.mp3",
+     "note": "after: I will be quiet. Easy repetition. No managing. → Drop the word. Sit in what is already here."
+    }
+   ]
+  },
+  "visualization": {
+   "name": "Visualization",
+   "pauses": [
+    {
+     "boundary": 0,
+     "weight": 3,
+     "clip": "visualization-short-01.mp3",
+     "note": "after: Sit or lie down. Close the eyes. → Picture a simple room you know, just for a moment. Walls, light, a chair."
+    },
+    {
+     "boundary": 1,
+     "weight": 1,
+     "clip": "visualization-short-02.mp3",
+     "note": "after: Picture a simple room you know, just for a moment. Walls, light, a chair. → Now drop the picture. What remains is the seeing itself, even with eyes closed."
+    },
+    {
+     "boundary": 2,
+     "weight": 3,
+     "clip": "visualization-short-03.mp3",
+     "note": "after: Now drop the picture. What remains is the seeing itself, even with eyes closed. → If the image comes back, let it. Then notice the space it appears in."
+    },
+    {
+     "boundary": 3,
+     "weight": 1,
+     "clip": "visualization-short-04.mp3",
+     "note": "after: If the image comes back, let it. Then notice the space it appears in. → I will be quiet. Image or no image — same space."
+    },
+    {
+     "boundary": 4,
+     "weight": 4,
+     "clip": "visualization-short-05.mp3",
+     "note": "after: I will be quiet. Image or no image — same space. → Open the eyes. The room you are in is not a picture."
+    }
+   ]
+  },
+  "hypnosis": {
+   "name": "Hypnosis",
+   "pauses": [
+    {
+     "boundary": 0,
+     "weight": 3,
+     "clip": "hypnosis-short-01.mp3",
+     "note": "after: Sit or lie down. You can open your eyes or stop this at any time. → Feel the heaviness of the hands, the feet, the jaw."
+    },
+    {
+     "boundary": 1,
+     "weight": 2,
+     "clip": "hypnosis-short-02.mp3",
+     "note": "after: Feel the heaviness of the hands, the feet, the jaw. → Each out-breath, a little heavier, as if the chair were doing the work."
+    },
+    {
+     "boundary": 2,
+     "weight": 3,
+     "clip": "hypnosis-short-03.mp3",
+     "note": "after: Each out-breath, a little heavier, as if the chair were doing the work. → You are not going anywhere. You are still the space these sensations appear in."
+    },
+    {
+     "boundary": 3,
+     "weight": 1,
+     "clip": "hypnosis-short-04.mp3",
+     "note": "after: You are not going anywhere. You are still the space these sensations appear in. → I will be quiet. Heavy, and aware."
+    },
+    {
+     "boundary": 4,
+     "weight": 4,
+     "clip": "hypnosis-short-05.mp3",
+     "note": "after: I will be quiet. Heavy, and aware. → Wiggle the fingers. The heaviness can go. The awareness does not."
+    }
+   ]
+  },
+  "movement": {
+   "name": "Movement",
+   "pauses": [
+    {
+     "boundary": 0,
+     "weight": 2,
+     "clip": "movement-short-01.mp3",
+     "note": "after: Stand, or sit if standing is not available. Eyes open. → Feel both feet. Begin a slow sway, as small as you like."
+    },
+    {
+     "boundary": 1,
+     "weight": 3,
+     "clip": "movement-short-02.mp3",
+     "note": "after: Feel both feet. Begin a slow sway, as small as you like. → The movement is the sit. You do not have to freeze to be present."
+    },
+    {
+     "boundary": 2,
+     "weight": 2,
+     "clip": "movement-short-03.mp3",
+     "note": "after: The movement is the sit. You do not have to freeze to be present. → When a thought boards, keep swaying. Come back to the next shift of weight."
+    },
+    {
+     "boundary": 3,
+     "weight": 1,
+     "clip": "movement-short-04.mp3",
+     "note": "after: When a thought boards, keep swaying. Come back to the next shift of weight. → I will be quiet. Slow movement. Eyes open."
+    },
+    {
+     "boundary": 4,
+     "weight": 4,
+     "clip": "movement-short-05.mp3",
+     "note": "after: I will be quiet. Slow movement. Eyes open. → Stillness now. Same space, not moving."
+    }
+   ]
+  },
+  "power-breath": {
+   "name": "Power Breath",
+   "pauses": [
+    {
+     "boundary": 0,
+     "weight": 3,
+     "clip": "power-breath-short-01.mp3",
+     "note": "settle after safety opener before the round begins"
+    },
+    {
+     "boundary": 1,
+     "weight": 3,
+     "clip": "power-breath-short-02.mp3",
+     "note": "practice: complete ~30 breaths. SAFETY soft-cap ≤45s stretch total for this gap",
+     "maxSeconds": 45
+    },
+    {
+     "boundary": 2,
+     "weight": 0,
+     "clip": "power-breath-short-03.mp3",
+     "note": "SAFETY: empty-lung rest stays at base only — \"only as long as it is easy\"; no stretch"
+    },
+    {
+     "boundary": 3,
+     "weight": 3,
+     "clip": "power-breath-short-04.mp3",
+     "note": "integrate after recovery breath"
+    },
+    {
+     "boundary": 4,
+     "weight": 4,
+     "clip": "power-breath-short-05.mp3",
+     "note": "closing rest before final line / end bowl"
+    }
+   ]
+  },
+  "mahayana": {
+   "name": "Mahayana",
+   "pauses": [
+    {
+     "boundary": 0,
+     "weight": 3,
+     "clip": "mahayana-short-01.mp3",
+     "note": "after: Sit. Soft eyes. → This space you are sitting in is not private. The same awareness holds others too."
+    },
+    {
+     "boundary": 1,
+     "weight": 2,
+     "clip": "mahayana-short-02.mp3",
+     "note": "after: This space you are sitting in is not private. The same awareness holds others too. → Wish, simply: may the one who suffers — including you — be free of the extra story."
+    },
+    {
+     "boundary": 2,
+     "weight": 3,
+     "clip": "mahayana-short-03.mp3",
+     "note": "after: Wish, simply: may the one who suffers — including you — be free of the extra story. → Now look: the wisher is also an appearance in the same space."
+    },
+    {
+     "boundary": 3,
+     "weight": 1,
+     "clip": "mahayana-short-04.mp3",
+     "note": "after: Now look: the wisher is also an appearance in the same space. → I will be quiet. Open, and kind, without a project."
+    },
+    {
+     "boundary": 4,
+     "weight": 4,
+     "clip": "mahayana-short-05.mp3",
+     "note": "after: I will be quiet. Open, and kind, without a project. → Carry both — space, and the wish — into the next conversation."
+    }
+   ]
+  },
+  "tree-of-life": {
+   "name": "Tree of Life",
+   "pauses": [
+    {
+     "boundary": 0,
+     "weight": 3,
+     "clip": "tree-of-life-short-01.mp3",
+     "note": "after: Sit. This is a map of attention, not a belief you have to join. → Imagine ten places on a tree, from the ground to a crown of space."
+    },
+    {
+     "boundary": 1,
+     "weight": 1,
+     "clip": "tree-of-life-short-02.mp3",
+     "note": "after: Imagine ten places on a tree, from the ground to a crown of space. → Rest for a moment at the crown — open, unoccupied, like the sky."
+    },
+    {
+     "boundary": 2,
+     "weight": 3,
+     "clip": "tree-of-life-short-03.mp3",
+     "note": "after: Rest for a moment at the crown — open, unoccupied, like the sky. → Descend to the heart. Warmth, if it is there. If not, space will do."
+    },
+    {
+     "boundary": 3,
+     "weight": 2,
+     "clip": "tree-of-life-short-04.mp3",
+     "note": "after: Descend to the heart. Warmth, if it is there. If not, space will do. → Return to the crown. Same you, two places, one looking."
+    },
+    {
+     "boundary": 4,
+     "weight": 4,
+     "clip": "tree-of-life-short-05.mp3",
+     "note": "after: Return to the crown. Same you, two places, one looking. → Drop the map. The tree was a scaffold. The space remains."
+    }
+   ]
+  }
+ }
+}

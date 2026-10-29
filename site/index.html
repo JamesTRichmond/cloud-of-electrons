@@ -2,68 +2,624 @@
 <title>Cloud of Electrons</title>
 <style>
 @font-face{font-family:"Source Serif 4";src:url(SourceSerif4.ttf)}
-html,body{margin:0;height:100%;background:#05070D;overflow:hidden}
+html,body{margin:0;height:100%;background:#05070D;overflow:hidden;user-select:none;-webkit-user-select:none}
 #coe{position:fixed;inset:0;width:100%;height:100%;display:block}
+
+/* Luxury Observatory Open Field trigger button */
+#of-btn{position:fixed;right:22px;bottom:20px;background:rgba(5,7,13,.65);border:1px solid rgba(237,230,214,.18);border-radius:22px;padding:6px 16px;color:#EDE6D6;opacity:.55;font:14px/1.4 'Source Serif 4',serif;letter-spacing:.04em;cursor:pointer;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 4px 16px rgba(0,0,0,.4);transition:all .35s cubic-bezier(.16,1,.3,1);z-index:10}
+#of-btn:hover,#of-btn[aria-expanded="true"]{opacity:1;border-color:rgba(250,214,133,.45);color:#fad685;box-shadow:0 0 20px rgba(250,214,133,.25),0 6px 20px rgba(0,0,0,.6)}
+#of-btn.playing{border-color:rgba(250,214,133,.6);color:#fad685;animation:pulseAura 3s infinite ease-in-out}
+@keyframes pulseAura{0%,100%{box-shadow:0 0 12px rgba(250,214,133,.2)}50%{box-shadow:0 0 24px rgba(250,214,133,.45)}}
+
+/* Observatory Glass Console */
+#of{position:fixed;right:22px;bottom:64px;display:none;flex-direction:column;gap:12px;color:#EDE6D6;font:13.5px 'Source Serif 4',serif;background:rgba(5,7,13,.82);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(237,230,214,.14);border-radius:14px;padding:18px 20px;width:280px;box-sizing:border-box;box-shadow:0 16px 40px rgba(0,0,0,.75),inset 0 1px 0 rgba(237,230,214,.12);transition:opacity .3s,transform .3s;transform:translateY(6px);opacity:0;z-index:10}
+#of.on{display:flex;transform:translateY(0);opacity:1}
+
+/* Mode pill switch */
+#of-mode{display:flex;background:rgba(237,230,214,.07);border:1px solid rgba(237,230,214,.12);border-radius:20px;padding:3px;gap:2px}
+#of-mode span{flex:1;text-align:center;padding:5px 0;border-radius:16px;cursor:pointer;opacity:.45;font-size:12.5px;letter-spacing:.03em;transition:all .25s ease}
+#of-mode span:hover{opacity:.8}
+#of-mode span.sel{opacity:1;background:rgba(237,230,214,.16);color:#EDE6D6;box-shadow:0 2px 8px rgba(0,0,0,.4)}
+#of-mode span:focus-visible{outline:1px solid rgba(250,214,133,.6)}
+
+/* Inputs, selects, and action buttons */
+#of label{display:flex;flex-direction:column;gap:4px;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:rgba(237,230,214,.65)}
+#of select{background:rgba(237,230,214,.06);color:#EDE6D6;border:1px solid rgba(237,230,214,.18);border-radius:8px;padding:6px 10px;font:13.5px 'Source Serif 4',serif;outline:none;transition:border-color .25s,background .25s}
+#of select:hover,#of select:focus{border-color:rgba(250,214,133,.5);background:rgba(237,230,214,.1)}
+#of select option{background:#05070D;color:#EDE6D6;padding:4px}
+#of select option:checked{background:rgba(250,214,133,.25);color:#fad685}
+#of-poem,#of-med{display:block;width:100%;box-sizing:border-box}
+
+/* Button rows */
+.of-row{display:flex;gap:8px;align-items:center}
+#of button{flex:1;background:rgba(237,230,214,.08);color:#EDE6D6;border:1px solid rgba(237,230,214,.2);border-radius:8px;padding:6px 10px;font:13.5px 'Source Serif 4',serif;cursor:pointer;transition:all .25s}
+#of button:hover{background:rgba(237,230,214,.16);border-color:rgba(237,230,214,.4)}
+#of #of-go{border-color:rgba(250,214,133,.45);color:#fad685;background:rgba(250,214,133,.08)}
+#of #of-go:hover{background:rgba(250,214,133,.2);border-color:#fad685;box-shadow:0 0 12px rgba(250,214,133,.25)}
+
+/* Volume range slider */
+#of input[type="range"]{-webkit-appearance:none;width:100%;height:4px;background:rgba(237,230,214,.18);border-radius:2px;outline:none;margin:8px 0 2px}
+#of input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:#fad685;cursor:pointer;box-shadow:0 0 8px rgba(250,214,133,.6);transition:transform .2s}
+#of input[type="range"]::-webkit-slider-thumb:hover{transform:scale(1.25)}
+
+/* Tooltip */
+#of-tip{position:fixed;display:none;z-index:10;max-width:270px;box-sizing:border-box;background:rgba(5,7,13,.9);color:#EDE6D6;border:1px solid rgba(250,214,133,.3);border-radius:8px;padding:6px 10px;font:13px 'Source Serif 4',serif;box-shadow:0 8px 24px rgba(0,0,0,.8);pointer-events:none}
+
+/* Observatory Galaxy Orbital Docket */
+#vroom .vroom-hud{display:flex;gap:12px;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:#fad685;opacity:.88;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid rgba(250,214,133,.22)}
+#vroom .vlead{font-size:17px;font-style:italic;color:#EDE6D6;opacity:.95;margin-bottom:12px}
+#vroom .vroom-actions{display:flex;gap:12px;align-items:center;margin-top:16px;padding-top:14px;border-top:1px solid rgba(237,230,214,.12);flex-wrap:wrap}
+#vroom .vroom-eject{background:rgba(250,214,133,.12);color:#fad685;border:1px solid rgba(250,214,133,.5);border-radius:20px;padding:6px 16px;font:13.5px 'Source Serif 4',serif;cursor:pointer;transition:all .25s;letter-spacing:.04em}
+#vroom .vroom-eject:hover{background:rgba(250,214,133,.28);color:#fff;border-color:#fad685;box-shadow:0 0 16px rgba(250,214,133,.4)}
+
 #coe-live{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
-</style></head><body>
-<canvas id="coe" aria-label="A drifting cloud of particles where lines of poetry form and fade"></canvas>
+</style></head><body><canvas id="coe" aria-label="A drifting cloud of particles where lines of poetry form and fade"></canvas>
+<button id="of-btn" aria-expanded="false">Open Field</button>
+<div id="of" role="group" aria-label="Open Field">
+<div id="of-mode" role="radiogroup" aria-label="Mode"><span role="radio" tabindex="0" data-m="poetry" class="sel" aria-checked="true">Poetry</span> <span role="radio" tabindex="0" data-m="meditation" aria-checked="false">Meditation</span></div>
+<label id="of-poeml">Poem <select id="of-poem"></select></label>
+<label id="of-medl" style="display:none">Meditation <select id="of-med"></select></label>
+<div class="of-row"><button id="of-go">Begin</button> <button id="of-sil">Silence</button></div>
+<div class="of-row"><button id="of-bn">Brown noise</button> <label style="white-space:nowrap;margin:0;flex-direction:row;align-items:center;gap:4px">Timer <select id="of-tm"><option value="0">off</option><option>10</option><option>20</option><option>30</option><option>60</option></select> min</label></div>
+<label>Volume <input id="of-vol" type="range" min="-40" max="-10" value="-25"></label>
+</div>
 <div id="coe-live" aria-live="polite"></div>
+<script src="cloud-fill.js"></script>
 <script type="module">
 import {poemTimeline,nextGap,shuffleBag,SECTIONS} from './motion.js';
-const N=60000,cv=document.getElementById('coe'),gl=cv.getContext('webgl2',{antialias:false,alpha:false});
+const FILL=(window.COE_FILL||[
+ {name:'near',count:12000,inner:.15,outer:.8,size:1.6,brightness:.35,swirl:.4},
+ {name:'mid',count:90000,inner:.8,outer:2.2,size:1.0,brightness:.8,swirl:1.0},
+ {name:'far',count:90000,inner:2.2,outer:5.5,size:.5,brightness:.45,swirl:1.0},
+ {name:'deep',count:40000,inner:5.5,outer:50.0,size:.45,brightness:.3,swirl:.25},
+ {name:'synapse',count:8000,inner:1.5,outer:5.0,size:1.4,brightness:.6,swirl:0.0}
+]).map(l=>({...l}));
+const QS=new URLSearchParams(location.search);
+const PER={near:1,mid:2,far:3,deep:4,synapse:1},CAMZ=3.5;let N=0;for(const L of FILL){L.i0=N;N+=L.count;L.i1=N;L.per=PER[L.name]||1;L.last=0;L.upd=0;L.acc=0}
+const DIM=.8,cv=document.getElementById('coe'),gl=cv.getContext('webgl2',{antialias:false,alpha:false});
 const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
 let aspect=1;function rs(){const d=Math.min(2,devicePixelRatio);cv.width=innerWidth*d;cv.height=innerHeight*d;gl.viewport(0,0,cv.width,cv.height);aspect=innerWidth/innerHeight}rs();addEventListener('resize',rs);
-const P=new Float32Array(N*3),V=new Float32Array(N*3),T=new Float32Array(N*3),C=new Float32Array(N*3),mark=new Uint8Array(N);
-for(let i=0;i<N;i++){const u=Math.random()*2-1,th=Math.random()*6.2832,r=2*Math.cbrt(Math.random()),q=Math.sqrt(1-u*u);P[i*3]=r*q*Math.cos(th);P[i*3+1]=r*q*Math.sin(th);P[i*3+2]=r*u}
+const P=new Float32Array(N*3),Q=new Float32Array(N*3),V=new Float32Array(N*3),T=new Float32Array(N*3),C=new Float32Array(N*3),mark=new Uint8Array(N),S=new Float32Array(N),H=new Float32Array(N),LY=new Float32Array(N),HV=new Float32Array(N*3),E=new Float32Array(N);
+// camera: view = R(a)*world - cam ; cam=(cx,cy,CAMZ) drifts ~0.5% of cloud width per 10 s
+let cam=[0,0,CAMZ];const camAt=t=>reduced?[0,0,CAMZ]:[.3*Math.sin(t*.0167),.15*Math.sin(t*.0123+1),CAMZ+.2*Math.sin(t*.0091+2)];
+const camW=(a,c)=>[c[0]*Math.cos(a)+c[2]*Math.sin(a),c[1],-c[0]*Math.sin(a)+c[2]*Math.cos(a)];
+{const cw=camW(0,cam);FILL.forEach((L,li)=>{for(let i=L.i0;i<L.i1;i++){const span=L.outer-L.inner,lo=L.inner-span*.12,hi=L.outer+span*.12,u3=Math.random();let r=Math.cbrt(lo**3+(hi**3-lo**3)*u3);r=Math.max(.12,r);H[i]=r;LY[i]=li;const u=Math.random()*2-1,th=Math.random()*6.2832,q=Math.sqrt(1-u*u);HV[i*3]=r*q*Math.cos(th);HV[i*3+1]=r*q*Math.sin(th);HV[i*3+2]=r*u;P[i*3]=cw[0]+HV[i*3];P[i*3+1]=cw[1]+HV[i*3+1];P[i*3+2]=cw[2]+HV[i*3+2];S[i]=1.7*L.size}});Q.set(P)}
+const MID=FILL[1];
+/* diagnostics only: per depth band spread and distance from each dot's start-layout home */
+const DRIFT={cw:[0,0,0],ra:0,t:0};/* direction bins (equal-area: 12 in z x 24 in azimuth) for spread/entropy */const BZ=12,BA=24,BINS=BZ*BA,binOf=(ux,uy,uz)=>Math.min(BZ-1,(uz+1)/2*BZ|0)*BA+Math.min(BA-1,((Math.atan2(uy,ux)+Math.PI)/(2*Math.PI))*BA|0);
+/* drift guard (v23.6): over many minutes the curl flow + attractor pull collapse each depth band into a few hard streams/blobs.
+   Nothing happens for the first GATE_S seconds (the v23.5 swirl is untouched). At GATE_S each band records its spread (direction entropy);
+   afterwards, if the band has collapsed below that, a small, deficit-proportional share of dots from over-crowded directions fades out
+   where it is (FADE_S), reappears at its start-layout home and fades in. ?nofix disables it, ?gate=s changes the gate (diagnostics). */
+const SUBSTEP=Math.max(1,+(QS.get('sub')||1)|0),RS_ON=QS.has('fix'),OLDCLOCK=QS.has('oldclock'),GATE_S=+(QS.get('gate')||120),RS_GAIN=+(QS.get('rsg')||.08),RS_MAX=.004,FADE_S=1.5,
+ FD=new Float32Array(N).fill(1),RS=new Uint8Array(N);FILL.forEach(L=>{L.bud=0;L.rsN=0;L.eT=null;L.eN=1;L.chk=0;L.bins=new Float32Array(BINS);L.crowd=1e9});
+const bandSpread=(L,cw)=>{const n=L.i1-L.i0,st=Math.max(1,n/3000|0),B=L.bins;B.fill(0);let k=0;for(let i=L.i0;i<L.i1;i+=st){if(mark[i])continue;const j=i*3,ex=P[j]-cw[0],ey=P[j+1]-cw[1],ez=P[j+2]-cw[2],rr=Math.hypot(ex,ey,ez)+1e-9;B[binOf(ex/rr,ey/rr,ez/rr)]++;k++}
+ let H=0;for(let b=0;b<BINS;b++)if(B[b]){const p=B[b]/k;H-=p*Math.log(p)}L.crowd=2*k/BINS;return H/Math.log(BINS)};window.coeDrift=()=>{const {cw,ra}=DRIFT,c=Math.cos(ra),s=Math.sin(ra);return FILL.map(L=>{const n=L.i1-L.i0,st=Math.max(1,n/4000|0),R=[],D=[],HB=new Float32Array(BINS);let mx=0,my=0,mz=0;
+ for(let i=L.i0;i<L.i1;i+=st){if(mark[i])continue;const j=i*3,ex=P[j]-cw[0],ey=P[j+1]-cw[1],ez=P[j+2]-cw[2],hx=HV[j]*c+HV[j+2]*s,hz=-HV[j]*s+HV[j+2]*c;{const rr=Math.hypot(ex,ey,ez)+1e-9;HB[binOf(ex/rr,ey/rr,ez/rr)]++}R.push(Math.hypot(ex,ey,ez));D.push(Math.hypot(ex-hx,ey-HV[j+1],ez-hz));mx+=ex;my+=ey;mz+=ez}
+ const q=(a,p)=>{a=a.slice().sort((x,y)=>x-y);return +a[Math.min(a.length-1,a.length*p|0)].toFixed(3)},k=R.length,span=L.outer-L.inner;let sx=0;for(let m=0;m<k;m++)sx+=R[m];
+ let Hh=0;for(let b=0;b<BINS;b++)if(HB[b]){const p=HB[b]/k;Hh-=p*Math.log(p)}return{band:L.name,n:k,entropy:+(Hh/Math.log(BINS)).toFixed(4),rMean:+(sx/k).toFixed(3),rP10:q(R,.1),rP90:q(R,.9),centroidOff:+(Math.hypot(mx/k,my/k,mz/k)/span).toFixed(3),homeP50:q(D,.5),homeP90:q(D,.9),homeP99:q(D,.99),respawning:L.rsN||0,target:L.eT,live:L.eN}})};
 const hsl=(h,s,l)=>{const f=n=>{const k=(n+h/30)%12,a=s*Math.min(l,1-l);return l-a*Math.max(-1,Math.min(k-3,9-k,1))};return[f(0),f(8),f(4)]};
 const sh=(t,s)=>{const x=gl.createShader(t);gl.shaderSource(x,s);gl.compileShader(x);if(!gl.getShaderParameter(x,gl.COMPILE_STATUS))throw gl.getShaderInfoLog(x);return x};
 const pr=gl.createProgram();
 gl.attachShader(pr,sh(gl.VERTEX_SHADER,`#version 300 es
-in vec3 p;in vec3 c;uniform float t,asp;out vec3 vc;void main(){float a=t*.04;
-vec3 q=vec3(p.x*cos(a)-p.z*sin(a),p.y,p.x*sin(a)+p.z*cos(a));q.z-=3.5;
-gl_Position=vec4(q.x*1.6/max(asp,1.),q.y*1.6*min(asp,1.)*(asp<1.?1.:1.),q.z,-q.z);gl_PointSize=2.;vc=c;}`));
+in vec3 p0;in vec3 p;in vec3 c;in float z;in float ly;in float te;uniform float t,asp,pxu,tps,tk,fg,vyaw,vst,vth,dA,dH,uFlash,uBreath;uniform vec4 uRipple,ph;uniform vec3 cam;out vec3 vc;out float soft,al,vTe;void main(){float a=t*.04;
+float u=ly<.5?ph.x:ly<1.5?ph.y:ly<2.5?ph.z:ly<3.5?ph.w:ph.x;vec3 w=mix(p0,p,u);
+if(uBreath>0.0&&te<.5){w*=1.0+0.035*sin(t*0.3927)*uBreath;}
+if(uRipple.w>0.0&&te<.5){float dRip=abs(length(w)-uRipple.z);w+=normalize(w+1e-5)*sin(dRip*12.0)*exp(-dRip*2.8)*uRipple.w*0.35;}
+vec3 q=vec3(w.x*cos(a)-w.z*sin(a),w.y,w.x*sin(a)+w.z*cos(a))-cam;float hs=fract(sin(float(gl_VertexID)*12.9898)*43758.5453),hs2=fract(sin(float(gl_VertexID)*78.233)*12543.17);q.x+=vst*(hs-.5)*2.4*(1.-te);{float cy=cos(vyaw),sy=sin(vyaw);q=vec3(q.x*cy-q.z*sy,q.y,q.x*sy+q.z*cy);}float d=max(-q.z,.02),R=length(q);
+gl_Position=vec4(q.x*1.6/max(asp,1.),q.y*1.6*min(asp,1.),q.z<0.?0.:2.*d,d);
+float f=clamp(CAMZ/d,.5,9.);float sa=z*f*pxu,sfa=smoothstep(1.2,.25,d);
+float ala=smoothstep(.08,.35,d)*exp(-R*.026);
+vec3 va=c/max(1.,f*f*.35);
+if(ly>3.5&&te<.5){
+ float pulse=exp(-pow(fract(t*.55+w.x*.35+w.y*.6+w.z*.4)-.5,2.)*140.);
+ va=mix(vec3(.32,.52,.82),vec3(.96,.98,1.)*2.4,pulse);
+ ala=(.05+pulse*1.8)*smoothstep(.08,.35,d)*exp(-R*.03);
+ sa*=(1.+pulse*1.6);
+}
+if(uFlash>0.0){va=mix(va,vec3(0.96,0.97,1.0)*(1.0+uFlash*1.8),te*uFlash);}
+gl_PointSize=mix(sa,tps*(1.0+uFlash*0.35),te);soft=mix(sfa,0.,te);al=mix(ala,1.,te);vTe=te;vc=mix(va,c*tk,te);al*=fg*(hs2<vth?0.:1.);
+float nx=gl_Position.x/gl_Position.w;float bw=2.*mix(.06,.08,dH),band=1.-smoothstep(-1.+bw*.55,-1.+bw,nx);float hs3=fract(sin(float(gl_VertexID)*39.425)*24634.63);al*=(hs3<.5*band*dA?0.:1.);float edge=band*(1.-band)*4.;
+{float phA=t*1.3+hs*6.28;gl_Position.xy+=vec2(.012*cos(phA),.012*sin(phA))*edge*dH*(1.-te)*gl_Position.w;
+ if(dH>0.0&&nx<-0.55){float pull=pow(clamp((-0.55-nx)/0.45,0.,1.),2.);gl_Position.y*=(1.0-0.3*pull*dH*(1.-te));vc=mix(vc,vec3(0.98,0.84,0.52),pull*dH*0.45*(1.-te));}
+}}`.replace('CAMZ','3.5')));
 gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,`#version 300 es
-precision mediump float;in vec3 vc;out vec4 o;void main(){o=vec4(vc,.55);}`));
+precision mediump float;in vec3 vc;in float soft,al,vTe;out vec4 o;void main(){float r=length(gl_PointCoord-.5)*2.;if(r>1.)discard;
+float hard=1.-smoothstep(.8,1.,r);float core=exp(-r*r*12.);float halo=exp(-r*r*2.2)*(1.-r*r);
+vec3 disp=vec3(exp(-pow(r-.08,2.)*18.)*.14,0.,exp(-pow(r-.22,2.)*12.)*.22);
+float shape=mix(hard,core*.7+halo*.5,soft);
+vec3 col=vc+disp*(1.-vTe)*soft;
+o=vec4(col,.55*al*shape);}`));
 gl.linkProgram(pr);gl.useProgram(pr);
 
 
-const bp=gl.createBuffer(),bc=gl.createBuffer(),lp=gl.getAttribLocation(pr,'p'),lc=gl.getAttribLocation(pr,'c');
+// te attribute: per-dot text ease (0 cloud .. 1 on its letter); shader output equals the cloud path at te=0, so no switch flash
+const be=gl.createBuffer(),le=gl.getAttribLocation(pr,'te'),bq=gl.createBuffer(),lq=gl.getAttribLocation(pr,'p0'),bl=gl.createBuffer(),ll=gl.getAttribLocation(pr,'ly'),bp=gl.createBuffer(),bc=gl.createBuffer(),lp=gl.getAttribLocation(pr,'p'),lc=gl.getAttribLocation(pr,'c'),lz=gl.getAttribLocation(pr,'z'),bz=gl.createBuffer();
+const bind=(b,l,n,arr)=>{gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,arr,gl.DYNAMIC_DRAW);gl.enableVertexAttribArray(l);gl.vertexAttribPointer(l,n,gl.FLOAT,false,0,0)};
+bind(bq,lq,3,Q);bind(bp,lp,3,P);bind(bc,lc,3,C);bind(bz,lz,1,S);bind(bl,ll,1,LY);bind(be,le,1,E);
+const sub=(b,arr,n,i0,i1)=>{gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferSubData(gl.ARRAY_BUFFER,i0*n*4,arr,i0*n,(i1-i0)*n)};
 gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE);
 const [att,man]=await Promise.all([fetch('attractors.json').then(r=>r.json()),fetch('glyphs/manifest.json').then(r=>r.json())]);
 for(const x of att.attractors)for(const k of['id','pos','radius','hue'])if(x[k]===undefined)throw new Error('attractors.json: '+x.id+' missing '+k);
 const A=att.attractors,poems=man.poems,byId=Object.fromEntries(poems.map(p=>[p.id,p]));
 const pick=shuffleBag(poems.map(p=>p.id),poems.filter(p=>SECTIONS[p.section]?.repeatSooner).map(p=>p.id));
 const cache={};const bin=async f=>cache[f]??=new Int16Array(await (await fetch(f)).arrayBuffer());
-let active=null,next=location.hash==='#poem'?0:performance.now()+4000,loading=false;const live=document.getElementById('coe-live');
-let rotA=0;const calmAt=(x,y,z)=>{if(!active||!active.box)return 0;const ra=rotA*.04,qx=x*Math.cos(ra)-z*Math.sin(ra),qz=x*Math.sin(ra)+z*Math.cos(ra)-3.5,sc=3.5/Math.max(.3,-qz),px=qx*sc,py=y*sc,B=active.box,L=active.lh,r=Math.hypot((px-(B[0]+B[1])/2)/((B[1]-B[0])/2+L),(py-(B[2]+B[3])/2)/((B[3]-B[2])/2+L)),u=Math.min(1,Math.max(0,(r-.5)/1.2)),h=1-u*u*(3-2*u);return h};const SLOW=1;async function start(now){const ra=rotA*.04+.1,ca=Math.cos(ra),sa=Math.sin(ra);loading=true;const QP=new URLSearchParams(location.search),p=byId[QP.get("poem")]||byId[pick()],g=QP.has("poem")?p.groups[0]:p.groups[Math.random()*p.groups.length|0],b=await bin(p.file);
+// Open Field brown noise, per brown-noise-spec.md. Start only from a user tap.
+class BrownNoise {
+  constructor(){ this.ctx=null; this.onChange=null; }
+  start(ctx=new AudioContext(), db=-24){
+    const c=this.ctx=ctx, len=c.sampleRate*4, buf=c.createBuffer(2,len,c.sampleRate);
+    for(let ch=0;ch<2;ch++){const d=buf.getChannelData(ch);let last=0;
+      for(let i=0;i<len;i++){last=(last+0.02*(Math.random()*2-1))/1.02;d[i]=last*3.5;}}
+    this.src=c.createBufferSource(); this.src.buffer=buf; this.src.loop=true;
+    const lp=c.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=500;
+    const hp=c.createBiquadFilter(); hp.type='highpass'; hp.frequency.value=25; // removes DC
+    this.breath=c.createGain(); this.out=c.createGain(); this.out.gain.value=0;
+    const lfo=c.createOscillator(), lg=c.createGain(); lfo.frequency.value=1/40; lg.gain.value=0.16; // about ±1.5 dB
+    lfo.connect(lg).connect(this.breath.gain); lfo.start();
+    this.src.connect(hp).connect(lp).connect(this.breath).connect(this.out).connect(c.destination); this.src.start();
+    this.setVolume(db, 3); this.onChange?.(true);
+  }
+  setVolume(db, fade=0.3){ if(!this.ctx) return; const t=this.ctx.currentTime;
+    this.out.gain.cancelScheduledValues(t); this.out.gain.setValueAtTime(this.out.gain.value,t);
+    this.out.gain.linearRampToValueAtTime(Math.pow(10,db/20), t+fade); }
+  stop(fade=3){ if(!this.ctx) return; const t=this.ctx.currentTime;
+    this.out.gain.cancelScheduledValues(t); this.out.gain.setValueAtTime(this.out.gain.value,t);
+    this.out.gain.linearRampToValueAtTime(0,t+fade); this.src.stop(t+fade+0.1);
+    clearTimeout(this.timer); this.ctx=null; this.onChange?.(false); }
+  setTimer(min){ clearTimeout(this.timer); if(min) this.timer=setTimeout(()=>this.stop(3), min*60000); } // 0 means off
+  get playing(){ return !!this.ctx; }
+}
+
+const OF=await fetch('openfield.json').then(r=>r.json());const BN=new BrownNoise();BN.onChange=on=>{window.coeBrownNoiseOn=on;document.getElementById('of-bn').textContent=on?'Stop brown noise':'Brown noise'};
+const breath=new Audio('forming.mp3');breath.volume=.5;let soundOK=false;const okS=()=>{soundOK=true};addEventListener('pointerdown',okS,{once:true});addEventListener('keydown',okS,{once:true});
+let POEMS_ON=location.hash==='#poem'||new URLSearchParams(location.search).has('poem');window.coePoemsOn=()=>POEMS_ON;let active=null,next=location.hash==='#poem'?0:performance.now()+4000,loading=false;const live=document.getElementById('coe-live');
+let rotA=0;const calmAt=(x,y,z)=>{if(!active||!active.box)return 0;const ra=rotA*.04,qx=x*Math.cos(ra)-z*Math.sin(ra),qz=x*Math.sin(ra)+z*Math.cos(ra)-cam[2],sc=CAMZ/Math.max(.3,-qz),px=(qx-cam[0])*sc+cam[0],py=(y-cam[1])*sc+cam[1],B=active.box,L=active.lh,r=Math.hypot((px-(B[0]+B[1])/2)/((B[1]-B[0])/2+L),(py-(B[2]+B[3])/2)/((B[3]-B[2])/2+L)),u=Math.min(1,Math.max(0,(r-1)/CALM_EDGE)),h=1-u*u*(3-2*u);return h};const SLOW=1,KC_CLOUD=.006,KR_DEPTH=6,RK=new Float32Array(N),PM=new Uint8Array(N),CALM_EDGE=.06;/* CALM_EDGE: falloff beyond the text block, ~12 px at 1280 wide */async function start(now){{const PS0=window.coePoetrySeq;if(PS0&&PS0.on&&PS0.p&&PS0.gi>=PS0.p.groups.length&&!new URLSearchParams(location.search).has('poem')){stopPoetry();return}}/* reading finished: no repeat, back to the pre-Begin state */const ra=rotA*.04+.1,ca=Math.cos(ra),sa=Math.sin(ra);loading=true;const QP=new URLSearchParams(location.search),PS=window.coePoetrySeq,seqOn=!QP.has("poem")&&PS&&PS.on,p=QP.has("poem")?byId[QP.get("poem")]||byId[pick()]:seqOn?(PS.gi>=(PS.p?PS.p.groups.length:0)?(PS.p=byId[pick()],PS.gi=0,PS.p):PS.p):byId[pick()],gi=seqOn?PS.gi++:-1,g=QP.has("poem")?p.groups[+(QP.get("group")||0)]||p.groups[0]:seqOn?p.groups[gi]:p.groups[Math.random()*p.groups.length|0],b=await bin(p.file);
 let ox=0,oy=0;for(let tr=0;tr<40;tr++){ox=(Math.random()-.5)*Math.max(.1,3.6-(g.w||2));oy=(Math.random()-.5)*.8;if(A.every(a=>Math.hypot(a.pos[0]-ox*ca,a.pos[1]-oy,a.pos[2]+ox*sa)>1.2*a.radius))break}
 const dimIds=new Set(A.filter(a=>Math.hypot(a.pos[0]-ox*ca,a.pos[1]-oy,a.pos[2]+ox*sa)<2*a.radius+.6).map(a=>a.id)),idx=[];mark.fill(0);let x0=1e9,x1=-1e9,y0=1e9,y1=-1e9;
-for(let k=0;k<g.count&&k<N;k++){const i=Math.random()*N|0;idx.push(i);mark[i]=1;const o=(g.offset+k)*2;
-const gx=b[o]/32767*man.scale+ox,gy=b[o+1]/32767*man.scale+oy;if(gx<x0)x0=gx;if(gx>x1)x1=gx;if(gy<y0)y0=gy;if(gy>y1)y1=gy;T[i*3]=gx;T[i*3+1]=gy;T[i*3+2]=0}
-active={ca,sa,box:[x0,x1,y0,y1],lh:Math.max(.08,(y1-y0)/Math.max(1,g.lines.length)),dimIds,idx,t0:performance.now()/1000,text:g.lines.join(' '),section:p.section};live.textContent=g.lines.join('\n');loading=false}
+ox=0;oy=0;const tt=textTargets(g.lines,.6,'left',null,capPx(p));x0=tt.box[0];x1=tt.box[1];y0=tt.box[2];y1=tt.box[3];{const R=recruit(tt.pts,0,0);R.forEach((i,k)=>{idx.push(i);T[i*3]=tt.pts[k][0];T[i*3+1]=tt.pts[k][1];T[i*3+2]=0})}
+const defHold=Math.min(22,Math.max(3.2,g.lines.join(' ').split(/\s+/).length*.55+2.0));
+active={ca,sa,ox,oy,w:x1-x0,hh:(y1-y0)/2,hw:(x1-x0)/2,ps:tt.ps,fpx:tt.fpx,dxs:0,dys:0,box:[x0,x1,y0,y1],lh:tt.lh,dimIds,idx,t0:performance.now()/1000,readUntil:performance.now()/1000+defHold,text:g.lines.join(' '),section:p.section};live.textContent=g.lines.join('\n');loading=false;
+if(seqOn&&window.coeHughSegs&&window.coeHughSegs[p.id]){active.seg=1;window.coeHughSeg(p.id,gi,active);}else if(seqOn){window.coePlayVoiceReading(active);}{const nw=performance.now();if(soundOK&&!window.coeMed&&!active.seg&&nw-(window.coeBellAt||-1e9)>20000){window.coeBellAt=nw;breath.volume=window.coeBrownNoiseOn?.25:.5;breath.currentTime=0;breath.play().catch(()=>{})}}}
+const cc=document.createElement('canvas'),cx2=cc.getContext('2d',{willReadFrequently:true});
+// Text -> dot targets. Longest line fills `frac` of screen width; every line same size; one line each, words exact.
+const viewWH=()=>{const z=cam[2];return[2*z*Math.max(aspect,1)/1.6,2*z/(1.6*Math.min(aspect,1))]};
+// Uncapped size (CSS px) of a section: longest line = frac of width, height-capped.
+function sectionPx(lines,frac){const F=120,LH=F*1.25;cx2.font=F+'px "Source Serif 4",serif';const mw=Math.ceil(Math.max(...lines.map(l=>cx2.measureText(l).width)))+8,h=Math.ceil(LH*lines.length+F*.3),[vw,vh]=viewWH(),sc=Math.min(frac*vw/mw,.55*vh/h);return F*sc*cv.width/vw/Math.min(2,devicePixelRatio)}
+const medCache=new Map();function poemMedianPx(p,frac){const k=p.id+'|'+frac+'|'+innerWidth+'x'+innerHeight;if(!medCache.has(k)){const a=p.groups.map(g=>sectionPx(g.lines,frac)).sort((x,y)=>x-y),n=a.length;medCache.set(k,n%2?a[n>>1]:(a[n/2-1]+a[n/2])/2)}return medCache.get(k)}
+// Cap: <=3x poem's median section size and <=160 px at 1280 wide (scaled with width). Fixed before dots form.
+const capPx=p=>Math.min(3*poemMedianPx(p,.6),160*innerWidth/1280);
+const TEXT_BOOST=1.0,TEXT_SIZE_BOOST=1.2,CREAM=[237/255,230/255,214/255],/* AD: warmer tint so text + cloud blue reads as #EDE6D6 */TEXT_TINT=[0xF4/255,0xE1/255,0xBC/255],TEXT_LUM=(()=>{const lum=c=>.2126*c[0]+.7152*c[1]+.0722*c[2],cl=hsl(220,.15,.33).map(v=>v*(MID.brightness??1)*DIM);return 1.6*lum(cl)/lum([237/255,230/255,214/255])})(),TEXT_DENSITY=.55,SECTION_DOT_CAP=20000;
+// Recruit, for each target, an unused mid-layer dot whose on-screen position is nearest (grid buckets + ring search): no long streaks.
+function recruit(pts,ox,oy){const ra=rotA*.04,c=Math.cos(ra),s=Math.sin(ra),G=.12,cells=new Map(),key=(a,b)=>a*100003+b;
+const NEAR=FILL[0],NEAR_CAP=Math.floor(NEAR.count*.25);let nN=0,nM=0;for(let i=NEAR.i0;i<MID.i1;i++){const j=i*3,qx=P[j]*c-P[j+2]*s-cam[0],qy=P[j+1]-cam[1],qz=P[j]*s+P[j+2]*c-cam[2];if(qz>-.3)continue;const u=qx/(-qz)*cam[2],v=qy/(-qz)*cam[2],k=key(Math.floor(u/G),Math.floor(v/G));let b=cells.get(k);if(!b)cells.set(k,b=[]);b.push(i)}
+for(const B of cells.values())B.keep=Math.floor(B.length*.7);const idx=[],used=mark;for(const q of pts){const cx=Math.floor((q[0]+ox)/G),cy=Math.floor((q[1]+oy)/G);let got=-1;
+for(let r=0;r<60&&got<0;r++){for(let a=-r;a<=r&&got<0;a++)for(let b=-r;b<=r&&got<0;b++){if(Math.max(Math.abs(a),Math.abs(b))!==r)continue;const B=cells.get(key(cx+a,cy+b));while(B&&B.length>B.keep){const i=B.pop();if(used[i])continue;if(i<NEAR.i1&&nN>=NEAR_CAP)continue;got=i;break}}}
+if(got<0){do{got=MID.i0+(Math.random()*MID.count|0)}while(used[got])}if(got<NEAR.i1)nN++;else nM++;used[got]=1;idx.push(got)}window.coeLastRecruit={near:nN,mid:nM,total:idx.length,nearCap:NEAR_CAP,sectionCap:SECTION_DOT_CAP};return idx}
+function textTargets(lines,frac,align,ref,maxPx){const F=120,fn=F+'px "Source Serif 4",serif',LH=F*1.25;cx2.font=fn;const refW0=ref?Math.ceil(Math.max(...ref.map(l=>cx2.measureText(l).width)))+8:0,ws=lines.map(l=>cx2.measureText(l).width),mw=Math.ceil(Math.max(...ws))+8,h=Math.ceil(LH*lines.length+F*.3);cc.width=mw;cc.height=h;cx2.font=fn;cx2.fillStyle='#fff';cx2.textBaseline='middle';
+lines.forEach((l,k)=>cx2.fillText(l,align==='center'?4+(mw-8-ws[k])/2:4,F*.15+LH*(k+.5)));const D=cx2.getImageData(0,0,mw,h).data,xs=[],ys=[];for(let y=0;y<h;y++)for(let x=0;x<mw;x++)if(D[(y*mw+x)*4+3]>150){xs.push(x);ys.push(y)}
+const [vw,vh]=viewWH();const refW=ref?refW0:mw;let sc=frac*vw/Math.max(refW,mw);const fit=.55*vh/h;let shrunk=false;if(sc>fit){sc=fit;shrunk=true}let capped=false,pre=F*sc*cv.width/vw/Math.min(2,devicePixelRatio);if(maxPx&&pre>maxPx){sc*=maxPx/pre;capped=true}
+// Density: constant dots per screen pixel of ink (strokes filled, interior sampled), so big and small text look equally dense.
+const pxu=cv.width/vw,inkPx=xs.length*(sc*pxu)**2,BUDGET=SECTION_DOT_CAP,want=Math.round(inkPx*TEXT_DENSITY),n=Math.max(800,Math.min(BUDGET,want)),pts=[];
+// stratified pick over the filled mask so interiors fill evenly
+const stride=xs.length/n;for(let k=0;k<n;k++){const q=Math.min(xs.length-1,Math.floor((k+Math.random())*stride));pts.push([(xs[q]+Math.random()-.5-mw/2)*sc,-(ys[q]+Math.random()-.5-h/2)*sc])}
+const spacing=Math.sqrt(inkPx/n),fpx=F*sc*cv.width/vw/Math.min(2,devicePixelRatio);const r={pts,box:[-mw*sc/2,mw*sc/2,-h*sc/2,h*sc/2],lh:LH*sc,ps:Math.max(1.5,Math.min(4,spacing*1.25)),fpx,shrunk,capped,pre,sc,n,want,inkPx};window.coeLastText={lines,fpx,shrunk,capped,pre};return r}
+window.coeTextAudit=(frac=.6)=>{const out=[];for(const p of poems)for(const g of p.groups){const r=textTargets(g.lines,frac,'left',null,capPx(p));out.push({id:p.id,group:p.groups.indexOf(g),lines:g.lines,fpx:+r.fpx.toFixed(1),before:+r.pre.toFixed(1),capped:r.capped,shrunk:r.shrunk,dots:r.n,want:r.want,density:+(r.n/r.inkPx).toFixed(3)})}return out};
+function capStart(line){const t0=performance.now()/1000,ra=rotA*.04+.1,ca=Math.cos(ra),sa=Math.sin(ra),[vw,vh]=viewWH(),ox=0,oy=-Math.min(1.15,vh*.42-.3);mark.fill(0);const idx=[],tt=textTargets([line],.7,'center');
+{const R=recruit(tt.pts,ox,oy);R.forEach((i,k)=>{idx.push(i);T[i*3]=tt.pts[k][0]+ox;T[i*3+1]=tt.pts[k][1]+oy;T[i*3+2]=0})}const B=tt.box;
+active={cap:true,ca,sa,ox,oy,w:B[1]-B[0],hw:(B[1]-B[0])/2,hh:(B[3]-B[2])/2,ps:tt.ps,fpx:tt.fpx,box:[B[0],B[1],oy+B[2],oy+B[3]],lh:tt.lh,dimIds:new Set(),idx,t0,scatterAt:null,dxs:0,dys:0};live.textContent=line}
+/* Meditation captions are visual only and follow the audio-clock plan (see medStart); after a throttled gap they catch up to the current step. */
+function capNext(){const M=window.coeMed;if(!M||!M.plan)return;const P=M.plan,now=ac().currentTime-M.T0;let i=M.i;while(i<P.off.length&&now>P.off[i]+P.d[i])i++;
+if(i>=P.off.length){capWait=1e12;return}const capAt=P.off[i]-.8;if(now<capAt){capWait=performance.now()/1000+(capAt-now);return}
+M.i=i+1;const st=M.m.steps[i];capStart(st.t);const a=active,n=performance.now()/1000;a.scatterAt=n+(P.off[i]+P.d[i]-now)+Math.min(4,st.p*.4);a.nextAt=i+1<P.off.length?n+(P.off[i+1]-.8-now):n+1e6}
+const capTL=t=>{const e=t-active.t0;if(e<.5)return{phase:'gather',p:e/.5};if(active.scatterAt===null||t<active.scatterAt)return{phase:'read',p:0};const q=(t-active.scatterAt)/(active.fd||.5);return q<1?{phase:'scatter',p:q}:{phase:'done',p:1}};
 const curl=(x,y,z,t)=>[Math.sin(y*1.7+t*.3)-Math.cos(z*1.3),Math.sin(z*1.9+t*.2)-Math.cos(x*1.5),Math.sin(x*1.1+t*.25)-Math.cos(y*1.6)];
-let last=performance.now();
-function frame(nowMs){const dt=Math.min(.05,(nowMs-last)/1000);last=nowMs;const t=nowMs/1000;
-if(!active&&!loading&&nowMs>next)start(nowMs).catch(e=>{loading=false;console.error(e)});
-let wt=0,dx=0,dy=0;if(active){const tl=poemTimeline(active.text,active.t0,active.t0+(t-active.t0)/SLOW,active.section);
-if(reduced&&tl.phase!=='done')wt=(tl.phase==='read'||tl.phase==='hold')?1:tl.phase==='gather'?tl.p:1-tl.p;
-else if(tl.phase==='gather')wt=tl.p;else if((tl.phase==='read'||tl.phase==='hold'))wt=1;else if(tl.phase==='scatter')wt=1-tl.p;
-if(tl.phase==='done'){active=null;mark.fill(0);next=nowMs+nextGap()*1000}else{const e=t-active.t0;dx=reduced?0:(tl.drift||0)*.1+.05*Math.sin(e*.21);dy=reduced?0:.035*Math.sin(e*.17+1)}}
-let sp=0,vx=0,vy=0,vz=0,cnt={};const ang=active?(reduced?0:t*.04)+.1+(reduced?0:.12*Math.sin((t-active.t0)*.15)):0,ca0=Math.cos(ang),sa0=Math.sin(ang);const k=reduced?.3:1;
-for(let i=0;i<N;i++){const j=i*3;let x=P[j],y=P[j+1],z=P[j+2];const f=curl(x,y,z,t);let ax=f[0]*.3,ay=f[1]*.3,az=f[2]*.3,best=null,bd=1e9;
-for(const a of A){const ex=a.pos[0]-x,ey=a.pos[1]-y,ez=a.pos[2]-z,d=Math.hypot(ex,ey,ez)+.05;if(d<bd){bd=d;best=a}const s=.15*a.radius/(d*d+.3);ax+=ex*s;ay+=ey*s;az+=ez*s}
-ax-=x*.05;ay-=y*.05;az-=z*.05;V[j]=(V[j]+ax*dt)*.97;V[j+1]=(V[j+1]+ay*dt)*.97;V[j+2]=(V[j+2]+az*dt)*.97;
-const cz=mark[i]?0:calmAt(x,y,z)*wt;x+=V[j]*dt*k*(1-.8*cz);y+=V[j+1]*dt*k*(1-.8*cz);z+=V[j+2]*dt*k*(1-.8*cz);
-if(mark[i]&&wt>0){const s=wt>=.999?1:Math.min(1,.04+.5*wt*wt*wt);const lx=T[j]+dx;x+=(lx*ca0-x)*s;y+=(T[j+1]+dy-y)*s;z+=(-lx*sa0-z)*s;if(s===1){V[j]=V[j+1]=V[j+2]=0}}
-P[j]=x;P[j+1]=y;P[j+2]=z;sp+=Math.hypot(V[j],V[j+1],V[j+2]);vx+=V[j];vy+=V[j+1];vz+=V[j+2];
-let c;{const hw=Math.max(0,1-bd/(best.radius*2));c=hsl(220+(best.hue-220)*hw,.15+.5*hw,.33+.15*hw);if(active&&active.dimIds.has(best.id)){const m=1-.6*wt;c=[c[0]*m,c[1]*m,c[2]*m]}cnt[best.id]=(cnt[best.id]||0)+1}
-if(mark[i]&&wt>0){const u=Math.min(1,wt/.4),e=u*u*(3-2*u),W=[.93*.55,.9*.55,.84*.55];c=[c[0]+(W[0]-c[0])*e,c[1]+(W[1]-c[1])*e,c[2]+(W[2]-c[2])*e]}else if(!mark[i]&&cz>0){const m=1-.85*cz;c=[c[0]*m,c[1]*m,c[2]*m]}
-if(!mark[i]){const rr=Math.hypot(x,y,z),v=Math.min(1,Math.max(0,(rr-1.0)/1.0)),ef=1-v*v*(3-2*v);c=[c[0]*ef,c[1]*ef,c[2]*ef]}C[j]=c[0];C[j+1]=c[1];C[j+2]=c[2]}
-gl.clearColor(5/255,7/255,13/255,1);gl.clear(gl.COLOR_BUFFER_BIT);
-gl.bindBuffer(gl.ARRAY_BUFFER,bp);gl.bufferData(gl.ARRAY_BUFFER,P,gl.DYNAMIC_DRAW);gl.enableVertexAttribArray(lp);gl.vertexAttribPointer(lp,3,gl.FLOAT,false,0,0);
-gl.bindBuffer(gl.ARRAY_BUFFER,bc);gl.bufferData(gl.ARRAY_BUFFER,C,gl.DYNAMIC_DRAW);gl.enableVertexAttribArray(lc);gl.vertexAttribPointer(lc,3,gl.FLOAT,false,0,0);
-gl.uniform1f(gl.getUniformLocation(pr,'t'),(rotA=reduced?0:t));gl.uniform1f(gl.getUniformLocation(pr,'asp'),aspect);gl.drawArrays(gl.POINTS,0,N);
+// ===== v23 VOID =====================================================================
+// Wells/ring from modeler/void-orbs.js (verbatim positions); titles/room text only from regions.json (regions.clean.ts).
+const VOID_WELLS=[
+ ['meditation','Meditation',-70,72,-30,20],
+ ['lordai','Biological Perception',-62,16,-200,26],
+ ['poetry','Poetry',96,48,-280,18],
+ ['music','Music',-108,-42,-360,20],
+ ['otter','Otter Creek',24,-8,-430,22],
+ ['fallout','The Silo',68,-20,-500,28],
+ ['history','The Agora',-32,54,-560,24],
+ ['cyber','Digital Forensics',52,28,-640,26],
+ ['fog','Brain Fog',-88,36,-720,18],
+ ['inventions','The Workshop',12,-62,-800,24],
+ ['games','Playable Thought',-120,-18,-880,22],
+ ['swarm','The Swarm',-56,26,-960,32],
+ ['agents','AgentiCubed',118,38,-1040,22],
+ ['homestead','The Homestead',-24,-78,-1140,20],
+ ['sales','Consultative Craft',84,-46,-1240,22],
+ ['preincarnation','Preincarnation',64,-10,-1350,34],
+ ['streamkill','StreamKill',-96,22,-1470,18],
+ ['absurd','The Absurd',36,70,-1590,18],
+ ['fermentation','Fermentation',-48,-28,-1700,20]
+].map(([id,name,x,y,z,r])=>({id,name,pos:[x,y,z],radius:r,click:Math.max(14,r)}));
+const RING={center:[0,0,-1850],radius:40,dots:1800,thickness:3},FUN={depth:300,throat:3,turns:3,spin:.15,dots:40000};
+// lordai well uses the 'perception' prose (known id mismatch in handoff); preincarnation has no entry in regions.clean.ts -> no title/room.
+const REGION_FOR={lordai:'perception'};
+const REG=await fetch('regions.json').then(r=>r.json()),REGB=Object.fromEntries(REG.map(r=>[r.id,r]));
+const hideLink=l=>/verbal[_ ]?kombat/i.test(l.href+' '+l.label);
+const hex=h=>[parseInt(h.slice(1,3),16)/255,parseInt(h.slice(3,5),16)/255,parseInt(h.slice(5,7),16)/255];
+const AMBER=hex('#fad685'),COOL=hex('#6b8cb8'),CRM=hex('#EDE6D6'),BG0=[5/255,7/255,13/255];
+const lerp=(a,b,u)=>a+(b-a)*u,lerp3=(a,b,u)=>[lerp(a[0],b[0],u),lerp(a[1],b[1],u),lerp(a[2],b[2],u)],sstep=(a,b,x)=>{const u=Math.min(1,Math.max(0,(x-a)/(b-a)));return u*u*(3-2*u)},eio=u=>u<.5?2*u*u:1-2*(1-u)*(1-u);
+const pv=gl.createProgram();
+gl.attachShader(pv,sh(gl.VERTEX_SHADER,`#version 300 es
+in vec3 ap;in vec4 ak;in vec3 ac;in float aa;in float as;uniform mat3 rot;uniform vec3 cp;uniform float t,asp,hpx,focus,fb,fspin,gain,ringA;out vec3 vc;out float va;out vec2 st;out float str;
+const float F=2.0503;
+void main(){vec3 w=ap;float k=ak.x;float al=aa;vec3 col=ac;float sz=as;st=vec2(1,0);str=1.;
+if(k<.5){w+=vec3(sin(t*.11+ak.y*6.28),cos(t*.09+ak.y*4.1),sin(t*.07+ak.y*2.3))*ak.z;w.z+=sin(t*.05+ak.y*6.28)*6.;}
+else if(k<1.5){
+ float morph=ak.z,an=ak.y+t*ak.w;
+ if(morph>0.5&&morph<1.5){/* Swarm: logarithmic spiral flocking */
+  float rSp=ak.w*(.75+.35*sin(an*3.));w=ap+vec3(cos(an*1.4)*rSp,sin(an*1.4)*rSp*.5,sin(an)*rSp);
+ }else if(morph>1.5&&morph<2.5){/* StreamKill: relativistic particle jet */
+  float jetZ=fract(ak.y+t*.4)*120.-60.;float jetR=(.08+.04*abs(jetZ))*ak.w;w=ap+vec3(cos(an*4.)*jetR,sin(an*4.)*jetR,jetZ);col=mix(col,vec3(.55,.85,1.),.5);
+ }else if(morph>2.5&&morph<3.5){/* Inventions: orthogonal gyroscopic rings */
+  float axId=floor(ak.y/2.094);vec3 o=vec3(cos(an)*ak.w,sin(an)*ak.w,0.);if(axId>1.5)o=vec3(cos(an)*ak.w,0.,sin(an)*ak.w);else if(axId>.5)o=vec3(0.,cos(an)*ak.w,sin(an)*ak.w);w=ap+o;
+ }else if(morph>3.5&&morph<4.5){/* Fermentation: convective bubbling plumes */
+  float plumeY=fract(ak.y+t*.25)*ak.w*1.8-ak.w*.9;float plumeR=sin(fract(ak.y+t*.25)*3.14159)*ak.w*.6;w=ap+vec3(cos(an*2.)*plumeR,plumeY,sin(an*2.)*plumeR);col=mix(col,vec3(.98,.72,.35),.4);
+ }else if(morph>4.5&&morph<5.5){/* Preincarnation: double-helix teal aurora */
+  float hZ=sin(an)*ak.w*.8;float signH=ak.y>3.14159?1.:-1.;w=ap+vec3(cos(an)*ak.w*.6*signH,sin(an)*ak.w*.6,hZ);col=mix(col,vec3(.35,.92,.75),.5);
+ }else if(morph>5.5&&morph<6.5){/* Music: standing-wave harmonic lobes */
+  float rHarm=ak.w*(.8+.35*cos(an*4.));w=ap+vec3(cos(an)*rHarm,sin(an)*rHarm*.4,sin(an)*rHarm);
+ }else if(morph>6.5&&morph<7.5){/* Cyber: Cat's Eye concentric gas shells */
+  float shId=floor(ak.y*3.);float shR=ak.w*(.35+shId*.32+.1*sin(an*2.));w=ap+vec3(cos(an)*shR,sin(an)*shR*.75,sin(an*3.)*.22*shR);col=mix(col,vec3(.15,.88,.75),.6);
+ }else if(morph>7.5&&morph<8.5){/* Fallout: Magnetar with polar beams */
+  if(ak.y>3.14159){float pZ=fract(ak.y*2.+t*.5)*140.-70.;float pR=(.05+.03*abs(pZ))*ak.w;w=ap+vec3(cos(an*6.)*pR,sin(an*6.)*pR,pZ);col=vec3(.98,.96,.92);}
+  else{float magR=ak.w*(.7+.3*sin(an*2.));w=ap+vec3(cos(an)*magR,sin(an)*magR*.4,sin(an*2.)*magR*.5);col=mix(col,vec3(.98,.76,.32),.5);}
+ }else if(morph>8.5&&morph<9.5){/* History: Pillars of Creation gas columns */
+  float colY=fract(ak.y+t*.08)*ak.w*2.4-ak.w*1.2;float colR=(.35+.2*sin(colY*.4))*ak.w*.5;w=ap+vec3(cos(an)*colR,colY,sin(an)*colR*.8);col=mix(col,vec3(.92,.58,.35),.5);
+ }else if(morph>9.5&&morph<10.5){/* Homestead: Sombrero dust disk */
+  float diskR=ak.w*(.45+.55*sqrt(fract(ak.y*1.27)));float dustH=(ak.y>3.14159?.08:.35)*ak.w;w=ap+vec3(cos(an)*diskR,(sin(an*3.)*.1)*dustH,sin(an)*diskR*.75);col=mix(col,vec3(.88,.62,.28),.5);
+ }else if(morph>10.5&&morph<11.5){/* Sales: Pleiades Jewel Box cluster */
+  float starR=ak.w*(.25+.75*fract(ak.y*7.13));w=ap+vec3(cos(an*.8)*starR,sin(an*.8)*starR*.6,sin(an*1.2)*starR);col=mix(col,vec3(.45,.75,1.),.65);
+ }else{float rr=ak.w;vec3 o=vec3(cos(an)*rr,sin(an)*rr*.35,sin(an)*rr);float tl=ak.y*1.7;w=ap+vec3(o.x,o.y*cos(tl)-o.z*sin(tl),o.y*sin(tl)+o.z*cos(tl));}
+}
+else if(k<2.5){w=ap+vec3(sin(t*.3+ak.y*9.),cos(t*.27+ak.y*7.),sin(t*.23+ak.y*5.))*ak.z*.15;sz*=1.3;if(ak.y>.82)str=3.5;}
+else{float kind=ak.y,u=ap.x;if(kind>2.5)u=fract(ap.x+ak.w+t*.2);
+ float turns=kind>2.5?1.5:${FUN.turns}.,an=ap.y+6.2831853*(turns*u+fspin);float r=max(1.5,${FUN.throat}.+(${RING.radius}.-${FUN.throat}.)*pow(1.-u,1.8)+ap.z*(1.-u));w=vec3(cos(an)*r,sin(an)*r,${RING.center[2]}.-${FUN.depth}.*u+ak.z);
+ col=mix(vec3(${CRM.join(',')}),vec3(${AMBER.join(',')}),smoothstep(0.,1.,u));
+ al*=kind>.5&&kind<1.5?ringA:kind>1.5&&kind<2.5?fb*.5:fb*mix(1.6,1.,u)*clamp(r/14.,.06,1.);sz*=mix(1.,.5,u);
+ if(kind>2.5){vec3 w2=vec3(cos(an+.08)*r,sin(an+.08)*r,w.z-${FUN.depth}.*.08/(6.2831853*turns));vec3 a1=rot*(w-cp),a2=rot*(w2-cp);vec2 s1=a1.xy/max(.35,-a1.z),s2=a2.xy/max(.35,-a2.z);vec2 dd=s2-s1;st=length(dd)>1e-6?normalize(vec2(dd.x/asp,dd.y)):vec2(1,0);str=3.;}}
+vec3 v=rot*(w-cp);float d=-v.z;if(d<.35){gl_Position=vec4(2.,2.,2.,1.);gl_PointSize=0.;va=0.;return;}
+float coc=smoothstep(16.,120.,abs(d-focus));
+gl_Position=vec4(v.x*F/asp,v.y*F,0.,d);float cg=k>.5&&k<2.5?.3:1.;gl_PointSize=clamp(sz*F*hpx/d*(1.+1.6*coc*cg)*(str>1.?1.8:1.),.45,26.);
+va=al*gain*(1.-.6*coc)*smoothstep(.35,3.,d)*(1.-smoothstep(2600.,4400.,d));vc=col;}`));
+gl.attachShader(pv,sh(gl.FRAGMENT_SHADER,`#version 300 es
+precision mediump float;in vec3 vc;in float va;in vec2 st;in float str;out vec4 o;void main(){vec2 pc=(gl_PointCoord-.5)*2.;pc.y=-pc.y;vec2 q=vec2(dot(pc,st),dot(pc,vec2(-st.y,st.x))*str);float r=length(q);if(r>1.)discard;float core=exp(-r*r*12.);float corona=exp(-r*r*2.2)*(1.-r*r);o=vec4(vc,va*(core*.6+corona*.5));}`));
+gl.linkProgram(pv);if(!gl.getProgramParameter(pv,gl.LINK_STATUS))throw gl.getProgramInfoLog(pv);
+const pj=gl.createProgram();
+gl.attachShader(pj,sh(gl.VERTEX_SHADER,`#version 300 es
+precision highp float;
+uniform mat3 rot;uniform vec3 cp;uniform float t,asp;out vec2 vUv;out float vDist;
+const float F=2.0503;
+void main(){vec2 q=vec2(float(gl_VertexID&1),float((gl_VertexID>>1)&1));vUv=vec2(q.x,1.-q.y);
+vec2 xy=(q*2.-1.)*vec2(80.,110.);
+float tilt=.006*sin(t*1.5),ca=cos(tilt),sa=sin(tilt);
+vec2 rxy=vec2(xy.x*ca-xy.y*sa,xy.x*sa+xy.y*ca);
+vec3 w=vec3(rxy.x+1.10,rxy.y-9.42,${RING.center[2]}.);
+vec3 v=rot*(w-cp);vDist=-v.z;if(vDist<.35){gl_Position=vec4(2.,2.,2.,1.);return;}
+gl_Position=vec4(v.x*F/asp,v.y*F,0.,vDist);}`));
+gl.attachShader(pj,sh(gl.FRAGMENT_SHADER,`#version 300 es
+precision highp float;
+in vec2 vUv;in float vDist;uniform sampler2D uTex;uniform float t,gain,fb;out vec4 o;
+void main(){
+vec3 col=texture(uTex,clamp(vUv,0.,1.)).rgb;
+float lum=dot(col,vec3(.299,.587,.114));
+float r=length(vUv-.5)*2.;
+float vig=exp(-r*r*4.8);
+float star=smoothstep(.55,.90,lum);col*=1.+star*.18*(.5+.5*sin(t*5.+vUv.x*28.+vUv.y*22.));
+float nearFade=smoothstep(1.2,24.,vDist),farFade=1.-smoothstep(2200.,3800.,vDist);
+o=vec4(col,gain*vig*nearFade*farFade*(1.-fb));}`));
+gl.linkProgram(pj);if(!gl.getProgramParameter(pj,gl.LINK_STATUS))throw gl.getProgramInfoLog(pj);
+const jVao=gl.createVertexArray(),jTex=gl.createTexture();let jReady=false;
+{const im=new Image();im.onload=()=>{gl.bindTexture(gl.TEXTURE_2D,jTex);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,im);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);jReady=true};im.src='jamestellation.jpg'}
+const jVid=document.createElement('video');jVid.muted=true;jVid.loop=true;jVid.playsInline=true;jVid.autoplay=true;jVid.setAttribute('playsinline','');jVid.setAttribute('webkit-playsinline','');jVid.src='jamestellation.mp4';jVid.load();
+const playJamestellation=()=>{jVid.play().catch(()=>{});};
+let vao=null,VN=0,FUN0=0;
+function buildVoid(){const isNarrow=innerWidth<1000,NF=isNarrow?9216:25600,cores=VOID_WELLS.length*220,orbits=VOID_WELLS.length*160,J_STARS=3600;VN=NF+cores+orbits+FUN.dots+J_STARS;
+const AP=new Float32Array(VN*3),AK=new Float32Array(VN*4),AC=new Float32Array(VN*3),AA=new Float32Array(VN),AS=new Float32Array(VN);let n=0;
+const rnd=Math.random,dir=()=>{const u=rnd()*2-1,th=rnd()*6.2832,q=Math.sqrt(1-u*u);return[q*Math.cos(th),q*Math.sin(th),u]};
+const put=(p,k,c,a,s)=>{AP.set(p,n*3);AK.set(k,n*4);AC.set(c,n*3);AA[n]=a;AS[n]=s;n++};
+for(let i=0;i<NF;i++){let p;const r0=rnd();if(r0<.74){const W=VOID_WELLS[rnd()*VOID_WELLS.length|0],d=dir(),r=Math.pow(rnd(),1.35)*22;p=[W.pos[0]+d[0]*r,W.pos[1]+d[1]*r,W.pos[2]+d[2]*r]}
+ else if(r0<.755){p=[(rnd()-.5)*40,(rnd()-.5)*24,110-12-rnd()*40]}else{const a=rnd()*6.2832,rr=28+92*Math.sqrt(rnd());p=[Math.cos(a)*rr,Math.sin(a)*rr,8-rnd()*3008]}
+ let nd=1e9;for(const W of VOID_WELLS)nd=Math.min(nd,Math.hypot(p[0]-W.pos[0],p[1]-W.pos[1],p[2]-W.pos[2]));const heat=1-sstep(4,28,nd),ember=rnd()>.994;
+ // stream id from angle around the flight axis + slow helix along z -> colour patches stretched into streams
+ const sa=Math.atan2(p[1],p[0])/6.2832+p[2]/2400,sid=((Math.floor((sa+10)*7))%A.length+A.length)%A.length,hw=.35+.45*Math.pow(.5+.5*Math.sin((sa*7+.5)*6.2832),2);
+ const col=hsl(220+(A[sid].hue-220)*hw,Math.min(.7,.15+.4*hw),.33+.12*hw).map(v=>v*1.6*DIM),thinD=1-.65*sstep(0,-3000,p[2]);
+ put(p,[0,rnd(),2.5*sstep(6,36,nd)+.3,0],col,Math.min(1,(.32*(1-.65*heat)+(ember?.4:0))*thinD),.7)}
+const MORPH_MAP={swarm:1,streamkill:2,inventions:3,fermentation:4,preincarnation:5,music:6,cyber:7,fallout:8,history:9,homestead:10,sales:11};
+for(const W of VOID_WELLS){
+ const mType=MORPH_MAP[W.id]||0;
+ for(let i=0;i<220;i++){const d=dir(),r=Math.abs((rnd()+rnd()+rnd()-1.5))*W.radius*.16;
+  const col=W.id==='preincarnation'?hex('#6be0b8'):W.id==='streamkill'?hex('#88c0d0'):W.id==='swarm'?hex('#e06c75'):W.id==='cyber'?hex('#4ee0ca'):W.id==='fallout'?hex('#fad685'):W.id==='history'?hex('#f09d6b'):W.id==='sales'?hex('#7ab8f5'):AMBER;
+  put([W.pos[0]+d[0]*r,W.pos[1]+d[1]*r,W.pos[2]+d[2]*r],[2,rnd(),W.radius*.1,0],col,W.id==='preincarnation'?.4:.6,.7)}
+ for(let i=0;i<160;i++){const rr=W.radius*(.55+.45*rnd())/3;
+  const col=W.id==='preincarnation'?hex('#56c2a6'):W.id==='swarm'?hex('#d08770'):W.id==='streamkill'?hex('#81a1c1'):W.id==='fermentation'?hex('#e5c07b'):W.id==='cyber'?hex('#28cca8'):W.id==='sales'?hex('#99caff'):lerp3(AMBER,CRM,.4);
+  put(W.pos,[1,rnd()*6.2832,mType,rr],col,.6,.5)}}
+// 3D Jamestellation volumetric constellation star-nodes
+for(let i=0;i<3600;i++){
+ const an=rnd()*6.2832,rStar=Math.pow(rnd(),.72)*26.;
+ const sx=Math.cos(an)*rStar*.76+(rnd()-.5)*1.6;
+ const sy=Math.sin(an)*rStar*1.08-5.+(rnd()-.5)*1.6-rStar*.12;
+ const sz=RING.center[2]+(rnd()-.5)*6.;
+ const stCol=lerp3(AMBER,CRM,rnd()<.3?.95:.35+.35*Math.sin(an*3.));
+ put([sx,sy,sz],[2,rnd(),2.6+rnd()*1.8,0],stCol,.65+rnd()*.3,.85);}
+FUN0=n;for(let i=0;i<FUN.dots;i++){const ring=i<RING.dots,tr=!ring&&i<RING.dots+1200,arm=!ring&&!tr&&rnd()<.8;
+ // ap=(u, angle, radial jitter); ak=(3, kind: 1 mouth ring / 2 throat ring / 3 arm / 0 scatter, z jitter, stream phase)
+ if(ring)put([0,rnd()*6.2832,(rnd()-.5)*RING.thickness],[3,1,(rnd()-.5)*RING.thickness,0],CRM,.5,.6);
+ else if(tr)put([1,rnd()*6.2832,(rnd()-.5)*.6],[3,2,(rnd()-.5)*.6,0],AMBER,.5,.4);
+ else if(arm)put([rnd(),(i%6)/6*6.2832+(rnd()-.5)*.12,(rnd()-.5)*.8],[3,3,0,rnd()],CRM,.3*1.3,.45);
+ else put([Math.pow(rnd(),.85),rnd()*6.2832,(rnd()-.5)*1.2],[3,0,(rnd()-.5)*2,0],CRM,.3,.45)}
+vao=gl.createVertexArray();gl.bindVertexArray(vao);
+const att=(name,arr,n)=>{const b=gl.createBuffer(),l=gl.getAttribLocation(pv,name);gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,arr,gl.STATIC_DRAW);gl.enableVertexAttribArray(l);gl.vertexAttribPointer(l,n,gl.FLOAT,false,0,0)};
+att('ap',AP,3);att('ak',AK,4);att('ac',AC,3);att('aa',AA,1);att('as',AS,1);gl.bindVertexArray(null);window.coeVoidDots={fog:NF,cores,orbits,funnel:FUN.dots,ring:RING.dots,total:VN}}
+// ---- state
+const VD={mode:'front',t0:0,pos:[0,0,110],yaw:0,pitch:0,sp:reduced?14:46,hov:0,ts:1,stick:[0,0],gain:0,fb:0,ringA:1,frontGain:1,bg:BG0.slice(),yawF:0,stream:0,thin:0,open:null,room:null,returnAt:-1,vol:null};
+window.coeVoid=VD;
+// ---- DOM: entry door, labels, room
+const css=document.createElement('style');css.textContent=`#void-door{position:fixed;left:0;top:0;width:5vw;height:100%;cursor:pointer;outline:none;transition:width .8s cubic-bezier(.16,1,.3,1);z-index:4}#void-door:hover,#void-door:focus-visible{width:7.5vw}#void-door::before{content:'';position:absolute;left:0;top:0;width:100%;height:100%;background:linear-gradient(90deg,rgba(250,214,133,.12),transparent);opacity:0;transition:opacity .6s}#void-door:hover::before,#void-door:focus-visible::before{opacity:1}#void-door span{position:absolute;left:1.1vw;top:50%;transform:translateY(-50%) rotate(-90deg);transform-origin:center;color:#EDE6D6;font:13px 'Source Serif 4',serif;letter-spacing:.12em;text-transform:lowercase;opacity:.4;transition:all .6s;white-space:nowrap}#void-door:hover span,#void-door:focus-visible span{opacity:1;color:#fad685;text-shadow:0 0 12px rgba(250,214,133,.6)}
+.vlabel{position:fixed;transform:translate(-50%,0);background:none;border:0;color:#EDE6D6;text-align:center;font:18px 'Source Serif 4',serif;text-shadow:0 0 12px rgba(0,0,0,.9),0 0 4px #000;cursor:pointer;opacity:0;pointer-events:none;white-space:nowrap;transition:opacity .4s,transform .4s}.vlabel small{display:block;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#fad685;opacity:.85;margin-bottom:2px}.vlabel span{display:inline-block;border-bottom:1px solid transparent;transition:border-color .3s}.vlabel:hover span{color:#fad685;border-color:rgba(250,214,133,.6)}
+#vroom{position:fixed;left:50%;bottom:0;transform:translateX(-50%) translateY(20px);width:min(46rem,100%);box-sizing:border-box;padding:26px 30px;background:rgba(5,7,13,.82);backdrop-filter:blur(28px) saturate(180%);-webkit-backdrop-filter:blur(28px) saturate(180%);border:1px solid rgba(237,230,214,.16);border-bottom:0;border-radius:16px 16px 0 0;box-shadow:0 -16px 48px rgba(0,0,0,.85),inset 0 1px 0 rgba(237,230,214,.2);color:#EDE6D6;font:16px/1.65 'Source Serif 4',serif;display:none;opacity:0;transition:opacity .4s cubic-bezier(.16,1,.3,1),transform .4s cubic-bezier(.16,1,.3,1);z-index:20}#vroom.on{display:block;opacity:1;transform:translateX(-50%) translateY(0)}#vroom small{letter-spacing:.22em;text-transform:uppercase;color:#fad685;opacity:.9;font-size:11px;display:block;margin-bottom:4px}#vroom h2{margin:.1em 0 .4em;font-size:26px;font-weight:400;color:#EDE6D6;letter-spacing:.02em}#vroom p{color:#dcd4c3;margin:.5em 0}#vroom a{color:#fad685;text-decoration:none;border-bottom:1px solid rgba(250,214,133,.4);padding-bottom:1px;transition:all .25s}#vroom a:hover{color:#fff;border-color:#fff;text-shadow:0 0 10px rgba(250,214,133,.6)}#vroom .x{position:absolute;right:18px;top:16px;width:32px;height:32px;border-radius:50%;border:1px solid rgba(237,230,214,.2);background:rgba(237,230,214,.06);color:#EDE6D6;font-size:18px;line-height:30px;text-align:center;cursor:pointer;transition:all .3s}#vroom .x:hover{transform:rotate(90deg);background:rgba(250,214,133,.2);border-color:#fad685;color:#fad685}`;document.head.appendChild(css);
+const door=document.createElement('div');door.id='void-door';door.tabIndex=0;door.setAttribute('role','link');door.setAttribute('aria-label','fall in');door.innerHTML='<span>fall in</span>';document.body.appendChild(door);
+const room=document.createElement('div');room.id='vroom';room.setAttribute('role','dialog');document.body.appendChild(room);
+const labels=VOID_WELLS.map(W=>{const R=REGB[REGION_FOR[W.id]||W.id]||(W.id==='preincarnation'?{kicker:'',name:W.name,noRoom:true}:null);if(!R)return null;const b=document.createElement('button');b.className='vlabel';b.innerHTML=`<small></small><span></span>`;b.querySelector('small').textContent=R.kicker;b.querySelector('span').textContent=R.name;if(R.noRoom){b.style.cursor='default';b.tabIndex=-1;b.onclick=null}else{b.onclick=()=>enterOrbit(W);b.onmouseenter=()=>VD.hoverId=W.id;}b.onmouseleave=()=>{if(VD.hoverId===W.id)VD.hoverId=null};document.body.appendChild(b);return b});
+function enterOrbit(W){const R=REGB[REGION_FOR[W.id]||W.id];if(!R)return;
+ VD.orbitTarget=W;VD.orbitAngle=Math.atan2(VD.pos[2]-W.pos[2],VD.pos[0]-W.pos[0]);
+ VD.orbitRadius=W.radius*1.55;VD.orbitT0=performance.now()/1000;VD.mode='orbit';openRoom(W);}
+function breakOrbit(){if(VD.mode==='orbit'){VD.mode='fly';VD.sp=42;closeRoom();}}
+window.coeBreakOrbit=breakOrbit;
+function openRoom(W){const R=REGB[REGION_FOR[W.id]||W.id];if(!R)return;VD.room=W.id;room.innerHTML='';
+ const x=document.createElement('button');x.className='x';x.setAttribute('aria-label','Close');x.textContent='×';x.onclick=()=>{breakOrbit();closeRoom();};room.append(x);
+ const hud=document.createElement('div');hud.className='vroom-hud';
+ hud.innerHTML=`<span>ORBITAL CAPTURE: SYNCHRONIZED</span> · <span>ALTITUDE: ${(W.radius*1.55).toFixed(1)} KM</span> · <span>BEARING: CENTERED</span>`;
+ room.append(hud);
+ const k=document.createElement('small');k.textContent=R.kicker;const h=document.createElement('h2');h.textContent=R.name;const l=document.createElement('p');l.className='vlead';l.textContent=R.lead;room.append(k,h,l);
+ for(const t of R.body){const p=document.createElement('p');p.textContent=t;room.append(p)}
+ const actRow=document.createElement('div');actRow.className='vroom-actions';
+ const ej=document.createElement('button');ej.className='vroom-eject';ej.textContent='Break Orbit (Fly Free)';ej.onclick=breakOrbit;actRow.append(ej);
+ const ls=R.links.filter(l=>!hideLink(l));if(ls.length){ls.forEach((L,i)=>{const a=document.createElement('a');a.href=L.href;a.textContent=L.label;a.target='_blank';a.rel='noopener';if(i)actRow.append(' · ');actRow.append(a)});}
+ room.append(actRow);room.classList.add('on');ej.focus()}
+function closeRoom(){VD.room=null;room.classList.remove('on')}
+window.coeOpenRoom=enterOrbit;window.coeCloseRoom=closeRoom;
+addEventListener('keydown',e=>{if((e.key==='Escape'||e.key===' ')&&VD.room){breakOrbit();closeRoom();}});
+let mLastT=performance.now();
+addEventListener('pointermove',e=>{
+ const now=performance.now(),dtM=Math.max(.001,Math.min(.1,(now-mLastT)/1000));mLastT=now;
+ const sx=e.clientX/innerWidth*2-1,sy=-(e.clientY/innerHeight*2-1);
+ const vx=(sx-(VD.mx||sx))/dtM,vy=(sy-(VD.my||sy))/dtM;
+ VD.mvx=lerp(VD.mvx||0,vx,.35);VD.mvy=lerp(VD.mvy||0,vy,.35);
+ VD.mx=sx;VD.my=sy;VD.stick=[sx,-sy];
+});
+addEventListener('wheel',e=>{if(VD.mode!=='fly')return;VD.sp=Math.max(16,Math.min(140,VD.sp*(e.deltaY>0?.86:1.16)))},{passive:true});
+const startFall=()=>{if(VD.mode!=='front')return;VD.mode='fall';VD.t0=performance.now()/1000;door.style.display='none';playJamestellation();if(active&&!active.cap){active=null;mark.fill(0)}};
+door.onclick=startFall;door.onmouseenter=()=>VD.doorHover=true;door.onmouseleave=()=>VD.doorHover=false;door.onfocus=()=>VD.doorHover=true;door.onblur=()=>VD.doorHover=false;door.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();startFall()}};
+function enterVoid(t){if(!vao)buildVoid();VD.mode='fly';VD.t0=t;VD.pos=[0,0,110];VD.yaw=0;VD.pitch=0;VD.sp=reduced?14:46;VD.gain=0}
+function borrowReturn(){// far-layer dots arrive in a ring in front of the camera, then their home spring settles them (~2 s)
+ const L=FILL[2],ra=rotA*.04,c=Math.cos(ra),s=Math.sin(ra),n=Math.min(FUN.dots,L.count);for(let k=0;k<n;k++){const i=L.i0+k,j=i*3,a=Math.random()*6.2832,rr=1.2+Math.random()*.5,dz=-(2.5+Math.random()*1.5),vx=Math.cos(a)*rr+cam[0],vy=Math.sin(a)*rr+cam[1],vz=dz+cam[2];P[j]=vx*c+vz*s;P[j+1]=vy;P[j+2]=-vx*s+vz*c;V[j]=0;RK[i]=1}}
+const vsetVol=d=>{if(!BN.playing)return;const base=+document.getElementById('of-vol').value;BN.setVolume(base+d,1.0)};
+// hooks
+{const q=new URLSearchParams(location.search).get('void');if(q)setTimeout(()=>{const t=performance.now()/1000;if(q==='start')startFall();else{door.style.display='none';enterVoid(t);if(q==='mid'){VD.pos=[-48,23,-795];VD.gain=1;VD.sp=16}if(q==='end'||q==='jamestellation'){VD.pos=[0,0,-1740];VD.gain=1;VD.sp=14;playJamestellation()}if(q==='funnel'){VD.pos=[0,0,-1850];VD.gain=1;VD.mode='close';VD.t0=t-.9}if(q==='return'){VD.gain=1;VD.mode='open';VD.t0=t-1.45;VD.frontGain=0;borrowReturn()}}},400)}
+window.coeVoidStart=startFall;
+// per-frame. returns true if the front cloud should be skipped entirely
+function voidTick(t,dt){const m=VD.mode;if(m==='front'){VD.frontGain=Math.min(1,VD.frontGain+dt/1.5);VD.bg=lerp3(VD.bg,BG0,Math.min(1,dt*2));VD.yawF*=Math.max(0,1-dt*2);VD.stream*=Math.max(0,1-dt*2);VD.thin*=Math.max(0,1-dt*2);door.style.display=VD.frontGain>.99?'':'none';return false}
+ const e=t-VD.t0;
+ if(m==='fall'){if(reduced){const u=Math.min(1,e/1);VD.frontGain=1-u;VD.yawF=0;VD.stream=0;VD.thin=0;VD.bg=lerp3(BG0,[0,0,0],u);if(e>=1){enterVoid(t);VD.gain=0}return false}
+  VD.yawF=-.55*eio(Math.min(1,e/2));VD.thin=sstep(0,2,e)*.75;VD.stream=sstep(0,2,e);VD.bg=lerp3(BG0,[0,0,0],Math.min(1,e/3));VD.frontGain=1-sstep(2,3,e);if(e>=3){enterVoid(t)}return false}
+ if(m==='orbit'){VD.gain=Math.min(1,VD.gain+dt/1.2);VD.bg=[0,0,0];const W=VD.orbitTarget;
+  if(!W){VD.mode='fly';return false}
+  VD.orbitAngle=(VD.orbitAngle||0)+dt*.22;const rOrb=W.radius*1.55;
+  const targetPos=[W.pos[0]+Math.cos(VD.orbitAngle)*rOrb,W.pos[1]+Math.sin(VD.orbitAngle*.5)*4.,W.pos[2]+Math.sin(VD.orbitAngle)*rOrb];
+  VD.pos[0]=lerp(VD.pos[0],targetPos[0],Math.min(1,dt*2.5));VD.pos[1]=lerp(VD.pos[1],targetPos[1],Math.min(1,dt*2.5));VD.pos[2]=lerp(VD.pos[2],targetPos[2],Math.min(1,dt*2.5));
+  const dx=W.pos[0]-VD.pos[0],dy=W.pos[1]-VD.pos[1],dz=W.pos[2]-VD.pos[2];
+  const targetYaw=Math.atan2(-dx,-dz),targetPitch=Math.atan2(dy,Math.hypot(dx,dz));
+  VD.yaw=lerp(VD.yaw,targetYaw,Math.min(1,dt*3.));VD.pitch=lerp(VD.pitch,targetPitch,Math.min(1,dt*3.));return false}
+ if(m==='fly'){VD.gain=Math.min(1,VD.gain+dt/1.2);VD.bg=[0,0,0];
+  VD.hov=Math.max(0,Math.min(.6,VD.hov+(VD.hoverId&&!VD.room?dt:-dt)));VD.ts=Math.pow(10,-2*VD.hov/.6);
+  const frozen=!!VD.room,z=VD.pos[2];let sp=VD.sp;
+  if(z<-1700){playJamestellation();const u=sstep(-1700,-1750,z),pull=sstep(-1780,-1845,z);sp=lerp(lerp(VD.sp,20,u),36,pull);VD.yaw*=1-Math.min(1,dt*1.8);VD.pitch*=1-Math.min(1,dt*1.8);VD.pos[0]*=1-Math.min(1,dt*1.5);VD.pos[1]*=1-Math.min(1,dt*1.5)}
+  else if(!frozen&&!reduced||!frozen){const dz=.12,cv2=x=>{const a=Math.max(0,Math.abs(x)-dz)/(1-dz);return Math.sign(x)*a*a};const rr=reduced?.4:1;VD.yaw+=1.15*rr*cv2(VD.stick[0])*dt;VD.pitch=Math.max(-1.15,Math.min(1.15,VD.pitch-.95*rr*cv2(VD.stick[1])*dt))}
+  if(!frozen){const f=[-Math.sin(VD.yaw)*Math.cos(VD.pitch),Math.sin(VD.pitch),-Math.cos(VD.yaw)*Math.cos(VD.pitch)],s=sp*VD.ts*dt;VD.pos[0]+=f[0]*s;VD.pos[1]+=f[1]*s;VD.pos[2]+=f[2]*s;
+   if(Math.abs(VD.pos[0])>240)VD.pos[0]=lerp(VD.pos[0],Math.sign(VD.pos[0])*240,dt*2);if(Math.abs(VD.pos[1])>150)VD.pos[1]=lerp(VD.pos[1],Math.sign(VD.pos[1])*150,dt*2);if(VD.pos[2]>280)VD.pos[2]=lerp(VD.pos[2],280,dt*2)}
+  if(VD.pos[2]<=RING.center[2]){VD.pos=[VD.pos[0],VD.pos[1],RING.center[2]];VD.mode='close';VD.t0=t;vsetVol(-3)}
+  return true}
+ if(m==='close'){const u=Math.min(1,e/1.5);VD.bg=[0,0,0];if(reduced){VD.fb=1;VD.gain=1}else{VD.fb=eio(u);VD.pos[2]=RING.center[2]-110*eio(u)}VD.pos[0]*=.9;VD.pos[1]*=.9;VD.yaw*=.9;VD.pitch*=.9;
+  if(e>=3.5){VD.mode='open';VD.t0=t;VD.frontGain=0;borrowReturn()}return true}
+ if(m==='open'){const u=Math.min(1,e/1.5);if(!reduced)VD.pos[2]=RING.center[2]-110-120*eio(u);VD.gain=1-u;VD.frontGain=u;VD.bg=lerp3([0,0,0],BG0,u);VD.yawF=0;VD.stream=0;VD.thin=0;
+  if(e>=1.5){VD.mode='front';VD.gain=0;VD.fb=0;vsetVol(0);next=performance.now()+8000;door.style.display=''}return 'both'}
+ return false}
+function drawVoid(t){if(!vao||VD.gain<=0.001)return;gl.useProgram(pv);gl.bindVertexArray(vao);
+ const cy=Math.cos(VD.yaw),sy=Math.sin(VD.yaw),cp=Math.cos(VD.pitch),sp=Math.sin(VD.pitch);
+ // view = Rx(-pitch) * Ry(-yaw); column-major
+ const Ry=[[cy,0,sy],[0,1,0],[-sy,0,cy]],Rx=[[1,0,0],[0,cp,sp],[0,-sp,cp]],M=[[0,0,0],[0,0,0],[0,0,0]];for(let i=0;i<3;i++)for(let j=0;j<3;j++)for(let k=0;k<3;k++)M[i][j]+=Rx[i][k]*Ry[k][j];
+ const colm=new Float32Array([M[0][0],M[1][0],M[2][0],M[0][1],M[1][1],M[2][1],M[0][2],M[1][2],M[2][2]]);
+ const fwd=[-sy*cp,sp,-cy*cp];let focus=72,best=1e9;for(const W of VOID_WELLS){const d=[W.pos[0]-VD.pos[0],W.pos[1]-VD.pos[1],W.pos[2]-VD.pos[2]],L=Math.hypot(...d),dot=(d[0]*fwd[0]+d[1]*fwd[1]+d[2]*fwd[2])/L;if(dot>.25&&L<best){best=L;focus=Math.max(18,Math.min(180,L))}}
+ {const d=[-VD.pos[0],-VD.pos[1],RING.center[2]-VD.pos[2]],L=Math.hypot(...d),dot=(d[0]*fwd[0]+d[1]*fwd[1]+d[2]*fwd[2])/L;if(dot>.25&&L<best){best=L;focus=Math.max(18,Math.min(180,L))}}
+ const vt=reduced?t*.1:t*VD.ts,U=n=>gl.getUniformLocation(pv,n);gl.uniformMatrix3fv(U('rot'),false,colm);gl.uniform3fv(U('cp'),VD.pos);gl.uniform1f(U('t'),vt);gl.uniform1f(U('asp'),aspect);gl.uniform1f(U('hpx'),cv.height/2);gl.uniform1f(U('focus'),focus);
+ gl.uniform1f(U('fb'),VD.fb);gl.uniform1f(U('fspin'),reduced?0:FUN.spin*t);gl.uniform1f(U('gain'),VD.gain);gl.uniform1f(U('ringA'),0);
+ gl.drawArrays(gl.POINTS,0,VN);
+ if(jReady){
+  if(jVid.readyState>=jVid.HAVE_CURRENT_DATA){gl.bindTexture(gl.TEXTURE_2D,jTex);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,jVid)}
+  gl.useProgram(pj);gl.bindVertexArray(jVao);gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,jTex);
+  const J=n=>gl.getUniformLocation(pj,n);gl.uniformMatrix3fv(J('rot'),false,colm);gl.uniform3fv(J('cp'),VD.pos);gl.uniform1f(J('t'),vt);gl.uniform1f(J('asp'),aspect);gl.uniform1f(J('gain'),VD.gain);gl.uniform1f(J('fb'),VD.fb);gl.uniform1i(J('uTex'),0);
+  gl.drawArrays(gl.TRIANGLE_STRIP,0,4)}
+ gl.bindVertexArray(null);gl.useProgram(pr);
+ // labels
+ let hov=null;const px=(VD.stick[0]*.5+.5)*innerWidth,py=(VD.stick[1]*.5+.5)*innerHeight;VD.screen=[];
+ labels.forEach((b,i)=>{const W0=VOID_WELLS[i];{const d=[W0.pos[0]-VD.pos[0],W0.pos[1]-VD.pos[1],W0.pos[2]-VD.pos[2]],v=[0,1,2].map(r=>M[r][0]*d[0]+M[r][1]*d[1]+M[r][2]*d[2]);if(v[2]<-1){const sx=(v[0]*2.0503/aspect/(-v[2])*.5+.5)*innerWidth,sy2=(.5-v[1]*2.0503/(-v[2])*.5)*innerHeight,rp=W0.click*2.0503*innerHeight/2/(-v[2]);VD.screen[i]=[sx,sy2,rp];if(Math.hypot(px-sx,py-sy2)<rp&&b&&W0.id!=='preincarnation')hov=W0.id}}if(!b)return;const W=VOID_WELLS[i],d=[W.pos[0]-VD.pos[0],W.pos[1]-VD.pos[1],W.pos[2]-VD.pos[2]];const v=[0,0,0];for(let r=0;r<3;r++)v[r]=M[r][0]*d[0]+M[r][1]*d[1]+M[r][2]*d[2];const L=Math.hypot(...d),dot=-v[2]/L;
+  let op=0;if(!VD.room&&VD.mode==='fly'&&v[2]<-1&&dot>.4&&L<300){op=Math.min(1-sstep(140,300,L),sstep(.4,.65,dot))*VD.gain}
+  if(op>0){const x=(v[0]*2.0503/aspect/(-v[2])*.5+.5)*innerWidth,y=(.5-v[1]*2.0503/(-v[2])*.5)*innerHeight+Math.min(70,((VD.screen[i]&&VD.screen[i][2]*.3)||0))+18;b.style.left=x+'px';b.style.top=y+'px'}
+  b.style.opacity=op.toFixed(3);b.style.pointerEvents=op>.45?'auto':'none'});if(!labels.some((b,i)=>b&&b.matches(':hover')))VD.hoverId=hov;}
+cv.addEventListener('click',()=>{if(VD.mode!=='fly'||VD.room)return;if(VD.hoverId){const W=VOID_WELLS.find(w=>w.id===VD.hoverId);if(W)enterOrbit(W)}});
+// ===== end VOID ======================================================================
+
+let last=performance.now(),capWait=1e12,frameNo=0,fpsN=0,fpsT=performance.now();window.coeDots=Object.fromEntries(FILL.map(L=>[L.name,L.count]));
+function sim(L,dt,t,wt,dx,dy,tlt,ca0,sa0,k,cw,ra){let rsN=0;if(RS_ON){DRIFT.t0??=t;const el=t-DRIFT.t0;if(el>=GATE_S){L.chk-=dt;if(L.chk<=0){L.chk=1;L.eN=bandSpread(L,cw);if(L.eT===null)L.eT=L.eN}const def=Math.max(0,L.eT-L.eN-.005),cnt=L.i1-L.i0;L.bud=Math.min(L.bud+cnt*Math.min(RS_MAX,def*RS_GAIN)*dt,cnt*RS_MAX*2)}}const AD=A.map(a=>{const ex=a.pos[0]-cw[0],ey=a.pos[1]-cw[1],ez=a.pos[2]-cw[2],r=Math.hypot(ex,ey,ez);return[ex/r,ey/r,ez/r,Math.max(.12,a.radius/r)*2.4]});const crr=Math.cos(ra),srr=Math.sin(ra),near=L.name==='near',sw=L.swirl??1,da=reduced?0:.04*dt,cd=Math.cos(da),sd=Math.sin(da),br=L.brightness??1,base=1.7*(L.size??1);
+const mSpeed=Math.hypot(VD.mvx||0,VD.mvy||0);const hasMouseWake=!reduced&&VD.mode==='front'&&mSpeed>.06;
+for(let i=L.i0;i<L.i1;i++){const j=i*3;let x=P[j],y=P[j+1],z=P[j+2];if(mark[i]&&RS[i]){RS[i]=0;FD[i]=1}
+if(!mark[i]||wt<.05){const x2=x*cd+z*sd,z2=-x*sd+z*cd;x=x2;z=z2}
+const f=curl(x,y,z,t);let ax=f[0]*.3*sw,ay=f[1]*.3*sw,az=f[2]*.3*sw,best=null,bd=1e9;
+for(const a of A){const ex=a.pos[0]-x,ey=a.pos[1]-y,ez=a.pos[2]-z,d=Math.hypot(ex,ey,ez)+.05;if(d<bd){bd=d;best=a}if(!near){const s=.07*a.radius/(d*d+.3);ax+=ex*s;ay+=ey*s;az+=ez*s}}
+if(hasMouseWake&&!mark[i]){const mxW=(VD.mx||0)*2.2,myW=(VD.my||0)*1.4;const mdx=(x-cw[0])-mxW,mdy=(y-cw[1])-myW,md2=mdx*mdx+mdy*mdy;if(md2<1.2){const fImp=Math.min(1.,mSpeed*.08)/(md2+.14);ax+=(-mdy*(VD.mvx||0)+mdx*(VD.mvy||0))*fImp*.22;ay+=(mdx*(VD.mvx||0)+mdy*(VD.mvy||0))*fImp*.22;}}
+if(!mark[i]){/* v23.4: v22 home pull (KC_CLOUD) so the cloud streams again; dots just released by a poem or returned from the void get the old strong pull, fading over ~2 s */if(PM[i]){PM[i]=0;RK[i]=1}const kc=KC_CLOUD+(near?1.2:1.0)*RK[i],hx=HV[j]*crr+HV[j+2]*srr,hz=-HV[j]*srr+HV[j+2]*crr;ax-=(x-cw[0]-hx)*kc;ay-=(y-cw[1]-HV[j+1])*kc;az-=(z-cw[2]-hz)*kc;
+ if(RS_ON){if(RS[i]===0){if(L.bud>=1&&RK[i]<.05){const ex=x-cw[0],ey=y-cw[1],ez=z-cw[2],rr=Math.hypot(ex,ey,ez)+1e-9;if(L.bins[binOf(ex/rr,ey/rr,ez/rr)]>L.crowd){RS[i]=1;L.bud--}}}else if(RS[i]===1){FD[i]-=dt/FADE_S;if(FD[i]<=0){FD[i]=0;RS[i]=2;x=cw[0]+hx;y=cw[1]+HV[j+1];z=cw[2]+hz;V[j]=V[j+1]=V[j+2]=0}}else{FD[i]+=dt/FADE_S;if(FD[i]>=1){FD[i]=1;RS[i]=0}}if(RS[i])rsN++}}
+const dm=Math.pow(mark[i]&&wt>.05?.95:RK[i]>.05?.95:.97,dt*60);/* v22 damping for free cloud dots */V[j]=(V[j]+ax*dt)*dm;V[j+1]=(V[j+1]+ay*dt)*dm;V[j+2]=(V[j+2]+az*dt)*dm;
+const cz=mark[i]?0:calmAt(x,y,z)*wt;x+=V[j]*dt*k*(1-.4*cz);y+=V[j+1]*dt*k*(1-.4*cz);z+=V[j+2]*dt*k*(1-.4*cz);if(mark[i])PM[i]=1;else{RK[i]*=Math.exp(-dt/.7);/* keep each cloud dot inside its layer's depth band */const ex=x-cw[0],ey=y-cw[1],ez=z-cw[2],r0=Math.hypot(ex,ey,ez)+1e-6,r=r0,sp5=.05*(L.outer-L.inner),Ht=Math.min(L.outer-sp5,Math.max(L.inner+sp5,H[i])),rc=Math.min(L.outer,Math.max(L.inner,r0+(Ht-r0)*Math.min(1,KR_DEPTH*dt)));/* soft: home depth kept 5% inside the band, eased spring; hard clamp is only a safety net *//* depth: ease each dot back to its own shell radius, clamp to band; tangential motion stays free */if(L.name!=='far'&&L.name!=='deep'&&L.name!=='synapse'&&rc!==r){const q=rc/r;x=cw[0]+ex*q;y=cw[1]+ey*q;z=cw[2]+ez*q;const vr=(V[j]*ex+V[j+1]*ey+V[j+2]*ez)/r;if((r>rc&&vr>0)||(r<rc&&vr<0)){V[j]-=vr*ex/r;V[j+1]-=vr*ey/r;V[j+2]-=vr*ez/r}}}
+if(mark[i]&&wt>0){const s=wt>=.999?1:Math.min(1,(.04+.52*wt*wt*wt)*dt*60);const ux=T[j]-active.ox,uy=T[j+1]-active.oy,ct=Math.cos(tlt),st=Math.sin(tlt),lx=active.ox+ux*ct-uy*st+dx,ly=active.oy+ux*st+uy*ct+dy;x+=(lx*ca0-x)*s;y+=(ly-y)*s;z+=(-lx*sa0-z)*s;if(s===1){V[j]=V[j+1]=V[j+2]=0}}
+let arr=0;if(mark[i]&&wt>0){const ux=T[j]-active.ox,uy=T[j+1]-active.oy,ct=Math.cos(tlt),st=Math.sin(tlt),lx=active.ox+ux*ct-uy*st+dx,ly=active.oy+ux*st+uy*ct+dy,dd=Math.hypot(lx*ca0-x,ly-y,-lx*sa0-z),q=Math.max(0,1-dd/.35);arr=q*q*(3-2*q)}
+P[j]=x;P[j+1]=y;P[j+2]=z;
+let c;{const ex=x-cw[0],ey=y-cw[1],ez=z-cw[2],rr=Math.hypot(ex,ey,ez)+1e-4;let hb=0,ab=null;for(let m=0;m<A.length;m++){const D=AD[m],ux=ex/rr-D[0],uy=ey/rr-D[1],uz=ez/rr-D[2],g2=(ux*ux+uy*uy+uz*uz)/(D[3]*D[3]*2.56),q2=g2<1?1-g2:0,hv=q2*q2*q2;if(hv>hb){hb=hv;ab=A[m]}}if(ab){best=ab}const hw=Math.max(hb,Math.max(0,1-bd/(best.radius*2)));c=hsl(220+(best.hue-220)*hw,.15+.4*hw,.33+.12*hw);if(active&&active.dimIds.has(best.id)){const m=1-.25*wt*hw;c=[c[0]*m,c[1]*m,c[2]*m]}}
+if(mark[i]&&wt>0){const u=Math.min(1,wt/.4),e=u*u*(3-2*u)*arr,W=[TEXT_TINT[0]*TEXT_LUM,TEXT_TINT[1]*TEXT_LUM,TEXT_TINT[2]*TEXT_LUM],cb=[c[0]*br*DIM,c[1]*br*DIM,c[2]*br*DIM];c=[cb[0]+(W[0]-cb[0])*e,cb[1]+(W[1]-cb[1])*e,cb[2]+(W[2]-cb[2])*e]}else{const m=(!mark[i]&&cz>0?1-.12*cz:1)*br*DIM;c=[c[0]*m,c[1]*m,c[2]*m]}
+C[j]=c[0];C[j+1]=c[1];C[j+2]=c[2];if(FD[i]<1){const f=FD[i];C[j]*=f;C[j+1]*=f;C[j+2]*=f}S[i]=base;E[i]=mark[i]&&wt>0?(()=>{const u=Math.min(1,wt/.4);return u*u*(3-2*u)*arr})():0}L.rsN=rsN}
+function frame(nowMs){const dt=Math.min(.05,(nowMs-last)/1000);last=nowMs;const t=nowMs/1000;/* scene clock: advances only by the clamped frame dt, so a hidden tab (rAF paused) or a stall cannot jump the camera, cloud centre and home rotation away from the dots */if(window.__ST===undefined)window.__ST=t;window.__ST+=dt;/* ?oldclock: diagnostics only, the pre-fix wall-clock scene */const st=OLDCLOCK?t:window.__ST;window.coeDT=dt;
+const vres=voidTick(t,dt);if(vres===true){gl.clearColor(...VD.bg,1);gl.clear(gl.COLOR_BUFFER_BIT);drawVoid(t);fpsN++;if(nowMs-fpsT>1000){window.coeFps=fpsN*1000/(nowMs-fpsT);fpsN=0;fpsT=nowMs}requestAnimationFrame(frame);return}
+if(window.coeMed&&!active&&!loading&&capWait<=t){capWait=1e12;capNext()}
+if(VD.mode==='front'&&POEMS_ON&&!window.coeMed&&!active&&!loading&&nowMs>next&&!(window.coePoetrySeq&&window.coePoetrySeq.on&&window.coePoetrySeq.p&&window.coePoetrySeq.gi>=window.coePoetrySeq.p.groups.length&&window.coeHughPlaying))start(nowMs).catch(e=>{loading=false;console.error(e)});
+let wt=0,dx=0,dy=0,tlt=0;if(active){window.coeLastWasSeg=!!active.seg;const holdD=active.readUntil!=null?Math.max(.3,active.readUntil-active.t0-(SECTIONS[active.section]||{gather:2.4}).gather):Math.min(22,Math.max(3.2,active.text.split(/\s+/).length*.55+2.0));
+const tl=active.cap||active.cut?capTL(t):poemTimeline(active.text,active.t0,active.t0+(t-active.t0)/SLOW,active.section,0,active.seg?holdD:undefined);
+window.coePhase={phase:tl.phase,p:tl.p,t:t-active.t0};if(reduced&&tl.phase!=='done')wt=(tl.phase==='read'||tl.phase==='hold')?1:tl.phase==='gather'?tl.p:1-tl.p;
+else if(tl.phase==='gather')wt=tl.p;else if((tl.phase==='read'||tl.phase==='hold')){if(active.lastPhase==='gather'){window.coeFlashT=t}wt=1;}else if(tl.phase==='scatter'){if(active.lastPhase!=='scatter'&&active.idx){for(const idxDot of active.idx){const jDot=idxDot*3;V[jDot]+=(Math.random()-.5)*.08;V[jDot+1]+=(Math.random()-.5)*.08;}}wt=1-tl.p;}active.lastPhase=tl.phase;
+if(tl.phase==='done'){if(active.cap)capWait=active.nextAt??t;const wasCut=active.cut;active=null;mark.fill(0);next=wasCut?nowMs:(window.coeLastWasSeg?nowMs+400:nowMs+nextGap()*1000)}else{const e=t-active.t0;const [vw,vh]=viewWH(),TC=2*Math.PI/180;tlt=reduced?0:Math.max(-TC,Math.min(TC,tl.tilt||0));
+const ex=active.hw*Math.cos(tlt)+active.hh*Math.abs(Math.sin(tlt)),ey=active.hw*Math.abs(Math.sin(tlt))+active.hh*Math.cos(tlt),mx=Math.max(0,.42*vw-ex),cy0=active.oy-cam[1],myUp=Math.max(0,.42*vh-ey-cy0),myDn=Math.max(0,.42*vh-ey+cy0);
+const tx=reduced?0:Math.max(-mx,Math.min(mx,(tl.offsetX||0)*active.w)),ty=reduced?0:Math.max(-myDn,Math.min(myUp,(tl.offsetY||0)*active.w)),vmax=.015*vw*dt,clampV=v=>Math.max(-vmax,Math.min(vmax,v));
+active.dxs+=clampV(tx-active.dxs);active.dys+=clampV(ty-active.dys);active.dxs=Math.max(-mx,Math.min(mx,active.dxs));active.dys=Math.max(-myDn,Math.min(myUp,active.dys));dx=active.dxs+cam[0]-active.ox*0;dy=active.dys+cam[1];}}
+const ang=active&&active.cap?(reduced?0:t*.04):active?(reduced?0:t*.04):0,ca0=Math.cos(ang),sa0=Math.sin(ang);const k=reduced?.3:1;
+cam=camAt(st);const ra=(reduced?0:st)*.04,cw=camW(ra,cam);frameNo++;DRIFT.cw=cw;DRIFT.ra=ra;DRIFT.t=t;const ph=[1,1,1];
+FILL.forEach((L,li)=>{L.acc+=dt;const due=(frameNo+li)%L.per===0;if(due){const ddt=Math.min(.15,L.acc);L.acc=0;L.upd=frameNo;Q.set(P.subarray(L.i0*3,L.i1*3),L.i0*3);{/* ?sub=n: diagnostics only, n smaller sim steps per update */const n=SUBSTEP;for(let q=0;q<n;q++)sim(L,ddt/n,st-ddt*(n-1-q)/n,wt,dx,dy,tlt,ca0,sa0,k,cw,ra)}
+for(const [b,arr,n] of [[bq,Q,3],[bp,P,3],[bc,C,3],[bz,S,1],[be,E,1]])sub(b,arr,n,L.i0,L.i1)}ph[li]=Math.min(1,(frameNo-L.upd+1)/L.per)});
+gl.clearColor(...VD.bg,1);gl.clear(gl.COLOR_BUFFER_BIT);gl.useProgram(pr);gl.uniform1f(gl.getUniformLocation(pr,'fg'),VD.frontGain);gl.uniform1f(gl.getUniformLocation(pr,'vyaw'),VD.yawF);gl.uniform1f(gl.getUniformLocation(pr,'vst'),VD.stream);gl.uniform1f(gl.getUniformLocation(pr,'vth'),VD.thin);VD.dA=VD.mode==='front'?Math.min(1,(VD.dA||0)+dt/2.5):Math.max(0,(VD.dA||0)-dt);/* door hover: widen + curl + edge redistribution share one ease: 0.6 s in, 1 s out */{const now=performance.now()/1000,rdt=Math.min(.25,now-(VD.doorT||now));VD.doorT=now;/* real elapsed time (not the 50 ms-clamped sim dt) so timings hold at low fps */VD.dH=Math.max(0,Math.min(1,(VD.dH||0)+(VD.doorHover&&VD.mode==='front'?rdt/.6:-rdt/1)));}gl.uniform1f(gl.getUniformLocation(pr,'dA'),VD.dA*VD.frontGain);gl.uniform1f(gl.getUniformLocation(pr,'dH'),VD.dH*VD.dH*(3-2*VD.dH));window.coeDoorH=VD.dH;
+gl.uniform1f(gl.getUniformLocation(pr,'t'),(rotA=reduced?0:st));gl.uniform1f(gl.getUniformLocation(pr,'asp'),aspect);gl.uniform1f(gl.getUniformLocation(pr,'pxu'),Math.min(2,devicePixelRatio));
+gl.uniform3fv(gl.getUniformLocation(pr,'cam'),cam);{const tp=active?active.ps*TEXT_SIZE_BOOST:2;gl.uniform1f(gl.getUniformLocation(pr,'tps'),tp);/* additive overlap compensation: expected dots covering a text pixel */gl.uniform1f(gl.getUniformLocation(pr,'tk'),1/Math.max(1,TEXT_DENSITY*Math.PI*(tp/2)**2*1.1))}gl.uniform4f(gl.getUniformLocation(pr,'ph'),ph[0],ph[1],ph[2],ph[3]||ph[2]);
+const flashEl=t-(window.coeFlashT||-10),uFlash=flashEl<.25?Math.max(0,1.-flashEl/.25):0;
+let ripRad=0,ripAmp=0;if(window.coeRipple){const el=ac().currentTime-window.coeRipple.t0;if(el<4.2){ripRad=el*3.6;ripAmp=Math.max(0,1.-el/4.2)*window.coeRipple.amp}else{window.coeRipple=null}}
+gl.uniform1f(gl.getUniformLocation(pr,'uFlash'),uFlash);gl.uniform1f(gl.getUniformLocation(pr,'uBreath'),window.coeMed?1.:0.);gl.uniform4f(gl.getUniformLocation(pr,'uRipple'),0,0,ripRad,ripAmp);
+gl.drawArrays(gl.POINTS,0,N);
+$('of-btn').classList.toggle('playing',BN.playing||!!window.coeMed||window.coeHughPlaying);
+if(vres==='both')drawVoid(t);
+fpsN++;if(nowMs-fpsT>1000){window.coeFps=fpsN*1000/(nowMs-fpsT);fpsN=0;fpsT=nowMs}
 requestAnimationFrame(frame)}
 requestAnimationFrame(frame);
-window.coeShowPoemNow=()=>{next=0};
+window.coeShowPoemNow=()=>{POEMS_ON=true;next=0};
+const $=id=>document.getElementById(id),ofp=$('of'),med=$('of-med');OF.forEach((m,i)=>med.add(new Option(m.name+' (~10 min)',i)));
+$('of-btn').onclick=()=>{const on=ofp.classList.toggle('on');$('of-btn').setAttribute('aria-expanded',on)};
+let acx=null;const ac=()=>acx??=new AudioContext();
+$('of-bn').onclick=()=>{BN.playing?BN.stop(3):(BN.start(ac(),+$('of-vol').value),BN.setTimer(+$('of-tm').value))};
+$('of-vol').oninput=e=>BN.setVolume(+e.target.value);$('of-tm').onchange=e=>BN.setTimer(+e.target.value);
+const stopMed=()=>{const M=window.coeMed;if(M&&bowlNow&&bowlNow.ctx.currentTime<bowlNow.t)bowlStop(0);/* Stop: a bowl not yet struck (pending end bowl) is cancelled; a sounding bowl rings out */medHalt(M);window.coeMed=null;capWait=1e12;window.speechSynthesis?.cancel();window.coeHughSpeaking=false;$('of-go').textContent='Begin';if(active&&active.cap&&active.scatterAt===null)active.scatterAt=performance.now()/1000};
+let MODE='meditation';const modeEls=[...document.querySelectorAll('#of-mode span')];
+const setMode=m=>{MODE=m;modeEls.forEach(e=>{const on=e.dataset.m===m;e.classList.toggle('sel',on);e.setAttribute('aria-checked',on)});$('of-medl').style.display=m==='meditation'?'':'none';$('of-poeml').style.display=m==='poetry'?'':'none'};
+modeEls.forEach(e=>{e.onclick=()=>{if(MODE!==e.dataset.m){stopMed();stopPoetry()}setMode(e.dataset.m)};e.onkeydown=k=>{if(k.key==='Enter'||k.key===' '){k.preventDefault();e.click()}}});
+// Poetry mode: poems form over brown noise. HUGH_POEM_CLIPS is the slot for Hugh's readings (none recorded yet): {poemId:[clip per section]}.
+// Hugh's readings: one per poem, starts 1.2 s after the poem's first section has formed; brown noise ducks ~6 dB over 400 ms; never overlaps.
+const HUGH_POEM_CLIPS=Object.fromEntries(poems.map(p=>[p.id,'voices/hugh-poems/'+p.id+'.mp3']));window.coeHughPoemClips=HUGH_POEM_CLIPS;
+window.coePoetrySeq={on:false,p:null,gi:0};let hughAu=null,segAu=null,segPoem=null,segTimer=0;window.coeHughPlaying=false;window.coeHughLog=[];
+const duck=on=>{if(BN.playing)BN.setVolume(+$('of-vol').value-(on?6:0),.4)};
+const hughStop=()=>{clearTimeout(segTimer);segTimer=0;if(segAu){segAu.pause();segAu=null;segPoem=null}if(hughAu){hughAu.pause();hughAu=null}if(window.coeHughPlaying){window.coeHughPlaying=false;duck(false)}};
+/* Singing bowl (meditation tracks only): synthesized strikes routed straight to the output, so the noise duck never touches them. */
+let bowlNow=null;window.coeBowlLog=[];
+/* bowl level follows the volume slider so its peak stays well above the noise at every position; capped below clipping */
+const bowlGain=()=>Math.min(1,.27*Math.pow(10,(+$('of-vol').value+25)/20));
+const bowlStop=(ms=60)=>{const b=bowlNow;bowlNow=null;if(!b)return;const c=b.ctx,t=c.currentTime;b.g.gain.cancelScheduledValues(t);b.g.gain.setValueAtTime(b.g.gain.value,t);b.g.gain.linearRampToValueAtTime(0,t+ms/1000);b.osc.forEach(o=>{try{o.stop(t+ms/1000+.02)}catch(e){}});if(b.duck&&BN.playing){BN.setVolume(+$('of-vol').value,.3)}};
+/* one strike: detuned sine partials, exponential decay, 15 ms attack. o={when (ctx s), f0, gain (0..1 of bowlGain), ring (s), duck} */
+window.coeBowlNow=()=>bowlNow;/* diagnostics */
+window.coeBowl=(kind,id,o={})=>{const ctx=ac();if(ctx.state!=='running'){ctx.resume().then(()=>window.coeBowl(kind,id,o)).catch(()=>{});return}bowlStop(300);window.coeRipple={t0:ctx.currentTime,amp:1.};
+ const f0=o.f0||220,ring=o.ring||8,t=Math.max(ctx.currentTime+.01,o.when||0),g=ctx.createGain();g.gain.value=bowlGain()*(o.gain??1);g.connect(ctx.destination);
+ const P=[[1,1,1],[2.76,.5,.64],[5.4,.28,.37],[8.9,.16,.2]],osc=[];
+ P.forEach(([m,a,dr])=>[-4,4].forEach(cents=>{const v=ctx.createOscillator(),e=ctx.createGain();v.frequency.value=f0*m;v.detune.value=cents;e.gain.setValueAtTime(0,t);e.gain.linearRampToValueAtTime(a/1.94/2,t+.015);e.gain.setTargetAtTime(0,t+.015,ring*dr/6.9);v.connect(e).connect(g);v.start(t);v.stop(t+ring*dr+.2);osc.push(v)}));
+ const b=bowlNow={ctx,g,osc,t,duck:!!o.duck};osc[0].onended=()=>{if(bowlNow===b)bowlNow=null};
+ if(o.onDone){/* silent marker on the audio clock: fires after ring-out + 2 s, as the noise starts its 1.5 s return */const z=ctx.createConstantSource(),zg=ctx.createGain();zg.gain.value=0;z.connect(zg).connect(ctx.destination);z.start(t);z.stop(t+ring+2);z.onended=()=>{if(bowlNow===b||!bowlNow)o.onDone()};b.osc.push(z)}
+ if(o.duck&&BN.playing){/* duck noise 6 dB from the strike through ring-out, 2 s of quiet, then back up over 1.5 s */const G=BN.out.gain,v=Math.pow(10,+$('of-vol').value/20),vd=v*Math.pow(10,-6/20);G.cancelScheduledValues(ctx.currentTime);G.setValueAtTime(G.value,ctx.currentTime);G.setValueAtTime(v,Math.max(ctx.currentTime,t-.15));G.linearRampToValueAtTime(vd,t);G.setValueAtTime(vd,t+ring+2);G.linearRampToValueAtTime(v,t+ring+3.5)}
+ window.coeBowlLog.push({kind,id,ctxAt:t,schedAt:performance.now()+(t-ctx.currentTime)*1000,f0,gain:g.gain.value})};
+/* lead: opening bowl ring-out (8 s) + 3.5 s; quiet: last voice -> closing strike 6 s. The 12.5 s added vs the 2.5/2.5 base is taken from the closing-silence overflow only. */
+const MED_LEAD0=2.5,MED_QUIET0=2.5,MED_LEAD=8+3.5,MED_QUIET=6,MED_RING=8,MED_TAIL=2,MED_TOTAL=600,MED_GAP_MAX=120;
+/* Track plan: clip lengths come from the decoded audio. Extra time to reach ~10:00 (strike -> end of ring-out + 2 s) is spread over the
+   boundaries named in pause-map.json by weight; unnamed boundaries keep their base gap (p + 0.8 s). Unmapped tracks keep base gaps and are flagged. */
+const clipBuf=new Map(),loadClip=f=>{if(!clipBuf.has(f))clipBuf.set(f,fetch('voices/hugh/'+f).then(r=>r.arrayBuffer()).then(b=>ac().decodeAudioData(b)).catch(()=>null));return clipBuf.get(f)};
+let pauseMapP=null;const pauseMap=()=>pauseMapP??=fetch('pause-map.json').then(r=>r.ok?r.json():null).catch(()=>null);
+const trackKey=m=>(m.steps[0].f||'').replace(/-short-\d+\.mp3$/,'');
+const medPlan=async m=>{const [bufs,PM]=await Promise.all([Promise.all(m.steps.map(s=>s.f?loadClip(s.f):null)),pauseMap()]),d=bufs.map(b=>b?b.duration:0),n=m.steps.length,key=trackKey(m),flags=[];
+ const base=m.steps.slice(0,-1).map(s=>s.p+.8),clips=d.reduce((a,b)=>a+b,0),fixed=MED_LEAD0+clips+MED_QUIET0+MED_RING+MED_TAIL,E=MED_TOTAL-fixed-base.reduce((a,b)=>a+b,0);
+ const w=base.map(()=>0),cap=base.map(()=>MED_GAP_MAX),ent=PM&&PM.tracks&&PM.tracks[key];if(ent&&Array.isArray(ent.pauses))ent.pauses.forEach(q=>{if(Number.isInteger(q.boundary)&&q.boundary>=0&&q.boundary<base.length&&q.weight>=0){w[q.boundary]+=q.weight;if(q.maxSeconds>0)cap[q.boundary]=Math.min(cap[q.boundary],Math.max(base[q.boundary],q.maxSeconds))}else flags.push('bad boundary '+q.boundary)});
+ const W=w.reduce((a,b)=>a+b,0);if(!ent)flags.push('unmapped');else if(!(W>0))flags.push('no weights');/* floor = v23.5 gap; ceiling 120 s per gap (capped share goes to the other weighted gaps); leftover goes to closing silence before the end-bowl lead */
+ const g=base.slice();let rem=Math.max(0,E),live=w.map((x,i)=>x>0&&g[i]<cap[i]),cappedAt=[];
+ while(rem>1e-6&&live.some(Boolean)){const Wl=w.reduce((a,x,i)=>a+(live[i]?x:0),0);let capped=false;const add=w.map((x,i)=>live[i]?rem*x/Wl:0);
+  add.forEach((v,i)=>{if(live[i]&&g[i]+v>cap[i]){rem-=cap[i]-g[i];g[i]=cap[i];live[i]=false;capped=true;cappedAt.push(i)}});if(!capped){add.forEach((v,i)=>g[i]+=v);rem=0}}
+ const closeX0=rem>1e-6?rem:0,closeX=Math.max(0,closeX0-(MED_LEAD-MED_LEAD0)-(MED_QUIET-MED_QUIET0));if(cappedAt.length)flags.push('capped boundaries '+cappedAt.join(','));if(closeX)flags.push('closing silence +'+closeX.toFixed(1)+'s');
+ const wg=g.filter((_,i)=>w[i]>0).sort((a,b)=>a-b),med=wg.length?wg[wg.length>>1]*(wg.length%2)+(wg.length%2?0:(wg[wg.length/2-1]+wg[wg.length/2])/2):0;
+ if(W>0&&base.length){if(g[0]<med)flags.push('settling gap below median weighted gap');if(g[g.length-1]<med)flags.push('closing gap below median weighted gap')}
+ const off=[];let x=MED_LEAD;for(let i=0;i<n;i++){off.push(x);x+=d[i]+(g[i]||0)}const lastEnd=off[n-1]+d[n-1],quiet=MED_QUIET+closeX,total=lastEnd+quiet+MED_RING+MED_TAIL,maxGap=Math.max(0,...g);
+ if(maxGap>MED_GAP_MAX+1e-6)flags.push('gap>120s');if(total<570||total>630)flags.push('total outside 9:30-10:30');return{key,bufs,d,off,g,base,w,cap,cappedAt,closeX,lastEnd,strike:lastEnd+quiet,total,maxGap,medWeighted:med,flags}};
+window.coeMedPlan=i=>medPlan(OF[i]).then(({bufs,...p})=>p);
+/* Every clip is scheduled on the AudioContext clock, so hidden tabs and throttled frames can't delay it. */
+const medStart=async m=>{const ctx=ac();if(ctx.state!=='running')await ctx.resume().catch(()=>{});window.coeBowl('start',m.name);const T0=ctx.currentTime,M={m,i:0,T0,srcs:[],plan:null};window.coeMed=M;capWait=1e12;
+ const P=await medPlan(m);if(window.coeMed!==M)return;M.plan=P;const out=M.out=ctx.createGain();out.connect(ctx.destination);window.coeMedLog={name:m.name,T0,plan:P,ended:[]};
+ P.bufs.forEach((b,i)=>{if(!b)return;const src=ctx.createBufferSource();src.buffer=b;src.connect(out);src.start(Math.max(ctx.currentTime+.05,T0+P.off[i]));M.srcs.push(src);
+  src.onended=()=>{if(window.coeMed!==M||M.stopped)return;window.coeMedLog.ended.push([i,ctx.currentTime-T0]);if(i!==P.bufs.length-1)return;M.endQ=1;window.coeMedLastSound=performance.now();
+   window.coeBowl('end',m.name,{when:T0+P.strike,f0:204,gain:.7,ring:MED_RING,duck:true,onDone:()=>{if(window.coeMed!==M)return;window.coeMed=null;capWait=1e12;if(active&&active.cap){active.fd=2;active.scatterAt=Math.min(active.scatterAt??1e12,performance.now()/1000)}/* text fades over ~2 s while the noise returns over 1.5 s; then the controls fade back in */setTimeout(()=>{if(window.coeMed)return;$('of-go').textContent='Begin';const els=[$('of-medl'),$('of-go')];els.forEach(e=>{e.style.transition='none';e.style.opacity=0});requestAnimationFrame(()=>els.forEach(e=>{e.style.transition=reduced?'none':'opacity .6s';e.style.opacity=''}));window.coeMedReturnedAt=performance.now()},2000)}})}});capWait=0};
+const medHalt=(M,fade=0)=>{if(!M)return;M.stopped=1;const c=ac(),t=c.currentTime;if(M.out){M.out.gain.setValueAtTime(M.out.gain.value,t);M.out.gain.linearRampToValueAtTime(0,t+fade+.02)}M.srcs.forEach(s=>{try{s.stop(t+fade+.03)}catch(e){}})};
+window.coeHughCue=id=>{const src=HUGH_POEM_CLIPS[id];if(!src||window.coeHughPlaying)return;const t0=performance.now();
+ const wait=()=>{if(!window.coePoetrySeq.on)return;const ph=window.coePhase;if(!ph||ph.phase!=='read'||performance.now()-t0<300){setTimeout(wait,50);return}
+  setTimeout(()=>{if(!window.coePoetrySeq.on||window.coeHughPlaying)return;hughStop();const au=hughAu=new Audio(src);window.coeHughPlaying=true;duck(true);
+   const end=()=>{if(hughAu===au){hughAu=null;window.coeHughPlaying=false;duck(false);window.coeHughLog.push({id,ended:performance.now()})}};au.onended=end;au.onerror=end;
+   au.play().then(()=>window.coeHughLog.push({id,formedAt:formed,started:performance.now()})).catch(end)},1200);const formed=performance.now()};wait()};
+/* v23.6.1: poems with a timed reading play one group's slice of Hugh's clip while that group is readable; the group holds until its slice ends,
+   then scatters and the next group forms. Native rate only (no playbackRate / time-stretch). Slices come from poem-segments.json (word-level alignment). */
+fetch('poem-segments.json').then(r=>r.ok?r.json():null).then(j=>{window.coeHughSegs=j?Object.fromEntries(Object.entries(j.poems).map(([k,v])=>[k,v.segs])):null}).catch(()=>{});
+window.coeSegLog=[];const segBlob={};/* whole clip fetched once, so seeks never wait on range requests mid-poem */
+window.coePlayVoiceReading=A=>{
+ if(!A||!A.text)return;
+ if('speechSynthesis' in window){
+  try{window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(A.text);u.rate=.88;u.pitch=.95;
+   const vs=window.speechSynthesis.getVoices();const pv=vs.find(v=>v.lang.startsWith('en')&&/natural|daniel|george|oliver|serena|arthur/i.test(v.name))||vs.find(v=>v.lang.startsWith('en'));
+   if(pv)u.voice=pv;
+   u.onend=()=>{if(active===A)A.readUntil=performance.now()/1000+.6;};
+   u.onerror=()=>{if(active===A)A.readUntil=performance.now()/1000+.6;};
+   window.speechSynthesis.speak(u);
+  }catch(e){A.readUntil=performance.now()/1000+Math.min(20,Math.max(3.5,A.text.split(/\s+/).length*.55+2.0));}
+ }
+};
+window.coeHughSeg=(id,gi,A)=>{
+ const sg=window.coeHughSegs?window.coeHughSegs[id]?.[gi]:null;
+ const defHold=Math.min(22,Math.max(3.2,A.text.split(/\s+/).length*.55+2.0));
+ A.readUntil=performance.now()/1000+defHold;
+ if(!sg){window.coePlayVoiceReading(A);return;}
+ const t0=performance.now();
+ const wait=()=>{if(!window.coePoetrySeq.on||active!==A)return;const ph=window.coePhase;if(!ph||ph.phase!=='read'||performance.now()-t0<300){segTimer=setTimeout(wait,40);return}
+  const src=HUGH_POEM_CLIPS[id];let played=false;
+  if(src){
+   try{
+    if(!segAu||segPoem!==id){if(segAu)segAu.pause();segAu=new Audio();segAu.preload='auto';segPoem=id;}
+    const au=segAu,[s,e]=sg;
+    const go=()=>{au.currentTime=s;window.coeHughPlaying=true;duck(true);
+     au.play().then(()=>{played=true;A.readUntil=performance.now()/1000+(e-s)+.6;
+      const poll=()=>{if(active!==A){au.pause();return}if(au.currentTime>=e-.02||au.ended){au.pause();window.coeHughPlaying=false;A.readUntil=performance.now()/1000+.6;return}segTimer=setTimeout(poll,30)};poll();
+     }).catch(()=>{window.coePlayVoiceReading(A);});};
+    au.src=src;au.readyState>=1?go():au.addEventListener('loadedmetadata',go,{once:true});
+    setTimeout(()=>{if(!played)window.coePlayVoiceReading(A);},1400);
+   }catch(err){window.coePlayVoiceReading(A);}
+  }else{window.coePlayVoiceReading(A);}
+ };wait();};
+const stopPoetry=()=>{window.coePoetrySeq.on=false;window.coePoetrySeq.p=null;hughStop();if(!POEMS_ON)return;POEMS_ON=false;$('of-go').textContent='Begin';if(active&&!active.cap&&active.scatterAt===null)active.scatterAt=performance.now()/1000};
+setMode('poetry');window.coeMode=()=>MODE;
+const KEEP=[["ttcem-bound-ing", "The Choice and the Lesson"], ["ttcem-midnight-orgy", "Midnight Orgy"], ["ttcem-jagged-rocks", "Jagged Rocks"], ["ttcem-machines-are-fighting-for-our-freedom", "Machines Are Fighting for Our Freedom"], ["ttcem-dinosaur-footprints", "Dinosaur Footprints"], ["ttcem-don-t-shit-in-my-christmas-spirit", "Don't Shit in My Christmas Spirit"], ["ttcem-flying-around", "Flying Around"], ["ttcem-fabulous", "Fabulous"], ["ttcem-now-i-don-t-throw-dirt-in-people-s-soup", "Now I Don't Throw Dirt in People's Soup"], ["ttcem-halloween-again", "Halloween Again"]],poemSel=$('of-poem');KEEP.forEach(([id,t])=>byId[id]&&poemSel.add(new Option(t,id)));
+const fadeOut=(au,ms)=>new Promise(res=>{if(!au||au.paused){res();return}const v0=au.volume,t0=performance.now();const st=()=>{const k=Math.min(1,(performance.now()-t0)/ms);au.volume=v0*(1-k);if(k<1)requestAnimationFrame(st);else{au.pause();au.volume=v0;window.coeFadeLog.push({ms:performance.now()-t0});res()}};st()});window.coeFadeLog=[];
+const cutPoem=()=>{if(active&&!active.cap&&!active.cut){active.cut=1;active.scatterAt=performance.now()/1000}};
+const beginPoem=()=>{cutPoem();POEMS_ON=true;window.coePoetrySeq={on:true,p:byId[poemSel.value],gi:0,sel:poemSel.value};next=0;$('of-go').textContent='End'};
+poemSel.onchange=()=>{if(!POEMS_ON)return;const au=hughAu;hughAu=null;window.coeHughPlaying=false;fadeOut(au,300);/* old section's dots are released and drift back while the new poem gathers */if(active&&!active.cap){active=null;mark.fill(0);window.coePhase=null}beginPoem()};
+med.onchange=async()=>{const M=window.coeMed;if(!M)return;window.coeMed=null;medHalt(M,.3);await new Promise(r=>setTimeout(r,300));if(active&&active.cap)active.scatterAt=Math.min(active.scatterAt??1e12,performance.now()/1000);medStart(OF[+med.value])};
+/* full-title tooltip: only when the closed dropdown's selected title is cut off; shows after ~1 s */
+const ofTip=(()=>{const d=document.createElement('div');d.id='of-tip';d.setAttribute('role','tooltip');document.body.appendChild(d);const cv=document.createElement('canvas').getContext('2d');let tm=0;
+const hide=()=>{clearTimeout(tm);d.style.transition='none';d.style.opacity=0;d.style.display='none'};
+const cut=sel=>{const o=sel.options[sel.selectedIndex];if(!o)return false;const cs=getComputedStyle(sel);cv.font=cs.font;const pad=parseFloat(cs.paddingLeft)+parseFloat(cs.paddingRight)+parseFloat(cs.borderLeftWidth)+parseFloat(cs.borderRightWidth)+20;/* 20px: arrow */return cv.measureText(o.textContent).width>sel.getBoundingClientRect().width-pad};
+[poemSel,med].forEach(sel=>{sel.addEventListener('pointerenter',e=>{hide();if(e.pointerType==='touch'||!cut(sel))return;tm=setTimeout(()=>{const r=sel.getBoundingClientRect();d.textContent=sel.options[sel.selectedIndex].textContent;d.style.display='block';d.style.opacity=0;d.offsetWidth;d.style.transition=reduced?'none':'opacity 150ms';d.style.opacity=1;d.style.left=r.left+'px';d.style.top=(r.top-d.offsetHeight-4)+'px';window.coeTipShownAt=performance.now()},1000)});['pointerleave','change','mousedown','keydown','blur'].forEach(ev=>sel.addEventListener(ev,hide))});return{hide,cut}})();window.coeTip=ofTip;
+$('of-go').onclick=()=>{if(MODE==='poetry'){if(POEMS_ON){stopPoetry();return}beginPoem();next=0;$('of-go').textContent='End';return}if(window.coeMed){stopMed();return}medStart(OF[+med.value]);$('of-go').textContent='End'};
+// On open: only swirl + brown noise (volume slider at 50%). Browsers block audio until a user gesture, so we try now
+// and, if the AudioContext is suspended, resume on the first pointer/key/touch.
+{const ctx=ac();window.coeAudioState=()=>ctx.state;if(!BN.playing)BN.start(ctx,+$('of-vol').value);window.coeAutoplay=ctx.state==='running'?'autoplayed':'blocked-until-gesture';
+ if(ctx.state!=='running'){const go=()=>{ctx.resume().then(()=>{window.coeAutoplay='started-on-first-gesture'});['pointerdown','keydown','touchstart'].forEach(e=>removeEventListener(e,go,true))};['pointerdown','keydown','touchstart'].forEach(e=>addEventListener(e,go,true))}}
+$('of-sil').onclick=()=>{stopMed();stopPoetry();if(BN.playing)BN.stop(3)};
+window.coeTestCaption=l=>{if(active&&!active.cap){active=null;mark.fill(0)}window.coeMed={m:{steps:[{t:l,p:30}]},i:0};capWait=0};
 </script></body></html>
