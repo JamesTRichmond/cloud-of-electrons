@@ -21,8 +21,8 @@ export const SECTIONS = {
 const DEF={gather:T.gather,readMul:1,scatter:T.scatter,drift:0.6,sway:0.5};
 // Returns {phase:'gather'|'read'|'scatter'|'done', p, offsetX, offsetY (fractions of poem width), tilt (rad)}.
 // Offsets are smooth sines, so speed never exceeds maxDriftFrac*drift and there are no jerks.
-export function poemTimeline(text, start, now, section, seed=0){
-  const S=SECTIONS[section]||DEF, r=Math.min(T.readCap*S.readMul, readFor(text)*S.readMul), e=now-start;
+export function poemTimeline(text, start, now, section, seed=0, readOverride){
+  const S=SECTIONS[section]||DEF, r=readOverride!==undefined?readOverride:Math.min(T.readCap*S.readMul, readFor(text)*S.readMul), e=now-start;
   const w=0.25, A=T.maxDriftFrac*S.drift/w; // amplitude so peak speed A*w == cap
   const m={offsetX:A*Math.sin(w*e+seed), offsetY:0.5*A*Math.sin(0.7*w*e+seed*1.7), tilt:T.maxTiltRad*S.sway*Math.sin(0.18*e+seed*0.6)};
   if(e<S.gather) return {phase:'gather',p:easeInOut(e/S.gather),...m};

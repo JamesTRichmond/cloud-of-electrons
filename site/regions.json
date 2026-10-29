@@ -1,0 +1,195 @@
+[
+ {
+  "id": "meditation",
+  "name": "Meditation",
+  "kicker": "A sit",
+  "lead": "Open Field lives here. One practice, a voice, a stretch of time. The rest of the field keeps moving behind it.",
+  "body": [
+   "This is not the whole page. It is one dense place inside it. Leave, and you are back in the empty."
+  ],
+  "links": []
+ },
+ {
+  "id": "poetry",
+  "name": "Poetry",
+  "kicker": "The page",
+  "lead": "The poems belong in this room. They are not pasted onto the field as a feed.",
+  "body": [
+   "A line is a small dense region: mostly silence, then a few words that slow everything else down. When the pages are ready, they open here — not as a blog, as a reading."
+  ],
+  "links": []
+ },
+ {
+  "id": "music",
+  "name": "Music",
+  "kicker": "Spotify",
+  "lead": "Listening is part of the same weather as the sit and the poems. The library stays on Spotify.",
+  "body": [
+   "This room does not pretend to be the player. It is the place in the field where the music is acknowledged, then handed back to the app that actually has the songs."
+  ],
+  "links": [
+   {
+    "href": "https://open.spotify.com/",
+    "label": "Open Spotify"
+   }
+  ]
+ },
+ {
+  "id": "inventions",
+  "name": "Inventions",
+  "kicker": "What is being built",
+  "lead": "Current aspirations and the machines already in motion: closed loops, a robot with a day, tools that turn a repeated mess into a procedure.",
+  "body": [
+   "Habitat is the robot who lives on a page and decides what to do with his afternoon. Braiding Rig, Gaurden, and the prompt instruments sit in the same workshop — things that are not finished, and are not slides about being unfinished."
+  ],
+  "links": [
+   {
+    "href": "https://jamestrichmond.github.io/habitat/",
+    "label": "Meet the robot"
+   },
+   {
+    "href": "https://github.com/JamesTRichmond",
+    "label": "The workshop"
+   }
+  ]
+ },
+ {
+  "id": "games",
+  "name": "Games",
+  "kicker": "Playable thought",
+  "lead": "Where an argument, a loop, or a Vermont hillside becomes something you can move through.",
+  "body": [
+   "Verbal Kombat treats a debate as a fight: sound reasoning lands, a fallacy misses or backfires. Stay, Dog Days, and HLS Aurora are the other weather systems. Preincarnation has its own well."
+  ],
+  "links": [
+   {
+    "href": "https://github.com/JamesTRichmond/Verbal_Kombat",
+    "label": "Verbal Kombat"
+   },
+   {
+    "href": "https://github.com/JamesTRichmond/preincarnation",
+    "label": "Preincarnation"
+   }
+  ]
+ },
+ {
+  "id": "agents",
+  "name": "Agents",
+  "kicker": "Fail closed",
+  "lead": "AgentiCubed turns an objective into a task graph, runs it, judges it, and refuses to pretend a failed step succeeded.",
+  "body": [
+   "Executor and evaluator stay apart. Tools are default-deny. The log is append-only. The human is still the gate. This is the engineering habit underneath the games and the consulting, not a second résumé."
+  ],
+  "links": [
+   {
+    "href": "https://github.com/AgentiCubed/A3",
+    "label": "AgentiCubed"
+   }
+  ]
+ },
+ {
+  "id": "fog",
+  "name": "Fog",
+  "kicker": "Late night",
+  "lead": "Two people talking. About an hour. Late. The person sitting brings the theme.",
+  "body": [
+   "Late Night Brain Fog is adjacent to the sit, but it is not silent and it is not alone. Always someone sitting. Never instead of him. The hours are not up yet; the room still exists."
+  ],
+  "links": [
+   {
+    "href": "https://brainfogpodcast.vercel.app/",
+    "label": "The show"
+   }
+  ]
+ },
+ {
+  "id": "fallout",
+  "name": "Historical Fallout",
+  "kicker": "Protocol and timeline",
+  "lead": "Nuclear weapons technician, then eight years in an AP U.S. History classroom. Same question in both rooms: what happens when a procedure meets a person.",
+  "body": [
+   "Air Force munitions work, a Top Secret clearance, Airman of the Year in 2008. Later, curricula and rubrics for up to 130 students, a College Board reading table, a 77% AP qualification year. The software still fails closed because both jobs punished a vague step."
+  ],
+  "links": []
+ },
+ {
+  "id": "swarm",
+  "name": "The Swarm",
+  "kicker": "Many minds",
+  "lead": "Not a link to a repository. The friction of several agents arguing, scoring, and refusing to collapse into one confident voice.",
+  "body": [
+   "Socratic profiles, debate harnesses, evaluator swarms. The interesting part is the disagreement that stays on the record — who yielded, which claim failed a rubric, what the human still has to approve."
+  ],
+  "links": [
+   {
+    "href": "https://github.com/JamesTRichmond/Verbal_Kombat",
+    "label": "The debate harness"
+   }
+  ]
+ },
+ {
+  "id": "perception",
+  "name": "Biological Perception",
+  "kicker": "Sensing, not calculating",
+  "lead": "An interest in intelligence that smells, leans, and answers the room — botanical, olfactory, not only a token stream.",
+  "body": [
+   "Petrichor and the LordAi.nz work sit here: machines treated as sensory organisms. The field around this spark is thinner on purpose. It is a research weather, not a product page."
+  ],
+  "links": []
+ },
+ {
+  "id": "homestead",
+  "name": "The Homestead",
+  "kicker": "Vermont dirt",
+  "lead": "Vermont. The analog counterweight to the architectures: weather, animals, trails, a day that does not compile.",
+  "body": [
+   "Livestock, a rooster, the ordinary maintenance of a place. It keeps the cloud from becoming a diagram of jobs. The metal and the agents are downstream of someone who also has to be outside."
+  ],
+  "links": []
+ },
+ {
+  "id": "streamkill",
+  "name": "StreamKill",
+  "kicker": "Consent before action",
+  "lead": "A receipt becomes a ranked ledger of subscriptions. Nothing is cancelled until a person approves that one line.",
+  "body": [
+   "Guarded actions, proof receipts, a redacted public demonstration, and the sensitive routes kept private. The same gate as the agents — applied to the boring, expensive drift of things that renew themselves."
+  ],
+  "links": [
+   {
+    "href": "https://github.com/JamesTRichmond/StreamKill",
+    "label": "StreamKill"
+   }
+  ]
+ },
+ {
+  "id": "otter",
+  "name": "Otter Creek",
+  "kicker": "The metal",
+  "lead": "The nodes the rest of the work actually runs on. Not a product diagram — the machines.",
+  "body": [
+   "Distinct from the inventions, which are the things being built. This is the ground they run on: a heartbeat, a topology, the creek under the architecture."
+  ],
+  "links": []
+ },
+ {
+  "id": "absurd",
+  "name": "The Absurd",
+  "kicker": "A working tool",
+  "lead": "Comedy is not a break from the work. It is one of the ways the work gets tested.",
+  "body": [
+   "Reggie Watts, Monty Python, a Spanish Inquisition that arrives when the protocol said it would not, a Diet of Worms for an agent that refuses to yield. The absurd is how a weird claim gets a fair trial."
+  ],
+  "links": []
+ },
+ {
+  "id": "fermentation",
+  "name": "Fermentation",
+  "kicker": "Slow yield",
+  "lead": "Sourdough, bagel batches, a dough that only changes if you leave it alone long enough.",
+  "body": [
+   "The same move as the software and the music theory: plain inputs, then time, temperature, and a technique you do not rush. The cloud needs a room that finishes later than you want it to."
+  ],
+  "links": []
+ }
+]
