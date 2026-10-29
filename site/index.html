@@ -65,6 +65,7 @@ html,body{margin:0;height:100%;background:#05070D;overflow:hidden;user-select:no
 </div>
 <div id="coe-live" aria-live="polite"></div>
 <script src="cloud-fill.js"></script>
+<script src="events.js"></script>
 <script type="module">
 import {poemTimeline,nextGap,shuffleBag,SECTIONS} from './motion.js';
 const FILL=(window.COE_FILL||[
@@ -641,8 +642,9 @@ function enterOrbit(W){if(!W)return;
  VD.orbitTarget=W;VD.orbitAngle=Math.atan2(VD.pos[2]-W.pos[2],VD.pos[0]-W.pos[0]);
  VD.orbitRadius=W.radius*1.55;VD.orbitT0=performance.now()/1000;VD.mode='orbit';
  const ob=document.getElementById('orbit-banner');if(ob){document.getElementById('ob-title').textContent=W.name;ob.classList.add('on');}
- const promptEl=document.getElementById('galaxy-prompt');if(promptEl)promptEl.classList.remove('active');}
-function breakOrbit(){if(VD.mode==='orbit'){VD.mode='fly';VD.sp=46;VD.orbitTarget=null;const ob=document.getElementById('orbit-banner');if(ob)ob.classList.remove('on');hudShow();}}
+ const promptEl=document.getElementById('galaxy-prompt');if(promptEl)promptEl.classList.remove('active');
+ window.COE_EVENTS?.dispatch('coe:orbit-enter',{galaxyId:W.id,name:W.name,pos:W.pos,radius:W.radius});}
+function breakOrbit(){if(VD.mode==='orbit'){VD.mode='fly';VD.sp=46;VD.orbitTarget=null;const ob=document.getElementById('orbit-banner');if(ob)ob.classList.remove('on');hudShow();window.COE_EVENTS?.dispatch('coe:orbit-break');}}
 window.coeBreakOrbit=breakOrbit;window.coeEnterOrbit=enterOrbit;
 const KEYS={KeyW:0,KeyS:0,KeyA:0,KeyD:0,KeyQ:0,KeyE:0,KeyR:0,KeyF:0,KeyX:0,Enter:0,ArrowUp:0,ArrowDown:0,ArrowLeft:0,ArrowRight:0,Space:0};
 addEventListener('keydown',e=>{
@@ -731,7 +733,8 @@ function voidTick(t,dt){const m=VD.mode;if(m==='front'){VD.frontGain=Math.min(1,
    VD.pos[0]=lerp(VD.pos[0],-1.94,Math.min(1,dt*2.2*pull));VD.pos[1]=lerp(VD.pos[1],21.6,Math.min(1,dt*2.2*pull));
    VD.yaw*=(1-Math.min(1,dt*2.0));VD.pitch*=(1-Math.min(1,dt*2.0));}
   if(z<=RING.center[2]+5&&Math.hypot(VD.pos[0]-(-1.94),VD.pos[1]-21.6)<32){
-   VD.pos=[-1.94,21.6,RING.center[2]];VD.mode='close';VD.t0=t;vsetVol(-3);}
+   VD.pos=[-1.94,21.6,RING.center[2]];VD.mode='close';VD.t0=t;vsetVol(-3);window.COE_EVENTS?.dispatch('coe:wormhole-dive',{target:'third-eye'});}
+  window.COE_EVENTS?.dispatch('coe:flight-tick',{pos:VD.pos,yaw:VD.yaw,pitch:VD.pitch,speed:VD.sp,warp:VD.warp,targetedGalaxy:VD.targetedGalaxy?VD.targetedGalaxy.name:null});
   return true}
  if(m==='close'){const u=Math.min(1,e/1.5);VD.bg=[0,0,0];if(reduced){VD.fb=1;VD.gain=1}else{VD.fb=eio(u);VD.pos[2]=RING.center[2]-110*eio(u)}VD.pos[0]*=.9;VD.pos[1]*=.9;VD.yaw*=.9;VD.pitch*=.9;
   if(e>=3.5){VD.mode='open';VD.t0=t;VD.frontGain=0;borrowReturn()}return true}
@@ -811,6 +814,7 @@ if(st>=window.coeThoughtNext){
  window.coeThoughtTract=tId/64.0;
  window.coeThoughtDest=tr?tr.destHub:[0,0,0];
  window.coeThoughtNext=st+10.0+Math.random()*6.0;
+ window.COE_EVENTS?.dispatch('coe:lightning-strike',{tractId:tId,hub:window.coeThoughtDest});
 }
 const eTh=st-window.coeThoughtT0;
 const uSynProg=(eTh>=0&&eTh<0.8)?(eTh/0.8):0.0;
