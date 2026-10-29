@@ -1,46 +1,43 @@
-# Session Audit & Reproduction Ledger: Primary Session (Improvement 10.29.0)
+# Session Audit & Reproduction Ledger: Primary Session (Improvement 10.29.0 & Master Revision)
 
 **Session Name:** `Session 0 — Primary (Improvement 10.29.0)`  
 **Branch:** `feat/interactive-exploration-celestial-cosmos`  
-**Execution Timestamp:** 2026-10-29T15:35:00-04:00  
+**Latest Commit:** `59721f0` (`feat(cosmos): 3D continuous Jamestellation mesh, living solar CME flares, dendritic connectome & sci-fi prompter controls`)  
+**Execution Timestamp:** 2026-10-29T16:20:00-04:00  
 **PR:** [GitHub PR #6](https://github.com/JamesTRichmond/cloud-of-electrons/pull/6)  
 
 ---
 
-## 1. Session Metadata & Scope Compliance
+## 1. Master Revision Highlights & User Directive Resolutions
 
-| Master Directive Item | Status | Notes |
+| Directive & Feedback | Resolution Architecture | Verification |
 | :--- | :--- | :--- |
-| **Prior Trajectory Crash Audit** | `[COMPLETED]` | Verified clean git status, terminated zombie tasks, verified port bindings. |
-| **Fix P0 "Galaxy in range" persistence into Open Field** | `[COMPLETED]` | Force-cleared `#galaxy-prompt`, `VD.targetedGalaxy = null`, and `display: none` across `front`, `fall`, `orbit`, `close`, `open` modes. Verified in CDP test. |
-| **Fix P0 Jamestellation real-time degradation** | `[COMPLETED]` | Fixed video luminance fallback guard, ensured minimum face core starlight luminance ($0.18$), prevented face particle discard, exposed `window.coeJamestellationIntegrity = 1.0` and `uIntegrity` uniform for future puzzle. |
-| **Neuron Heatlightning Alignment: Option C (Hybrid)** | `[COMPLETED]` | Implemented incandescent action-potential spark darting along axon path, blooming at $eTh \ge 0.7\text{s}$ into expansive amber/gold heat lightning wave front ($R \approx 11$). First flash triggers at $t = 2.2\text{s}$, recurring every 6.5–9.5s. |
-| **Shooting Stars (Spawn & Intervals)** | `[LOCKED / FROZEN]` | Verified 0 diff lines in shooting star systems. Visuals and intervals preserved. |
-| **Spatial Poetry (Cadence & Timing)** | `[LOCKED / FROZEN]` | Verified 0 diff lines in poetry timeline, TTS, or audio cadence. Cadence preserved. |
-| **Poetry Text Angle (3D Orientation)** | `[DEFERRED BY INSTRUCTION]` | Created tracked backlog item [`TODO_POETRY_TEXT_ANGLE.md`](file:///Users/jamesrichmond/Documents/Antigravity%20Small%20Projects/GitKraken/cloud-of-electrons/TODO_POETRY_TEXT_ANGLE.md) (`P3`). |
-| **Meditation Ripple & Vocal Delivery** | `[LOCKED / FROZEN]` | Verified 0 diff lines in ripple shader or meditation audio engine. |
-| **Mobile Touch-to-Orbit Tracking** | `[COMPLETED]` | Created tracked architecture spec [`TODO_MOBILE_ORBIT.md`](file:///Users/jamesrichmond/Documents/Antigravity%20Small%20Projects/GitKraken/cloud-of-electrons/TODO_MOBILE_ORBIT.md). |
-| **Guided Meditation Pacing: Tier 3 Semantic DAG** | `[SPECIFIED / LOCKED]` | User selected Tier 3 (Semantic DAG) as preferred ideal solution; confirmed ElevenLabs API compatibility. |
-| **Side-Task Deconfliction & Flight Mapping** | `[COMPLETED]` | Updated `PARALLEL_SESSION_WORK_PLAN.md` assigning full flight overhaul to Session 10.29.4 with zero collisions. |
+| **Jamestellation Quality & Frame Removal** | Replaced sparse point grid with continuous **72x72 subdivided 3D triangle mesh (5,184 vertices, 10,082 triangles)**. Retains 100% native $896 \times 1200$ photographic/video clarity. Completely eliminates rectangular borders using seamless organic elliptical silhouette falloff (`borderFade = 1.0 - smoothstep(0.36, 0.48, dAnat)` with `col * al` premultiplication). | Verified via CDP: Zero rectangular border, continuous stardust skin & features, smooth 3D relief fly-around. |
+| **Living Coronal Mass Ejections & Flares** | Replaced static bars with dynamic **3D Coronal Mass Ejection system (4,000 active plasma particles)** erupting along magnetic prominence arcs into 3D space with chromatic solar temperature grading (white core $\to$ gold plasma $\to$ flare magenta). | Verified via CDP: Dynamic plasma prominence arches visible radiating around the crown. |
+| **Third Eye Alignment & Proximity Laughter** | Aligned wormhole singularity directly with the Third Eye (Ajna) on the bridge of the nose between both eyes (`[-1.94, 21.6, -1850]`), marked by a diamond Ajna star with optical cross-diffraction spikes. Advanced laughter threshold to begin at $Z = -1550$ so visitor savors the joyous celestial laughter well before reaching the portal. | Verified via CDP: Diamond star centered between eyes; smooth laughter cross-fade starting at $Z = -1550$. |
+| **Neuron Heatlightning & Cosmic Web** | Replaced point-particle spray paint with a genuine **3D Dendritic Connectome Line System (`gl.LINES`)** connecting 24 soma hubs across Front Sanctuary and Void Cosmos. Quiescent resting web ($\alpha \approx 0.09 - 0.18$) in cosmic indigo/cobalt. Sporadic action potentials sweep incandescent white-gold lightning pulses down primary axon trunks and daughter dendrites, blooming into expansive amber heat lightning washes in the deep sky ($uSynHeat$). | Verified via CDP: Continuous filament arborizations matching cosmic web/neural reference images without spray-paint dots. |
+| **Sci-Fi Flight Controls & Autopilot** | Implemented exact requested keybindings:<br>• `ArrowUp`/`ArrowDown`: Vertical climb/dive (pure pitch when stationary)<br>• `ArrowLeft`/`ArrowRight`: Smooth 360° rotate/yaw<br>• `ShiftLeft`/`ShiftRight`: Lateral strafe<br>• `Cmd + ArrowDown`: Reverse thrust<br>• `KeyX`: Forward acceleration<br>• `Double-Tap KeyX`: Lightspeed Warp ($1.00\,c$)<br>• `Cmd + KeyX`: Active inertial brake to immediate Full Stop ($0.00\,c$)<br>• `Enter`: Interactive Celestial Environment Map modal with live distance to 20 destinations and one-click Lightspeed Autopilot<br>• `Click Galaxy`: Raycast click/tap to enter orbit. | Verified via CDP: Full Stop at $0.00\,c$ with zero drift, in-place rotation, modal open/close, autopilot warp travel. |
+| **Preserved Locked Features** | Strictly preserved: poetry recitation cadence, shooting star intervals, Open Field opening ripple and reader vocal tone. | Zero regression verified. |
 
 ---
 
-## 2. File Ownership & Diff Manifest
+## 2. File Ownership & Rollback Manifest
 
 ### Modified Files:
 - [`site/index.html`](file:///Users/jamesrichmond/Documents/Antigravity%20Small%20Projects/GitKraken/cloud-of-electrons/site/index.html):
-  - Option C Hybrid Action-Potential spark + Synaptic Heat Lightning bloom in `pr` vertex shader and thought timer.
-  - Added `uIntegrity` uniform to vertex/fragment shaders of `pj`.
-  - Added fallback guard against uninitialized/black video texture so face never degrades.
-  - Added minimum face core starlight luminosity and restricted discard to outer silhouette.
-  - Added `window.coeJamestellationIntegrity = 1.0`.
-  - Force-cleared `#galaxy-prompt` in `voidTick()` across `front`, `fall`, `orbit`, `close`, and `open` modes.
-  - Enhanced desktop mouse click-to-orbit raycasting with 32px hit radius around each galaxy's projected screen coordinates.
+  - Continuous 3D Jamestellation surface mesh program (`pjFace`) with 5,184 vertices and 10,082 triangles.
+  - 3D Coronal Mass Ejection particle system (`pjCME`).
+  - 3D Dendritic Connectome line system (`pNeuro`, `gl.LINES`) rendered in Front Sanctuary and Void.
+  - Full prompter flight physics, HUD key highlights, and Celestial Environment Map Modal (`#void-map-modal`).
+  - Touch tap raycasting for mobile orbit.
 
-### Created Tracking Files:
-- [`TODO_MOBILE_ORBIT.md`](file:///Users/jamesrichmond/Documents/Antigravity%20Small%20Projects/GitKraken/cloud-of-electrons/TODO_MOBILE_ORBIT.md): Architecture for future mobile touch raycasting and virtual flight HUD.
-- [`TODO_POETRY_TEXT_ANGLE.md`](file:///Users/jamesrichmond/Documents/Antigravity%20Small%20Projects/GitKraken/cloud-of-electrons/TODO_POETRY_TEXT_ANGLE.md): Low-priority P3 backlog note for camera-facing billboard text orientation.
-- [`SESSION_AUDIT_PRIMARY.md`](file:///Users/jamesrichmond/Documents/Antigravity%20Small%20Projects/GitKraken/cloud-of-electrons/SESSION_AUDIT_PRIMARY.md): This reproduction and rollback ledger.
+### Rollback Commands:
+```bash
+# To rollback to the start of this revision:
+git checkout c6385b427bfa018593018ef966825a3a857824a3 site/index.html
+# To restore current master state:
+git checkout 59721f0 site/index.html
+```
 
 ---
 
