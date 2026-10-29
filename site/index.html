@@ -524,18 +524,19 @@ void main(){
  float F=mix(2.0503,1.45,uWarp);
  gl_Position=vec4(v.x*F/asp,v.y*F,0.0,vDist);
 
- float isTract=1.0-smoothstep(0.0,0.04,abs(tractId-uNeuroTract));
+ float isTract=1.0-smoothstep(0.0,0.065,abs(tractId-uNeuroTract));
  float delta=prog-uNeuroProg;
- float spark=isTract*exp(-delta*delta*260.0)*step(0.001,uNeuroProg);
- float trail=isTract*exp(-clamp(delta,0.0,0.40)*14.0)*step(0.001,uNeuroProg)*0.65;
- float symp=step(abs(tractId-uNeuroTract),0.09)*exp(-delta*delta*120.0)*step(0.001,uNeuroProg)*0.35*(2.0-level);
- float totalSpark=clamp(spark*2.2+trail+symp,0.0,2.5);
+ float spark=isTract*exp(-delta*delta*340.0)*step(0.001,uNeuroProg);
+ float trail=isTract*exp(-clamp(delta,0.0,0.45)*12.0)*step(0.001,uNeuroProg)*0.75;
+ float symp=step(abs(tractId-uNeuroTract),0.12)*exp(-delta*delta*160.0)*step(0.001,uNeuroProg)*0.5*(1.0+level*0.35);
+ float terminalFlash=(level>=2.0)?isTract*exp(-pow(uNeuroProg-0.96,2.0)*160.0)*1.8:0.0;
+ float totalSpark=clamp(spark*2.4+trail+symp+terminalFlash,0.0,3.0);
 
- float restingAlpha=mix(0.18,0.09,level/2.0)*(0.85+0.15*sin(t*1.5+seed*6.28));
+ float restingAlpha=mix(0.24,0.12,level/3.0)*(0.82+0.18*sin(t*1.6+seed*6.28));
  vAlpha=mix(restingAlpha,0.98,clamp(totalSpark,0.0,1.0));
 
- vec3 restingCol=mix(vec3(0.32,0.22,0.56),vec3(0.18,0.28,0.52),seed);
- vec3 sparkCol=mix(vec3(1.0,0.82,0.38),vec3(1.0,1.0,0.98),clamp(spark*1.4,0.0,1.0));
+ vec3 restingCol=mix(vec3(0.28,0.20,0.52),vec3(0.16,0.26,0.48),seed);
+ vec3 sparkCol=mix(vec3(1.0,0.80,0.34),vec3(1.0,0.98,0.92),clamp(spark*1.6+terminalFlash,0.0,1.0));
  vCol=mix(restingCol,sparkCol,clamp(totalSpark,0.0,1.0));
 }`));
 gl.attachShader(pNeuro,sh(gl.FRAGMENT_SHADER,`#version 300 es
@@ -543,10 +544,47 @@ precision highp float;
 in float vDist;in float vAlpha;in vec3 vCol;
 uniform float gain,fb;out vec4 o;
 void main(){
- float nearFade=smoothstep(0.8,12.0,vDist),farFade=1.0-smoothstep(2200.0,3800.0,vDist);
+ float nearFade=smoothstep(0.8,12.0,vDist),farFade=1.0-smoothstep(2400.0,4000.0,vDist);
  o=vec4(vCol,gain*vAlpha*nearFade*farFade*(1.0-fb));
 }`));
 gl.linkProgram(pNeuro);if(!gl.getProgramParameter(pNeuro,gl.LINK_STATUS))throw gl.getProgramInfoLog(pNeuro);
+
+// 3D Soma Bodies & Synaptic Boutons Point Sprite Program
+const pSoma=gl.createProgram();
+gl.attachShader(pSoma,sh(gl.VERTEX_SHADER,`#version 300 es
+precision highp float;
+in vec3 s_pos;in vec4 s_attr;
+uniform mat3 rot;uniform vec3 cp;uniform float t,asp,hpx,uWarp,uNeuroTract,uNeuroProg;
+out float vDist;out float vAlpha;out vec3 vCol;out float vIsSoma;
+void main(){
+ vec3 v=rot*(s_pos-cp);vDist=-v.z;
+ if(vDist<0.35){gl_Position=vec4(2.,2.,2.,1.);gl_PointSize=0.;return;}
+ float F=mix(2.0503,1.45,uWarp);
+ gl_Position=vec4(v.x*F/asp,v.y*F,0.0,vDist);
+ float tractId=s_attr.x;float isSoma=s_attr.y;float baseRad=s_attr.z;float seed=s_attr.w;
+ float isTract=1.0-smoothstep(0.0,0.08,abs(tractId-uNeuroTract));
+ float pulse=isTract*exp(-pow(uNeuroProg-(isSoma>0.5?0.08:0.96),2.0)*(isSoma>0.5?120.0:180.0))*step(0.001,uNeuroProg);
+ float sz=baseRad*(1.0+pulse*2.6)*F*hpx/vDist;
+ gl_PointSize=clamp(sz,1.5,isSoma>0.5?52.0:24.0);
+ float restingAlpha=(isSoma>0.5?0.48:0.25)*(0.85+0.15*sin(t*2.0+seed*6.28));
+ vAlpha=clamp(restingAlpha+pulse*1.8,0.0,2.0);
+ vec3 restingCol=isSoma>0.5?vec3(0.42,0.30,0.78):vec3(0.24,0.38,0.68);
+ vec3 flashCol=isSoma>0.5?vec3(1.0,0.95,0.82):vec3(1.0,0.78,0.35);
+ vCol=mix(restingCol,flashCol,clamp(pulse*1.6,0.0,1.0));
+ vIsSoma=isSoma;
+}`));
+gl.attachShader(pSoma,sh(gl.FRAGMENT_SHADER,`#version 300 es
+precision highp float;
+in float vDist;in float vAlpha;in vec3 vCol;in float vIsSoma;
+uniform float gain,fb;out vec4 o;
+void main(){
+ vec2 pc=(gl_PointCoord-0.5)*2.0;float r=length(pc);if(r>1.0)discard;
+ float core=exp(-r*r*(vIsSoma>0.5?3.5:5.0));
+ float halo=exp(-r*2.2)*0.45;
+ float nearFade=smoothstep(0.8,12.0,vDist),farFade=1.0-smoothstep(2400.0,4000.0,vDist);
+ o=vec4(vCol*(core+halo),gain*vAlpha*(core+halo*0.6)*nearFade*farFade*(1.0-fb));
+}`));
+gl.linkProgram(pSoma);if(!gl.getProgramParameter(pSoma,gl.LINK_STATUS))throw gl.getProgramInfoLog(pSoma);
 
 // Jamestellation Continuous 3D Subdivided Face Mesh (5,184 Vertices, 10,082 Triangles)
 const GW=72,GH=72;
@@ -618,46 +656,86 @@ const attC=(name,arr,sz)=>{const b=gl.createBuffer(),l=gl.getAttribLocation(pjCM
 attC('cme_pos',CME_POS,3);attC('cme_dir',CME_DIR,3);attC('cme_attr',CME_ATTR,2);
 gl.bindVertexArray(null);
 
-// 3D Neural Connectome Network Generation (Dendritic Arborization across Front Sanctuary & Void)
-const NEURO_HUBS=[
- [0,16,-22],[-18,8,-28],[20,-10,-24],[-22,-14,-36],[24,15,-32],
- [-12,24,-45],[16,-18,-48],[-28,6,-54],[26,-6,-58],[0,2,-65],
- [0,25,-200],[-62,16,-200],[96,48,-280],[-70,72,-30],
- [120,-35,-550],[-140,60,-780],[45,-80,-950],[-90,-40,-1150],
- [110,85,-1350],[-40,20,-1550],[0,40,-1750],[80,-30,-1700],
- [-85,45,-1800],[-1.94,21.6,-1850]
+// 3D Neural Connectome Network Generation (Living Dendritic Arborization across Front Sanctuary & Void)
+const SOMA_HUBS=[
+ [0,16,-22, 6.2, 0],       // Sanctuary Soma
+ [-24,12,-38, 4.8, 1],     // Front Port Ganglion
+ [26,14,-34, 4.8, 2],      // Front Starboard Ganglion
+ [0,24,-180, 5.5, 3],      // Corridor Threshold Node
+ [75,48,-320, 5.2, 4],     // Mid-Cosmos Ganglion
+ [-110,55,-780, 6.5, 5],   // Deep Void Spiral Center
+ [95,-55,-1350, 7.0, 6],   // Abyssal Synaptic Hub
+ [-40,25,-1550, 7.5, 7],   // Pre-Portal Ganglion
+ [0,38,-1750, 8.2, 8],     // Gateway Crown Center
+ [-1.94,21.6,-1850, 10.0, 9]// Ajna Singularity Soma
 ];
-window.coeNeuroHubs=NEURO_HUBS;
+window.coeNeuroHubs=SOMA_HUBS.map(h=>[h[0],h[1],h[2]]);
+
 const neuroLines=[];
-// Build arborization hierarchy connecting hubs
-for(let h=0;h<NEURO_HUBS.length-1;h++){
- const pA=NEURO_HUBS[h],pB=NEURO_HUBS[h+1];
- const tractId=h/(NEURO_HUBS.length-1);
- const mid=[(pA[0]+pB[0])*0.5+(Math.sin(h*2.1)-0.5)*45.0, (pA[1]+pB[1])*0.5+(Math.cos(h*1.7)-0.5)*35.0, (pA[2]+pB[2])*0.5+(Math.sin(h*3.2)-0.5)*50.0];
- const TRUNK_SEGS=14;
- for(let s=0;s<TRUNK_SEGS;s++){
-  const t0=s/TRUNK_SEGS,t1=(s+1)/TRUNK_SEGS;
-  const bz=(t)=>{const it=1.0-t;return [it*it*pA[0]+2.0*it*t*mid[0]+t*t*pB[0], it*it*pA[1]+2.0*it*t*mid[1]+t*t*pB[1], it*it*pA[2]+2.0*it*t*mid[2]+t*t*pB[2]];};
-  const v0=bz(t0),v1=bz(t1);
-  neuroLines.push(v0[0],v0[1],v0[2], tractId, t0, 0, Math.random());
-  neuroLines.push(v1[0],v1[1],v1[2], tractId, t1, 0, Math.random());
+const somaNodes=[];
 
-  // Collateral branch
-  if(s%3===1){
-   const dir=[(Math.random()-0.5)*38.0,(Math.random()-0.5)*32.0,(Math.random()-0.5)*40.0];
-   const cEnd=[v0[0]+dir[0],v0[1]+dir[1],v0[2]+dir[2]];
-   neuroLines.push(v0[0],v0[1],v0[2], tractId, t0, 1, Math.random());
-   neuroLines.push(cEnd[0],cEnd[1],cEnd[2], tractId, Math.min(1.0,t0+0.18), 1, Math.random());
+// Register primary soma bodies
+for(let i=0;i<SOMA_HUBS.length;i++){
+ const H=SOMA_HUBS[i];
+ const tractId=i/(SOMA_HUBS.length-1);
+ somaNodes.push(H[0],H[1],H[2], tractId, 1.0, H[3], Math.random());
+}
 
-   // Terminal dendritic tendrils
+// Generate organic undulating axon tracts and recursive dendritic arborizations
+for(let h=0;h<SOMA_HUBS.length-1;h++){
+ const pA=SOMA_HUBS[h],pB=SOMA_HUBS[h+1];
+ const tractId=h/(SOMA_HUBS.length-1);
+ const TRUNK_SEGS=28;
+ 
+ const mid=[
+  (pA[0]+pB[0])*0.5+(Math.sin(h*2.3)-0.5)*55.0,
+  (pA[1]+pB[1])*0.5+(Math.cos(h*1.9)-0.5)*42.0,
+  (pA[2]+pB[2])*0.5+(Math.sin(h*3.1)-0.5)*60.0
+ ];
+ 
+ let prevPt=[pA[0],pA[1],pA[2]];
+ for(let s=1;s<=TRUNK_SEGS;s++){
+  const t1=s/TRUNK_SEGS,it=1.0-t1;
+  const t0=(s-1)/TRUNK_SEGS;
+  const bx=it*it*pA[0]+2.0*it*t1*mid[0]+t1*t1*pB[0];
+  const by=it*it*pA[1]+2.0*it*t1*mid[1]+t1*t1*pB[1];
+  const bz=it*it*pA[2]+2.0*it*t1*mid[2]+t1*t1*pB[2];
+  const env=Math.sin(t1*Math.PI);
+  const curPt=[
+   bx+Math.sin(t1*12.0+h*4.0)*env*16.0,
+   by+Math.cos(t1*10.0+h*3.0)*env*14.0,
+   bz+Math.sin(t1*14.0+h*5.0)*env*18.0
+  ];
+  
+  neuroLines.push(prevPt[0],prevPt[1],prevPt[2], tractId, t0, 0, Math.random());
+  neuroLines.push(curPt[0],curPt[1],curPt[2], tractId, t1, 0, Math.random());
+
+  // Recursive Collateral Dendritic Branching (Generation 1)
+  if(s%4===2){
+   const dir=[(Math.random()-0.5)*36.0, (Math.random()-0.5)*30.0, (Math.random()-0.5)*42.0];
+   const cMid=[curPt[0]+dir[0]*0.5+(Math.random()-0.5)*12.0, curPt[1]+dir[1]*0.5+(Math.random()-0.5)*10.0, curPt[2]+dir[2]*0.5+(Math.random()-0.5)*12.0];
+   const cEnd=[curPt[0]+dir[0], curPt[1]+dir[1], curPt[2]+dir[2]];
+   
+   neuroLines.push(curPt[0],curPt[1],curPt[2], tractId, t1, 1, Math.random());
+   neuroLines.push(cMid[0],cMid[1],cMid[2], tractId, Math.min(1.0,t1+0.12), 1, Math.random());
+   neuroLines.push(cMid[0],cMid[1],cMid[2], tractId, Math.min(1.0,t1+0.12), 1, Math.random());
+   neuroLines.push(cEnd[0],cEnd[1],cEnd[2], tractId, Math.min(1.0,t1+0.24), 1, Math.random());
+
+   // Generation 2: Terminal Dendritic Arborizations
    for(let k=0;k<3;k++){
-    const tEnd=[cEnd[0]+(Math.random()-0.5)*18.0, cEnd[1]+(Math.random()-0.5)*16.0, cEnd[2]+(Math.random()-0.5)*20.0];
-    neuroLines.push(cEnd[0],cEnd[1],cEnd[2], tractId, Math.min(1.0,t0+0.18), 2, Math.random());
-    neuroLines.push(tEnd[0],tEnd[1],tEnd[2], tractId, Math.min(1.0,t0+0.32), 2, Math.random());
+    const tDir=[(Math.random()-0.5)*18.0, (Math.random()-0.5)*16.0, (Math.random()-0.5)*20.0];
+    const tEnd=[cEnd[0]+tDir[0], cEnd[1]+tDir[1], cEnd[2]+tDir[2]];
+    neuroLines.push(cEnd[0],cEnd[1],cEnd[2], tractId, Math.min(1.0,t1+0.24), 2, Math.random());
+    neuroLines.push(tEnd[0],tEnd[1],tEnd[2], tractId, Math.min(1.0,t1+0.38), 2, Math.random());
+
+    // Generation 3: Synaptic Bouton Node at terminus
+    somaNodes.push(tEnd[0],tEnd[1],tEnd[2], tractId, 0.0, 2.2, Math.random());
    }
   }
+  prevPt=curPt;
  }
 }
+
 const NEURO_VERT_COUNT=neuroLines.length/7;
 const neuroBufArr=new Float32Array(neuroLines);
 const neuroVao=gl.createVertexArray();
@@ -668,6 +746,20 @@ gl.bufferData(gl.ARRAY_BUFFER,neuroBufArr,gl.STATIC_DRAW);
 const lNPos=gl.getAttribLocation(pNeuro,'n_pos'),lNAttr=gl.getAttribLocation(pNeuro,'n_attr');
 gl.enableVertexAttribArray(lNPos);gl.vertexAttribPointer(lNPos,3,gl.FLOAT,false,28,0);
 gl.enableVertexAttribArray(lNAttr);gl.vertexAttribPointer(lNAttr,4,gl.FLOAT,false,28,12);
+gl.bindVertexArray(null);
+
+const SOMA_VERT_COUNT=somaNodes.length/7;
+window.coeNeuroVertCount=NEURO_VERT_COUNT;
+window.coeSomaVertCount=SOMA_VERT_COUNT;
+const somaBufArr=new Float32Array(somaNodes);
+const somaVao=gl.createVertexArray();
+gl.bindVertexArray(somaVao);
+const somaBuf=gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER,somaBuf);
+gl.bufferData(gl.ARRAY_BUFFER,somaBufArr,gl.STATIC_DRAW);
+const lSPos=gl.getAttribLocation(pSoma,'s_pos'),lSAttr=gl.getAttribLocation(pSoma,'s_attr');
+gl.enableVertexAttribArray(lSPos);gl.vertexAttribPointer(lSPos,3,gl.FLOAT,false,28,0);
+gl.enableVertexAttribArray(lSAttr);gl.vertexAttribPointer(lSAttr,4,gl.FLOAT,false,28,12);
 gl.bindVertexArray(null);
 const jTexStill=gl.createTexture(),jTexVideo=gl.createTexture();let jReady=false;
 {const im=new Image();im.onload=()=>{gl.bindTexture(gl.TEXTURE_2D,jTexStill);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,im);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);jReady=true};im.src='jamestellation_serene.jpg'}
@@ -785,21 +877,34 @@ const css=document.createElement('style');css.textContent=`#void-door{position:f
 #galaxy-prompt .gp-tag{font:10px 'Source Serif 4',serif;letter-spacing:.22em;text-transform:uppercase;color:#fad685}
 #galaxy-prompt .gp-name{font:15px 'Source Serif 4',serif;color:#ffffff;font-weight:600}
 #galaxy-prompt .gp-action{font:10px 'Source Serif 4',serif;letter-spacing:.14em;text-transform:uppercase;color:#fad685;background:rgba(250,214,133,.18);border:1px solid rgba(250,214,133,.4);padding:3px 10px;border-radius:9999px}
-#void-map-modal{position:fixed;inset:0;background:rgba(3,5,9,.88);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);z-index:90;display:none;align-items:center;justify-content:center;padding:24px;box-sizing:border-box}
+#void-map-modal{position:fixed;inset:0;background:radial-gradient(ellipse at 50% 45%,rgba(10,15,28,.95),rgba(3,5,9,.98));backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);z-index:90;display:none;flex-direction:column;box-sizing:border-box;overflow:hidden}
 #void-map-modal.open{display:flex}
-.vmap-card{background:rgba(10,14,24,.92);border:1px solid rgba(250,214,133,.35);border-radius:20px;max-width:880px;width:100%;max-height:85vh;display:flex;flex-direction:column;box-shadow:0 24px 64px rgba(0,0,0,.9),0 0 32px rgba(250,214,133,.15);overflow:hidden}
-.vmap-header{padding:20px 24px 16px;border-bottom:1px solid rgba(250,214,133,.2);display:flex;justify-content:space-between;align-items:flex-start}
-.vmap-title{font:18px 'Source Serif 4',serif;color:#fad685;letter-spacing:.06em;font-weight:600}
-.vmap-sub{font-size:11px;color:#EDE6D6;opacity:.75;margin-top:4px;letter-spacing:.04em}
-.vmap-close{background:none;border:1px solid rgba(237,230,214,.25);color:#EDE6D6;border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:14px;transition:all .2s}
-.vmap-close:hover{border-color:#fad685;color:#fad685}
-.vmap-body{padding:20px 24px;overflow-y:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
-.vmap-item{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px 14px;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;justify-content:space-between;gap:8px}
-.vmap-item:hover{background:rgba(250,214,133,.12);border-color:rgba(250,214,133,.45);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.6)}
-.vmap-item-name{font:14px 'Source Serif 4',serif;color:#ffffff;font-weight:600}
-.vmap-item-meta{display:flex;justify-content:space-between;font-size:10px;color:#fad685;letter-spacing:.08em;text-transform:uppercase}
-.vmap-item-btn{align-self:flex-start;background:rgba(250,214,133,.15);border:1px solid rgba(250,214,133,.35);color:#fad685;border-radius:9999px;padding:3px 10px;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;transition:all .2s}
-.vmap-item:hover .vmap-item-btn{background:#fad685;color:#0b0f19;font-weight:600}`;document.head.appendChild(css);
+.nms-map-shell{display:flex;flex-direction:column;width:100%;height:100%;padding:20px 24px;box-sizing:border-box}
+.nms-top-bar{display:flex;justify-content:space-between;align-items:center;padding-bottom:14px;border-bottom:1px solid rgba(250,214,133,.22);flex-shrink:0}
+.nms-brand .nms-tag{font:12px 'Source Serif 4',serif;letter-spacing:.24em;text-transform:uppercase;color:#fad685;font-weight:600}
+.nms-brand .nms-sub{font-size:10.5px;color:#EDE6D6;opacity:.75;letter-spacing:.08em;margin-top:3px}
+.nms-telemetry-strip{display:flex;align-items:center;gap:12px}
+.nms-pill{font:10px 'Source Serif 4',serif;background:rgba(255,255,255,.05);border:1px solid rgba(250,214,133,.3);border-radius:9999px;padding:4px 12px;color:#EDE6D6;letter-spacing:.08em}
+.nms-pill strong{color:#fad685;font-weight:600}
+.nms-close-btn{background:rgba(250,214,133,.12);border:1px solid rgba(250,214,133,.4);color:#fad685;border-radius:50%;width:30px;height:30px;cursor:pointer;font-size:16px;line-height:28px;transition:all .2s;display:flex;align-items:center;justify-content:center}
+.nms-close-btn:hover{background:#fad685;color:#05070d;border-color:#ffffff}
+.nms-canvas-wrap{position:relative;flex:1;width:100%;height:100%;margin-top:12px;border:1px solid rgba(250,214,133,.25);border-radius:14px;background:#030509;overflow:hidden;box-shadow:inset 0 0 60px rgba(0,0,0,.9),0 16px 48px rgba(0,0,0,.85)}
+#nms-galactic-map-c{width:100%;height:100%;display:block;cursor:crosshair}
+.nms-hover-card{position:absolute;bottom:20px;left:20px;width:320px;background:rgba(8,12,22,.92);border:1px solid rgba(250,214,133,.5);border-radius:14px;padding:16px 18px;backdrop-filter:blur(20px);box-shadow:0 16px 40px rgba(0,0,0,.9),0 0 24px rgba(250,214,133,.2);pointer-events:auto;transition:opacity .25s ease,transform .25s ease;z-index:10}
+.nms-hover-card.hidden{opacity:0;pointer-events:none;transform:translateY(10px)}
+.nms-card-kicker{font:9.5px 'Source Serif 4',serif;letter-spacing:.22em;text-transform:uppercase;color:#fad685;opacity:.9;margin-bottom:4px}
+.nms-card-title{font:16px 'Source Serif 4',serif;color:#ffffff;font-weight:600;margin-bottom:10px;text-shadow:0 0 10px rgba(250,214,133,.4)}
+.nms-card-grid{display:flex;flex-direction:column;gap:5px;font-size:11px;margin-bottom:14px;border-top:1px solid rgba(237,230,214,.1);border-bottom:1px solid rgba(237,230,214,.1);padding:8px 0}
+.nms-card-row{display:flex;justify-content:space-between;color:#EDE6D6;opacity:.85}
+.nms-card-row strong{color:#fad685;font-weight:600}
+.nms-engage-btn{width:100%;background:linear-gradient(90deg,#fad685,#f2bc56);color:#080c14;border:none;border-radius:9999px;padding:8px 0;font:11px 'Source Serif 4',serif;font-weight:700;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:all .2s ease;box-shadow:0 4px 16px rgba(250,214,133,.35)}
+.nms-engage-btn:hover{background:#ffffff;box-shadow:0 4px 20px rgba(255,255,255,.6);transform:scale(1.02)}
+.nms-bottom-bar{display:flex;justify-content:space-between;align-items:center;padding-top:12px;flex-shrink:0}
+.nms-instructions{display:flex;gap:14px;font-size:10.5px;color:#EDE6D6;opacity:.7}
+.nms-instructions kbd{background:rgba(250,214,133,.16);border:1px solid rgba(250,214,133,.35);border-radius:4px;padding:2px 6px;color:#fad685;font-weight:600}
+.nms-quick-presets{display:flex;gap:8px}
+.nms-preset-btn{background:rgba(255,255,255,.05);border:1px solid rgba(250,214,133,.25);border-radius:9999px;color:#EDE6D6;font:10px 'Source Serif 4',serif;letter-spacing:.08em;padding:4px 12px;cursor:pointer;transition:all .2s}
+.nms-preset-btn:hover{background:rgba(250,214,133,.2);border-color:#fad685;color:#ffffff}`;document.head.appendChild(css);
 const door=document.createElement('div');door.id='void-door';door.tabIndex=0;door.setAttribute('role','link');door.setAttribute('aria-label','fall in');door.innerHTML='<span>fall in</span>';document.body.appendChild(door);
 const hudEl=document.createElement('div');hudEl.id='void-hud';
 hudEl.innerHTML=`<div class="hud-top"><span class="hud-callsign">ASTRONAV · SCI-FI FLIGHT DECK</span><span id="hud-warp-badge" class="hud-badge">SUBLIGHT</span></div><div class="hud-body"><div class="hud-row" id="hr-pitch"><span class="k">↑ · ↓</span><span class="v">Climb / Dive</span></div><div class="hud-row" id="hr-yaw"><span class="k">← · →</span><span class="v">Rotate Left / Right</span></div><div class="hud-row" id="hr-strafe"><span class="k">L-SHIFT · R-SHIFT</span><span class="v">Lateral Strafe</span></div><div class="hud-row" id="hr-rev"><span class="k">CMD + ↓</span><span class="v">Reverse Thrust</span></div><div class="hud-row" id="hr-accel"><span class="k">X</span><span class="v">Forward Acceleration</span></div><div class="hud-row" id="hr-warp"><span class="k">X, X (DOUBLE-TAP)</span><span class="v">Lightspeed Warp (1.0 c)</span></div><div class="hud-row" id="hr-stop"><span class="k">CMD + X</span><span class="v">Full Stop / Inertial Brake</span></div><div class="hud-row" id="hr-map"><span class="k">ENTER</span><span class="v">Celestial Map & Autopilot</span></div><div class="hud-row" id="hr-orbit"><span class="k">CLICK GALAXY</span><span class="v">Enter Orbit</span></div></div><div class="hud-meter"><div class="hud-meter-label"><span>VELOCITY</span><span id="hud-vel-val">0.00 c</span></div><div class="hud-bar"><div id="hud-bar-fill" class="hud-bar-fill"></div></div></div>`;
@@ -813,25 +918,332 @@ gpEl.innerHTML=`<span class="gp-tag">✦ GALAXY IN RANGE</span><span id="gp-name
 gpEl.onclick=()=>{if(VD.targetedGalaxy)enterOrbit(VD.targetedGalaxy);};
 document.body.appendChild(gpEl);
 
-// Astronavigation Environment Map Modal
+// Astronavigation Environment Map Modal (No Man's Sky 3D Bird's-Eye Tactical Overview)
 const mapModal=document.createElement('div');mapModal.id='void-map-modal';
-mapModal.innerHTML=`<div class="vmap-card"><div class="vmap-header"><div><div class="vmap-title">✦ CELESTIAL ENVIRONMENT MAP & AUTOPILOT ✦</div><div class="vmap-sub">SELECT ANY GALAXY TO ENGAGE LIGHTSPEED QUICK TRAVEL (PRESS ENTER OR ESC TO CLOSE)</div></div><button class="vmap-close" id="vmap-close-btn">&times;</button></div><div class="vmap-body" id="vmap-list"></div></div>`;
+mapModal.innerHTML=`
+<div class="nms-map-shell">
+ <div class="nms-top-bar">
+  <div class="nms-brand">
+   <div class="nms-tag">✦ ASTRONAVIGATION SECTOR MATRIX · TACTICAL HOLODECK ✦</div>
+   <div class="nms-sub">NO MAN'S SKY 3D SPATIAL OVERVIEW · GODLIKE HIGH-ALTITUDE PERSPECTIVE</div>
+  </div>
+  <div class="nms-telemetry-strip">
+   <span class="nms-pill">VESSEL: <strong id="nms-ship-coord">[0, 0, 110]</strong></span>
+   <span class="nms-pill">HEADING: <strong id="nms-ship-heading">000°</strong></span>
+   <span class="nms-pill" id="nms-warp-status">STATUS: <strong>SUBLIGHT</strong></span>
+   <button id="vmap-close-btn" class="nms-close-btn" title="Exit Astronav Map (Enter / Esc)">&times;</button>
+  </div>
+ </div>
+ <div class="nms-canvas-wrap">
+  <canvas id="nms-galactic-map-c"></canvas>
+  <div id="nms-hover-card" class="nms-hover-card hidden">
+   <div class="nms-card-kicker">✦ TARGET LOCK ACQUIRED</div>
+   <div class="nms-card-title" id="nms-card-name">GALAXY NAME</div>
+   <div class="nms-card-grid">
+    <div class="nms-card-row"><span>COORDINATES</span><strong id="nms-card-pos">[0, 0, 0]</strong></div>
+    <div class="nms-card-row"><span>DISTANCE</span><strong id="nms-card-dist">0 LY</strong></div>
+    <div class="nms-card-row"><span>CELESTIAL CLASS</span><strong id="nms-card-type">SPIRAL SINGULARITY</strong></div>
+    <div class="nms-card-row"><span>APPROACH PROFILE</span><strong id="nms-card-profile">DIRECT KEPLER ORBIT</strong></div>
+   </div>
+   <button id="nms-card-engage-btn" class="nms-engage-btn">ENGAGE LIGHTSPEED AUTOPILOT (1.00 c)</button>
+  </div>
+ </div>
+ <div class="nms-bottom-bar">
+  <div class="nms-instructions">
+   <span><kbd>DRAG</kbd> Orbit 360° & Tilt</span>
+   <span><kbd>WHEEL</kbd> Zoom Depth</span>
+   <span><kbd>HOVER</kbd> Inspect Telemetry</span>
+   <span><kbd>CLICK</kbd> Lightspeed Autopilot</span>
+   <span><kbd>ENTER / ESC</kbd> Return to Pilot Helm</span>
+  </div>
+  <div class="nms-quick-presets">
+   <button class="nms-preset-btn" id="nms-btn-reset">Reset Bird's-Eye</button>
+   <button class="nms-preset-btn" id="nms-btn-top">Top-Down Plane</button>
+   <button class="nms-preset-btn" id="nms-btn-ship">Center Ship</button>
+   <button class="nms-preset-btn" id="nms-btn-james">Jamestellation</button>
+  </div>
+ </div>
+</div>`;
 document.body.appendChild(mapModal);
-const closeMap=()=>{mapModal.classList.remove('open');};
-const openMap=()=>{
- const list=document.getElementById('vmap-list');if(!list)return;list.innerHTML='';
- const curPos=VD.pos;
- const allDest=[...VOID_WELLS,{id:'jamestellation',name:'Jamestellation Deep Void Portal',pos:[-1.94,21.6,-1850],radius:45}];
- allDest.forEach(W=>{
-  const d=Math.hypot(W.pos[0]-curPos[0],W.pos[1]-curPos[1],W.pos[2]-curPos[2]);
-  const it=document.createElement('div');it.className='vmap-item';
-  it.innerHTML=`<div><div class="vmap-item-name">${W.name}</div><div class="vmap-item-meta"><span>DIST: ${Math.round(d)} LY</span><span>[${Math.round(W.pos[0])}, ${Math.round(W.pos[1])}, ${Math.round(W.pos[2])}]</span></div></div><button class="vmap-item-btn">ENGAGE AUTOPILOT</button>`;
-  it.onclick=()=>{closeMap();engageAutopilot(W);};
-  list.appendChild(it);
+
+// Tactical 3D Map State & Engine
+const NMS_MAP={
+ cv:null,ctx:null,open:false,
+ az:0.26,el:-0.92,zoom:0.46,
+ cx:0,cy:0,cz:-900,
+ drag:false,lx:0,ly:0,
+ hoveredTarget:null,screenNodes:[],rafId:null
+};
+
+const getAllDestinations=()=>[...VOID_WELLS,{id:'jamestellation',name:'Jamestellation Deep Void Portal',pos:[-1.94,21.6,-1850],radius:45,isPortal:true}];
+
+function initNmsMapCanvas(){
+ if(NMS_MAP.cv)return;
+ NMS_MAP.cv=document.getElementById('nms-galactic-map-c');
+ if(!NMS_MAP.cv)return;
+ NMS_MAP.ctx=NMS_MAP.cv.getContext('2d');
+ 
+ const cv=NMS_MAP.cv;
+ cv.addEventListener('mousedown',e=>{
+  if(e.button===0){NMS_MAP.drag=true;NMS_MAP.lx=e.clientX;NMS_MAP.ly=e.clientY;}
  });
+ window.addEventListener('mouseup',()=>{NMS_MAP.drag=false;});
+ cv.addEventListener('mousemove',e=>{
+  if(NMS_MAP.drag){
+   const dx=e.clientX-NMS_MAP.lx,dy=e.clientY-NMS_MAP.ly;
+   NMS_MAP.az+=(dx/cv.clientWidth)*2.8;
+   NMS_MAP.el=Math.max(-1.45,Math.min(-0.15,NMS_MAP.el-(dy/cv.clientHeight)*2.2));
+   NMS_MAP.lx=e.clientX;NMS_MAP.ly=e.clientY;
+  }
+  // Hover detection
+  const rect=cv.getBoundingClientRect();
+  const mx=e.clientX-rect.left,my=e.clientY-rect.top;
+  let closest=null,minDist=32;
+  for(const sn of NMS_MAP.screenNodes){
+   const d=Math.hypot(sn.sx-mx,sn.sy-my);
+   if(d<minDist){minDist=d;closest=sn;}
+  }
+  updateNmsHover(closest);
+ });
+ cv.addEventListener('wheel',e=>{
+  e.preventDefault();
+  const factor=e.deltaY>0?0.90:1.11;
+  NMS_MAP.zoom=Math.max(0.12,Math.min(2.4,NMS_MAP.zoom*factor));
+ },{passive:false});
+ cv.addEventListener('click',e=>{
+  if(NMS_MAP.hoveredTarget){
+   closeMap();
+   engageAutopilot(NMS_MAP.hoveredTarget.target);
+  }
+ });
+ 
+ const btnEngage=document.getElementById('nms-card-engage-btn');
+ if(btnEngage){
+  btnEngage.onclick=()=>{
+   if(NMS_MAP.hoveredTarget){
+    closeMap();
+    engageAutopilot(NMS_MAP.hoveredTarget.target);
+   }
+  };
+ }
+ const bReset=document.getElementById('nms-btn-reset');if(bReset)bReset.onclick=()=>{NMS_MAP.az=0.26;NMS_MAP.el=-0.92;NMS_MAP.zoom=0.46;NMS_MAP.cx=0;NMS_MAP.cz=-900;};
+ const bTop=document.getElementById('nms-btn-top');if(bTop)bTop.onclick=()=>{NMS_MAP.az=0.0;NMS_MAP.el=-1.45;NMS_MAP.zoom=0.42;};
+ const bShip=document.getElementById('nms-btn-ship');if(bShip)bShip.onclick=()=>{NMS_MAP.cx=VD.pos[0];NMS_MAP.cz=VD.pos[2];NMS_MAP.zoom=0.75;};
+ const bJames=document.getElementById('nms-btn-james');if(bJames)bJames.onclick=()=>{NMS_MAP.cx=-1.94;NMS_MAP.cz=-1850;NMS_MAP.zoom=0.90;};
+}
+
+function updateNmsHover(node){
+ NMS_MAP.hoveredTarget=node;
+ const card=document.getElementById('nms-hover-card');
+ if(!card)return;
+ if(!node){card.classList.add('hidden');return;}
+ const T=node.target;
+ const dist=Math.round(Math.hypot(T.pos[0]-VD.pos[0],T.pos[1]-VD.pos[1],T.pos[2]-VD.pos[2]));
+ document.getElementById('nms-card-name').textContent=T.name;
+ document.getElementById('nms-card-pos').textContent=`[${Math.round(T.pos[0])}, ${Math.round(T.pos[1])}, ${Math.round(T.pos[2])}]`;
+ document.getElementById('nms-card-dist').textContent=`${dist} LIGHT YEARS`;
+ document.getElementById('nms-card-type').textContent=T.isPortal?'WORMHOLE SINGULARITY':'CELESTIAL REALM GALAXY';
+ document.getElementById('nms-card-profile').textContent=dist<220?'CLOSE RANGE ORBIT':'WARP CORRIDOR VECTOR';
+ card.classList.remove('hidden');
+}
+window.updateNmsHover=updateNmsHover;
+
+function renderNmsMapFrame(){
+ if(!NMS_MAP.open)return;
+ const cv=NMS_MAP.cv,ctx=NMS_MAP.ctx;
+ if(!cv||!ctx)return;
+ const w=cv.clientWidth,h=cv.clientHeight;
+ if(cv.width!==w||cv.height!==h){cv.width=w;cv.height=h;}
+
+ ctx.fillStyle='#04060c';ctx.fillRect(0,0,w,h);
+ 
+ const bgGrad=ctx.createRadialGradient(w*0.5,h*0.45,20,w*0.5,h*0.5,w*0.75);
+ bgGrad.addColorStop(0,'rgba(16,25,50,0.65)');
+ bgGrad.addColorStop(0.5,'rgba(8,12,24,0.4)');
+ bgGrad.addColorStop(1,'rgba(2,3,6,0.95)');
+ ctx.fillStyle=bgGrad;ctx.fillRect(0,0,w,h);
+
+ const az=NMS_MAP.az,el=NMS_MAP.el,zoom=NMS_MAP.zoom;
+ const caz=Math.cos(az),saz=Math.sin(az),cel=Math.cos(el),sel=Math.sin(el);
+ const cx=NMS_MAP.cx,cz=NMS_MAP.cz;
+
+ const project=(x,y,z)=>{
+  const dx=x-cx,dy=y,dz=z-cz;
+  const rx=dx*caz+dz*saz;
+  const rz=-dx*saz+dz*caz;
+  const ry=dy*cel-rz*sel;
+  const rz2=dy*sel+rz*cel;
+  const distCam=2200/zoom;
+  const pz=rz2+distCam;
+  if(pz<40)return null;
+  const sc=(w*0.88)/pz;
+  return {sx:w*0.5+rx*sc,sy:h*0.52-ry*sc,depth:pz,scale:sc};
+ };
+
+ // 1. Draw Celestial Plane Grid (Y = 0)
+ ctx.lineWidth=1;
+ ctx.strokeStyle='rgba(80,180,225,0.09)';
+ for(let gz=200;gz>=-2100;gz-=150){
+  const p1=project(-350,0,gz),p2=project(350,0,gz);
+  if(p1&&p2){ctx.beginPath();ctx.moveTo(p1.sx,p1.sy);ctx.lineTo(p2.sx,p2.sy);ctx.stroke();}
+ }
+ for(let gx=-350;gx<=350;gx+=100){
+  const p1=project(gx,0,200),p2=project(gx,0,-2100);
+  if(p1&&p2){ctx.beginPath();ctx.moveTo(p1.sx,p1.sy);ctx.lineTo(p2.sx,p2.sy);ctx.stroke();}
+ }
+
+ // Concentric Range Rings on Plane
+ ctx.strokeStyle='rgba(250,214,133,0.11)';
+ for(const r of [300,700,1200,1800]){
+  ctx.beginPath();
+  let first=true;
+  for(let a=0;a<=6.283;a+=0.2){
+   const p=project(Math.cos(a)*r,0,-900+Math.sin(a)*r);
+   if(p){if(first){ctx.moveTo(p.sx,p.sy);first=false;}else ctx.lineTo(p.sx,p.sy);}
+  }
+  ctx.stroke();
+ }
+
+ NMS_MAP.screenNodes=[];
+ const allDest=getAllDestinations();
+
+ // 2. Draw Vertical Drop Stems from Galaxies to Plane
+ for(const T of allDest){
+  const pTop=project(T.pos[0],T.pos[1],T.pos[2]);
+  const pBase=project(T.pos[0],0,T.pos[2]);
+  if(pTop&&pBase){
+   ctx.beginPath();
+   ctx.setLineDash([3,4]);
+   ctx.strokeStyle=T.isPortal?'rgba(250,214,133,0.45)':'rgba(120,200,255,0.25)';
+   ctx.moveTo(pBase.sx,pBase.sy);ctx.lineTo(pTop.sx,pTop.sy);ctx.stroke();
+   ctx.setLineDash([]);
+   // Anchor ring on plane
+   ctx.beginPath();
+   ctx.ellipse(pBase.sx,pBase.sy,Math.max(2,5*pBase.scale),Math.max(1,2.5*pBase.scale),0,0,6.28);
+   ctx.fillStyle='rgba(80,180,225,0.18)';ctx.fill();
+   ctx.strokeStyle='rgba(80,180,225,0.35)';ctx.stroke();
+  }
+ }
+
+ // 3. Draw Visitor Ship Drop Stem & Marker
+ const pShip=project(VD.pos[0],VD.pos[1],VD.pos[2]);
+ const pShipBase=project(VD.pos[0],0,VD.pos[2]);
+ if(pShip&&pShipBase){
+  ctx.beginPath();
+  ctx.setLineDash([2,3]);
+  ctx.strokeStyle='rgba(255,255,255,0.6)';
+  ctx.moveTo(pShipBase.sx,pShipBase.sy);ctx.lineTo(pShip.sx,pShip.sy);ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.beginPath();
+  ctx.ellipse(pShipBase.sx,pShipBase.sy,6,3,0,0,6.28);
+  ctx.strokeStyle='rgba(250,214,133,0.8)';ctx.stroke();
+
+  const nowT=performance.now()*0.003;
+  const pulseR=8+(nowT%1.0)*22;
+  const pulseA=1.0-(nowT%1.0);
+  ctx.beginPath();
+  ctx.arc(pShip.sx,pShip.sy,pulseR,0,6.28);
+  ctx.strokeStyle=`rgba(250,214,133,${pulseA*0.7})`;ctx.stroke();
+
+  ctx.beginPath();
+  ctx.fillStyle='#ffffff';
+  ctx.arc(pShip.sx,pShip.sy,4.5,0,6.28);
+  ctx.fill();
+  ctx.strokeStyle='#fad685';ctx.lineWidth=1.5;ctx.stroke();
+
+  ctx.font='10px "Source Serif 4", serif';
+  ctx.fillStyle='#fad685';
+  ctx.fillText('▲ YOU ARE HERE',pShip.sx+10,pShip.sy+4);
+ }
+
+ // 4. Draw Trajectory Line if Hovering
+ if(NMS_MAP.hoveredTarget&&pShip){
+  const hPos=NMS_MAP.hoveredTarget.target.pos;
+  const pHov=project(hPos[0],hPos[1],hPos[2]);
+  if(pHov){
+   ctx.beginPath();
+   ctx.setLineDash([4,4]);
+   ctx.strokeStyle='rgba(250,214,133,0.75)';
+   ctx.lineWidth=1.5;
+   ctx.moveTo(pShip.sx,pShip.sy);ctx.lineTo(pHov.sx,pHov.sy);ctx.stroke();
+   ctx.setLineDash([]);
+  }
+ }
+
+ // 5. Draw Galaxy Nodes
+ for(const T of allDest){
+  const p=project(T.pos[0],T.pos[1],T.pos[2]);
+  if(!p)continue;
+  NMS_MAP.screenNodes.push({sx:p.sx,sy:p.sy,target:T});
+
+  const isHov=NMS_MAP.hoveredTarget&&NMS_MAP.hoveredTarget.target.id===T.id;
+  const isPortal=T.isPortal;
+  const nodeRad=Math.max(4,Math.min(18,(isPortal?9:6)*p.scale));
+
+  const auraGrad=ctx.createRadialGradient(p.sx,p.sy,nodeRad*0.2,p.sx,p.sy,nodeRad*(isHov?3.5:2.2));
+  if(isPortal){
+   auraGrad.addColorStop(0,'rgba(255,255,255,0.95)');
+   auraGrad.addColorStop(0.3,'rgba(250,214,133,0.85)');
+   auraGrad.addColorStop(0.7,'rgba(215,80,180,0.4)');
+   auraGrad.addColorStop(1,'rgba(0,0,0,0)');
+  }else if(isHov){
+   auraGrad.addColorStop(0,'rgba(255,255,255,0.95)');
+   auraGrad.addColorStop(0.4,'rgba(250,214,133,0.8)');
+   auraGrad.addColorStop(1,'rgba(0,0,0,0)');
+  }else{
+   auraGrad.addColorStop(0,'rgba(220,240,255,0.85)');
+   auraGrad.addColorStop(0.5,'rgba(100,180,245,0.35)');
+   auraGrad.addColorStop(1,'rgba(0,0,0,0)');
+  }
+  ctx.fillStyle=auraGrad;
+  ctx.beginPath();ctx.arc(p.sx,p.sy,nodeRad*(isHov?3.5:2.2),0,6.28);ctx.fill();
+
+  ctx.fillStyle=isPortal?'#ffffff':(isHov?'#ffffff':'#fad685');
+  ctx.beginPath();ctx.arc(p.sx,p.sy,nodeRad*0.65,0,6.28);ctx.fill();
+
+  if(isHov){
+   const bSz=nodeRad*2.2;
+   ctx.strokeStyle='#fad685';ctx.lineWidth=1.5;
+   ctx.beginPath();
+   ctx.moveTo(p.sx-bSz,p.sy-bSz+6);ctx.lineTo(p.sx-bSz,p.sy-bSz);ctx.lineTo(p.sx-bSz+6,p.sy-bSz);
+   ctx.moveTo(p.sx+bSz,p.sy-bSz+6);ctx.lineTo(p.sx+bSz,p.sy-bSz);ctx.lineTo(p.sx+bSz-6,p.sy-bSz);
+   ctx.moveTo(p.sx-bSz,p.sy+bSz-6);ctx.lineTo(p.sx-bSz,p.sy+bSz);ctx.lineTo(p.sx-bSz+6,p.sy+bSz);
+   ctx.moveTo(p.sx+bSz,p.sy+bSz-6);ctx.lineTo(p.sx+bSz,p.sy+bSz);ctx.lineTo(p.sx+bSz-6,p.sy+bSz);
+   ctx.stroke();
+  }
+
+  ctx.font=`${isHov?'600 12px':'10.5px'} "Source Serif 4", serif`;
+  ctx.fillStyle=isHov?'#ffffff':'#EDE6D6';
+  ctx.shadowColor='rgba(0,0,0,0.9)';ctx.shadowBlur=6;
+  ctx.fillText(T.name,p.sx+nodeRad+6,p.sy+3);
+  ctx.shadowBlur=0;
+ }
+
+ const cEl=document.getElementById('nms-ship-coord');
+ if(cEl)cEl.textContent=`[${Math.round(VD.pos[0])}, ${Math.round(VD.pos[1])}, ${Math.round(VD.pos[2])}]`;
+ const hEl=document.getElementById('nms-ship-heading');
+ if(hEl)hEl.textContent=`${Math.round(((VD.yaw%(Math.PI*2)+Math.PI*2)%(Math.PI*2))*(180/Math.PI))}°`;
+ const wEl=document.getElementById('nms-warp-status');
+ if(wEl)wEl.innerHTML=AUTOPILOT.active?'STATUS: <strong style="color:#fad685">AUTOPILOT WARP</strong>':(VD.warp>0.5?'STATUS: <strong style="color:#fad685">LIGHTSPEED (1.0 c)</strong>':'STATUS: <strong>SUBLIGHT</strong>');
+
+ if(NMS_MAP.open)NMS_MAP.rafId=requestAnimationFrame(renderNmsMapFrame);
+}
+
+const closeMap=()=>{
+ mapModal.classList.remove('open');
+ NMS_MAP.open=false;
+ if(NMS_MAP.rafId)cancelAnimationFrame(NMS_MAP.rafId);
+};
+const openMap=()=>{
+ initNmsMapCanvas();
  mapModal.classList.add('open');
+ NMS_MAP.open=true;
+ updateNmsHover(null);
+ renderNmsMapFrame();
 };
 document.getElementById('vmap-close-btn').onclick=closeMap;
+window.coeOpenMap=openMap;
+window.coeCloseMap=closeMap;
 
 const AUTOPILOT={active:false,targetPos:null,targetGalaxy:null,phase:'steer'};
 function engageAutopilot(target){
@@ -841,12 +1253,17 @@ function engageAutopilot(target){
  window.COE_EVENTS?.dispatch('coe:autopilot-engage',{target:target.name,pos:target.pos});
 }
 window.coeAutopilot=engageAutopilot;
+window.coeAutopilotState=AUTOPILOT;
 
 const hudShow=()=>{VD.hudTimer=4.0;hudEl.classList.add('active');};
 const labels=VOID_WELLS.map(W=>{const R=REGB[REGION_FOR[W.id]||W.id]||(W.id==='preincarnation'?{kicker:'',name:W.name}:null);if(!R)return null;const b=document.createElement('button');b.className='vlabel';b.innerHTML=`<small></small><span></span><div class="vorbit-tag">✦ ENTER ORBIT</div>`;b.querySelector('small').textContent=R.kicker;b.querySelector('span').textContent=R.name;b.onclick=()=>enterOrbit(W);b.onmouseenter=()=>{VD.hoverId=W.id;hudShow();};b.onmouseleave=()=>{if(VD.hoverId===W.id)VD.hoverId=null;};document.body.appendChild(b);return b});
 function enterOrbit(W){if(!W)return;
  AUTOPILOT.active=false;VD.orbitTarget=W;VD.orbitAngle=Math.atan2(VD.pos[2]-W.pos[2],VD.pos[0]-W.pos[0]);
  VD.orbitRadius=W.radius*1.55;VD.orbitT0=performance.now()/1000;VD.mode='orbit';
+ const toX=W.pos[0]-VD.pos[0],toY=W.pos[1]-VD.pos[1],toZ=W.pos[2]-VD.pos[2];
+ const distH=Math.hypot(toX,toZ);
+ VD.yaw=Math.atan2(-toX,-toZ);
+ VD.pitch=Math.atan2(toY,distH);
  const ob=document.getElementById('orbit-banner');if(ob){document.getElementById('ob-title').textContent=W.name;ob.classList.add('on');}
  const promptEl=document.getElementById('galaxy-prompt');if(promptEl)promptEl.classList.remove('active');
  window.COE_EVENTS?.dispatch('coe:orbit-enter',{galaxyId:W.id,name:W.name,pos:W.pos,radius:W.radius});}
@@ -924,9 +1341,14 @@ function voidTick(t,dt){const m=VD.mode;if(m==='front'){VD.frontGain=Math.min(1,
   VD.orbitAngle=(VD.orbitAngle||0)+dt*.24;const rOrb=W.radius*1.55;
   const targetPos=[W.pos[0]+Math.cos(VD.orbitAngle)*rOrb,W.pos[1]+Math.sin(VD.orbitAngle*.5)*5.,W.pos[2]+Math.sin(VD.orbitAngle)*rOrb];
   VD.pos[0]=lerp(VD.pos[0],targetPos[0],Math.min(1,dt*2.8));VD.pos[1]=lerp(VD.pos[1],targetPos[1],Math.min(1,dt*2.8));VD.pos[2]=lerp(VD.pos[2],targetPos[2],Math.min(1,dt*2.8));
-  const dx=W.pos[0]-VD.pos[0],dy=W.pos[1]-VD.pos[1],dz=W.pos[2]-VD.pos[2];
-  const targetYaw=Math.atan2(-dx,-dz),targetPitch=Math.atan2(dy,Math.hypot(dx,dz));
-  VD.yaw=lerp(VD.yaw,targetYaw,Math.min(1,dt*3.2));VD.pitch=lerp(VD.pitch,targetPitch,Math.min(1,dt*3.2));return true}
+  // Continuous Inward Radial Vector Tidal Lock (targetPos - shipPos)
+  const toX=W.pos[0]-VD.pos[0],toY=W.pos[1]-VD.pos[1],toZ=W.pos[2]-VD.pos[2];
+  const targetYaw=Math.atan2(-toX,-toZ),targetPitch=Math.atan2(toY,Math.hypot(toX,toZ));
+  let diffYaw=(targetYaw-VD.yaw)%(Math.PI*2);
+  if(diffYaw<-Math.PI)diffYaw+=Math.PI*2;
+  if(diffYaw>Math.PI)diffYaw-=Math.PI*2;
+  VD.yaw+=diffYaw*Math.min(1.0,dt*8.0);
+  VD.pitch=lerp(VD.pitch,targetPitch,Math.min(1.0,dt*8.0));return true}
  if(m==='fly'){VD.gain=Math.min(1,VD.gain+dt/1.2);VD.bg=[0,0,0];
   if(VD.hudTimer>0){VD.hudTimer-=dt;const hud=document.getElementById('void-hud');if(hud)hud.classList.toggle('active',VD.hudTimer>0||VD.hudHover);}
 
@@ -983,8 +1405,8 @@ function voidTick(t,dt){const m=VD.mode;if(m==='front'){VD.frontGain=Math.min(1,
    const vertInput=(KEYS.ArrowUp?1:0)-(KEYS.ArrowDown&&!KEYS.Meta?1:0);
    VD.pitch=Math.max(-1.40,Math.min(1.40,VD.pitch+vertInput*1.35*dt));
 
-   // Rotate Left / Right (ArrowLeft / ArrowRight)
-   const yawTurn=(KEYS.ArrowLeft||KEYS.KeyA?1:0)-(KEYS.ArrowRight||KEYS.KeyD?1:0);
+   // Rotate Left / Right (ArrowLeft / ArrowRight) - Inverted so ArrowLeft yaws CCW (port) and ArrowRight yaws CW (starboard)
+   const yawTurn=(KEYS.ArrowRight||KEYS.KeyD?1:0)-(KEYS.ArrowLeft||KEYS.KeyA?1:0);
    VD.yaw+=yawTurn*1.65*dt;
 
    // Lateral strafe (Left Shift / Right Shift)
@@ -1065,6 +1487,18 @@ function drawVoid(t){if(!vao||VD.gain<=0.001)return;gl.useProgram(pv);gl.bindVer
   gl.uniform1f(N('uNeuroTract'),window.coeThoughtTract||0);
   gl.uniform1f(N('uNeuroProg'),window.coeThoughtProg||0);
   gl.drawArrays(gl.LINES,0,NEURO_VERT_COUNT);
+ }
+
+ // Render 3D Soma Bodies & Synaptic Boutons Point Sprites
+ if(somaVao){
+  gl.useProgram(pSoma);gl.bindVertexArray(somaVao);
+  const S=n=>gl.getUniformLocation(pSoma,n);
+  gl.uniformMatrix3fv(S('rot'),false,colm);gl.uniform3fv(S('cp'),VD.pos);
+  gl.uniform1f(S('t'),vt);gl.uniform1f(S('asp'),aspect);gl.uniform1f(S('hpx'),cv.height/2);
+  gl.uniform1f(S('gain'),VD.gain);gl.uniform1f(S('fb'),VD.fb);gl.uniform1f(S('uWarp'),VD.warp||0);
+  gl.uniform1f(S('uNeuroTract'),window.coeThoughtTract||0);
+  gl.uniform1f(S('uNeuroProg'),window.coeThoughtProg||0);
+  gl.drawArrays(gl.POINTS,0,SOMA_VERT_COUNT);
  }
 
  // Render Continuous High-Resolution Jamestellation Face & 3D Coronal Mass Ejections
@@ -1187,6 +1621,24 @@ if(neuroVao && VD.frontGain > 0.01){
  gl.uniform1f(NF('uNeuroProg'),uSynProg);
  gl.drawArrays(gl.LINES,0,NEURO_VERT_COUNT);
  gl.bindVertexArray(null);
+
+ if(somaVao){
+  gl.useProgram(pSoma);
+  gl.bindVertexArray(somaVao);
+  const SF=n=>gl.getUniformLocation(pSoma,n);
+  gl.uniformMatrix3fv(SF('rot'),false,frontM);
+  gl.uniform3fv(SF('cp'),cam);
+  gl.uniform1f(SF('t'),st);
+  gl.uniform1f(SF('asp'),aspect);
+  gl.uniform1f(SF('hpx'),cv.height/2);
+  gl.uniform1f(SF('gain'),VD.frontGain * 0.88);
+  gl.uniform1f(SF('fb'),0.0);
+  gl.uniform1f(SF('uWarp'),0.0);
+  gl.uniform1f(SF('uNeuroTract'),window.coeThoughtTract||0);
+  gl.uniform1f(SF('uNeuroProg'),uSynProg);
+  gl.drawArrays(gl.POINTS,0,SOMA_VERT_COUNT);
+  gl.bindVertexArray(null);
+ }
  gl.useProgram(pr);
 }
 gl.drawArrays(gl.POINTS,0,N);

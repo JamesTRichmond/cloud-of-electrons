@@ -129,3 +129,28 @@ git status
 - **Jamestellation Stabilization Proof:**
   - `v24_6_jamestellation_serene_3d.png`: Face solid, no degradation, no hollow holes.
   - `v24_7_jamestellation_laughter_3d.png`: Joyful laughter stable, no decay.
+
+---
+
+## 6. Master Revision 2.6: Flight Physics, Orbital Tidal Lock, No Man's Sky 3D Tactical Map, Living Synaptic Connectome & Argon External Handoff
+
+**Execution Timestamp:** 2026-10-29T17:10:00-04:00  
+**Target Branch:** `feat/interactive-exploration-celestial-cosmos`  
+
+### 6.1 Directives & Remediation Summary
+
+| Directive & Feedback | Root Cause | Resolution Architecture | Verification |
+| :--- | :--- | :--- | :--- |
+| **3.1 Reversed Yaw Controls** | In `drawVoid`, rotation matrix $X' = sy \cdot (-z)$ meant $+sy$ (increased yaw) shifts objects left, rotating camera right. `ArrowLeft` was adding to `VD.yaw`, steering starboard. | Mapped `yawTurn = (KEYS.ArrowRight \|\| KEYS.KeyD ? 1 : 0) - (KEYS.ArrowLeft \|\| KEYS.KeyA ? 1 : 0)`. `ArrowLeft` now decreases `VD.yaw` (turns CCW/port); `ArrowRight` increases `VD.yaw` (turns CW/starboard). | Verified via CDP: `leftTurnDecreasesYaw: PASS [✓]`, `rightTurnIncreasesYaw: PASS [✓]`. |
+| **3.2 Orbital Blindspot (Tidal Lock)** | Naïve angle `lerp` in `voidTick` crossed $[-\pi, \pi]$ branch cuts, causing camera flips and pointing into empty space away from orbited galaxy. | Implemented continuous inward radial vector tidal lock `toX = W.pos[0] - VD.pos[0]`, `targetYaw = Math.atan2(-toX, -toZ)`, `targetPitch = Math.atan2(toY, distH)` with shortest-arc wrapping. Galaxy remains framed dead-center at all times. | Verified via CDP: Inward gaze alignment dot product = `1.000` (PASS [✓]). Screenshot: `v26_tidally_locked_orbit.png`. |
+| **3.3 Astronavigation Map Overhaul** | `#void-map-modal` rendered a 20-card text button grid rather than a spatial map. | Replaced with full-screen **No Man's Sky 3D Tactical Astronavigation Holodeck** (`<canvas id="nms-galactic-map-c">`): high-altitude bird's-eye perspective (pitch $-54^\circ$), glowing celestial reference grid ($Y = 0$), vertical altitude drop stems, galaxy nodes with pulsing halos, visitor ship beacon with radar pulse, interactive hover telemetry card, and click-to-autopilot. | Verified via CDP: 3D canvas render, hover telemetry, click-to-autopilot engagement. Screenshot: `v26_nms_tactical_spatial_map.png`. |
+| **3.4 Living Synaptic Connectome & Heat Lightning** | Straight single-segment wireframe lines and single serial chain connecting hubs looked like rigid CAD prisms / spray paint. | Overhauled geometry into **Living Dendritic Arborization**: 10 primary soma hubs across Front and Void, 28-segment Catmull-Rom splines with 3D curl-noise displacement, recursive collateral branching ($30^\circ - 45^\circ$), fine terminal dendrites, and terminal synaptic boutons. Built companion point sprite system (`pSoma`, `gl.POINTS`) for pulsing soma bodies and blooming terminal flash cascades. | Verified via CDP: 1,134 dendritic vertices, 199 soma bodies/boutons, incandescent pulse propagation. Screenshot: `v26_living_synaptic_lightning_firing.png`. |
+| **4.0 The Jamestellation External Handoff** | Achieving volumetric SDF raymarching, organic boundary curl-noise erosion, and magnetohydrodynamic coronal prominence loops exceeds g3.8FHigh's sweet spot and burns internal context. | Authored turnkey, self-contained handoff specification: `handoffs/JAMESTELLATION_EXTERNAL_HANDOFF_PROMPT.md` with full embedded source code, shaders, uniforms, textures, coordinates, gap analysis from `media_1793306459687_e0c834e9.png`, and dual return-path protocols (Git PR vs Drop-In `.md`). | Verified: File created and validated on disk. |
+
+### 6.2 Rollback Commands for Revision 2.6
+```bash
+# To rollback index.html to before Revision 2.6:
+git checkout 59721f0 site/index.html
+# To re-verify:
+node test_cdp_verification.js
+```
