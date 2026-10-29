@@ -28,7 +28,7 @@ html,body{margin:0;height:100%;background:#05070D;overflow:hidden;user-select:no
 #of select:hover,#of select:focus{border-color:rgba(250,214,133,.5);background:rgba(237,230,214,.1)}
 #of select option{background:#05070D;color:#EDE6D6;padding:4px}
 #of select option:checked{background:rgba(250,214,133,.25);color:#fad685}
-#of-poem,#of-med{display:block;width:100%;box-sizing:border-box}
+#of-poem,#of-med,#of-med-level{display:block;width:100%;box-sizing:border-box}
 
 /* Button rows */
 .of-row{display:flex;gap:8px;align-items:center}
@@ -59,6 +59,7 @@ html,body{margin:0;height:100%;background:#05070D;overflow:hidden;user-select:no
 <div id="of-mode" role="radiogroup" aria-label="Mode"><span role="radio" tabindex="0" data-m="poetry" class="sel" aria-checked="true">Poetry</span> <span role="radio" tabindex="0" data-m="meditation" aria-checked="false">Meditation</span></div>
 <label id="of-poeml">Poem <select id="of-poem"></select></label>
 <label id="of-medl" style="display:none">Meditation <select id="of-med"></select></label>
+<label id="of-med-levell" style="display:none">Depth <select id="of-med-level"><option value="beginner">Beginner (~5 min)</option><option value="intermediate" selected>Intermediate (~10 min)</option><option value="advanced">Advanced (~20 min)</option></select></label>
 <div class="of-row"><button id="of-go">Begin</button> <button id="of-sil">Silence</button></div>
 <div class="of-row"><button id="of-bn">Brown noise</button> <label style="white-space:nowrap;margin:0;flex-direction:row;align-items:center;gap:4px">Timer <select id="of-tm"><option value="0">off</option><option>10</option><option>20</option><option>30</option><option>60</option></select> min</label></div>
 <label>Volume <input id="of-vol" type="range" min="-40" max="-10" value="-25"></label>
@@ -295,25 +296,27 @@ const curl=(x,y,z,t)=>[Math.sin(y*1.7+t*.3)-Math.cos(z*1.3),Math.sin(z*1.9+t*.2)
 // ===== v23 VOID =====================================================================
 // Wells/ring from modeler/void-orbs.js (verbatim positions); titles/room text only from regions.json (regions.clean.ts).
 const VOID_WELLS=[
- ['meditation','Meditation',-70,72,-30,20],
- ['lordai','Biological Perception',-62,16,-200,26],
- ['poetry','Poetry',96,48,-280,18],
- ['music','Music',-108,-42,-360,20],
- ['otter','Otter Creek',24,-8,-430,22],
- ['fallout','The Silo',68,-20,-500,28],
- ['history','The Agora',-32,54,-560,24],
- ['cyber','Digital Forensics',52,28,-640,26],
- ['fog','Brain Fog',-88,36,-720,18],
- ['inventions','The Workshop',12,-62,-800,24],
- ['games','Playable Thought',-120,-18,-880,22],
- ['swarm','The Swarm',-56,26,-960,32],
- ['agents','AgentiCubed',118,38,-1040,22],
- ['homestead','The Homestead',-24,-78,-1140,20],
- ['sales','Consultative Craft',84,-46,-1240,22],
- ['preincarnation','Preincarnation',64,-10,-1350,34],
- ['streamkill','StreamKill',-96,22,-1470,18],
- ['absurd','The Absurd',36,70,-1590,18],
- ['fermentation','Fermentation',-48,-28,-1700,20]
+ ['meditation','Meditation',0,110,-90,24],
+ // Starboard Perseus Spiral Arm (High & Mid Altitudes)
+ ['poetry','Poetry',190,75,-240,20],
+ ['otter','Otter Creek',160,-55,-420,22],
+ ['fallout','The Silo',310,-110,-550,28],
+ ['cyber','Digital Forensics',390,85,-690,26],
+ ['history','The Agora',220,140,-820,24],
+ ['inventions','The Workshop',350,-75,-970,24],
+ ['sales','Consultative Craft',290,115,-1180,22],
+ ['fermentation','Fermentation',190,-105,-1450,22],
+ // Port Orion Spiral Arm (Deep Spanning Arcs)
+ ['lordai','Biological Perception',-185,45,-210,26],
+ ['music','Music',-250,-85,-370,22],
+ ['fog','Brain Fog',-290,110,-510,20],
+ ['games','Playable Thought',-380,-75,-670,24],
+ ['swarm','The Swarm',-420,65,-830,32],
+ ['agents','AgentiCubed',-290,-140,-990,24],
+ ['homestead','The Homestead',-360,95,-1160,22],
+ ['preincarnation','Preincarnation',-180,-80,-1340,34],
+ ['streamkill','StreamKill',-270,115,-1510,20],
+ ['absurd','The Absurd',-110,-130,-1640,20]
 ].map(([id,name,x,y,z,r])=>({id,name,pos:[x,y,z],radius:r,click:Math.max(14,r)}));
 window.coeVoidWells=VOID_WELLS;
 const RING={center:[0,0,-1850],radius:40,dots:1800,thickness:3},FUN={depth:300,throat:3,turns:3,spin:.15,dots:40000};
@@ -385,7 +388,29 @@ else if(k<1.5){
   col=mix(col,vec3(1.,.72,.35),.5);
  }else{float rr=ak.w;vec3 o=vec3(cos(an)*rr,sin(an)*rr*.35,sin(an)*rr);float tl=ak.y*1.7;w=ap+vec3(o.x,o.y*cos(tl)-o.z*sin(tl),o.y*sin(tl)+o.z*cos(tl));}
 }
-else if(k<2.5){w=ap+vec3(sin(t*.3+ak.y*9.),cos(t*.27+ak.y*7.),sin(t*.23+ak.y*5.))*ak.z*.15;sz*=1.3;if(ak.y>.82)str=4.5;}
+else if(k<2.5){
+ if(ak.y>0.88){
+  // Hyper-fast Diamond Streak Meteors (0.4s streak in a periodic 7s cycle)
+  float meteorPeriod=6.5+ak.z*3.5;
+  float tau=fract((t+ak.w*11.0)/meteorPeriod);
+  if(tau<0.065){
+   float mProg=tau/0.065;
+   vec3 vDir=normalize(vec3(-0.76,-0.20,-0.63));
+   w=ap+vDir*(mProg*360.0);
+   vec3 a1=rot*vDir;
+   st=length(a1.xy)>1e-4?normalize(vec2(a1.x/asp,a1.y)):vec2(1.0,0.0);
+   str=10.0;
+   col=mix(vec3(0.96,0.98,1.0),vec3(0.55,0.88,1.0),mProg);
+   al=sin(mProg*3.14159)*2.2;
+   sz=3.8;
+  }else{
+   al=0.0;gl_PointSize=0.0;w=ap;
+  }
+ }else{
+  w=ap+vec3(sin(t*.22+ak.y*6.28),cos(t*.19+ak.y*4.5),sin(t*.16+ak.y*3.2))*ak.z*.12;
+  sz*=1.1;str=1.0;
+ }
+}
 else{float kind=ak.y,u=ap.x;if(kind>2.5)u=fract(ap.x+ak.w+t*.2);
  float turns=kind>2.5?1.5:${FUN.turns}.,an=ap.y+6.2831853*(turns*u+fspin);float r=max(1.5,${FUN.throat}.+(${RING.radius}.-${FUN.throat}.)*pow(1.-u,1.8)+ap.z*(1.-u));w=vec3(cos(an)*r,sin(an)*r,${RING.center[2]}.-${FUN.depth}.*u+ak.z);
  col=mix(vec3(${CRM.join(',')}),vec3(${AMBER.join(',')}),smoothstep(0.,1.,u));
@@ -400,566 +425,117 @@ va=al*gain*(1.-.6*coc)*smoothstep(.35,3.,d)*(1.-smoothstep(2600.,4400.,d));vc=co
 gl.attachShader(pv,sh(gl.FRAGMENT_SHADER,`#version 300 es
 precision mediump float;in vec3 vc;in float va;in vec2 st;in float str;out vec4 o;void main(){vec2 pc=(gl_PointCoord-.5)*2.;pc.y=-pc.y;vec2 q=vec2(dot(pc,st),dot(pc,vec2(-st.y,st.x))*str);float r=length(q);if(r>1.)discard;float core=exp(-r*r*12.);float corona=exp(-r*r*2.2)*(1.-r*r);o=vec4(vc,va*(core*.6+corona*.5));}`));
 gl.linkProgram(pv);if(!gl.getProgramParameter(pv,gl.LINK_STATUS))throw gl.getProgramInfoLog(pv);
-// Continuous Masterpiece Jamestellation 3D Face Program (Argon Physics: Multi-Stratum SDF Relief, Planckian Stellar Classes, Zero Egg-Halo)
+// Continuous Masterpiece Jamestellation 3D Face Program (Sculpted Craniofacial Relief, Photographic Likeness, Zero Egg-Halo, Diamond Ajna)
 const pjFace=gl.createProgram();
 gl.attachShader(pjFace,sh(gl.VERTEX_SHADER,`#version 300 es
 precision highp float;
+in vec3 a_pos;in vec2 a_uv;in vec3 a_attr;
+uniform mat3 rot;uniform vec3 cp;uniform float t,asp,uWarp,uLaugh,uIntegrity;
+out vec2 vUv;out float vDist;out vec3 vPos;out float vHairWeight;
+void main(){
+ vUv=a_uv;
+ float hairWeight=a_attr.y;
+ float seed=a_attr.z;
+ vHairWeight=hairWeight;
+ vec3 w=a_pos;
 
-layout(location = 0) in vec2 aUV;
-layout(location = 1) in vec3 aSeed; // x: hash [0,1], y: stratum [-1,1], z: spectral/ajna flag [0,2]
+ if(hairWeight>0.05){
+  float waveX=sin(t*1.3+a_uv.y*7.0+a_uv.x*4.0)*4.5;
+  float waveY=cos(t*1.1+a_uv.x*5.0+a_uv.y*6.0)*3.5;
+  float waveZ=sin(t*1.5+a_uv.x*6.0-a_uv.y*5.0)*9.0;
+  w+=vec3(waveX,waveY,waveZ)*(hairWeight*hairWeight)*(0.65+0.35*uLaugh);
+ }
 
-uniform mat3 rot;
-uniform vec3 cp;
-uniform float t;
-uniform float asp;
-uniform float hpx;
-uniform float gain;
-uniform float fb;
-uniform float uWarp;
-uniform float uLaugh;
-uniform float uIntegrity;
-uniform sampler2D uTexStill;
-uniform sampler2D uTexVideo;
+ if(uIntegrity<0.999){
+  float decay=(1.0-uIntegrity)*35.0;
+  w+=vec3(sin(seed*45.0)*decay,cos(seed*33.0)*decay,sin(seed*21.0)*decay*1.5);
+ }
 
-out vec3 vColor;
-out vec2 vTexCoord;
-out float vAlpha;
-out float vStarClass;   // 0: Nebula/M-type, 1: G-type, 2: O/B-type, 3: Ajna Singularity
-out float vErosion;
-out float vDispersion;
-
-const vec3 AJNA_POS = vec3(-1.94, 21.6, -1850.0);
-const vec2 AJNA_UV  = vec2(0.50, 0.58);
-const float PI      = 3.14159265359;
-
-// 3D Hash & Value/Simplex Noise for FBM and Divergence-Free Curl Advection
-vec3 hash33(vec3 p3) {
-    p3 = fract(p3 * vec3(0.1031, 0.1030, 0.0973));
-    p3 += dot(p3, p3.yxz + 33.33);
-    return fract((p3.xxy + p3.yxx) * p3.zyx) * 2.0 - 1.0;
-}
-
-float noise3D(vec3 p) {
-    vec3 i = floor(p);
-    vec3 f = fract(p);
-    vec3 u = f * f * (3.0 - 2.0 * f);
-    return mix(
-        mix(mix(dot(hash33(i + vec3(0,0,0)), f - vec3(0,0,0)),
-                dot(hash33(i + vec3(1,0,0)), f - vec3(1,0,0)), u.x),
-            mix(dot(hash33(i + vec3(0,1,0)), f - vec3(0,1,0)),
-                dot(hash33(i + vec3(1,1,0)), f - vec3(1,1,0)), u.x), u.y),
-        mix(mix(dot(hash33(i + vec3(0,0,1)), f - vec3(0,0,1)),
-                dot(hash33(i + vec3(1,0,1)), f - vec3(1,0,1)), u.x),
-            mix(dot(hash33(i + vec3(0,1,1)), f - vec3(0,1,1)),
-                dot(hash33(i + vec3(1,1,1)), f - vec3(1,1,1)), u.x), u.y), u.z
-    );
-}
-
-float fbm(vec3 p) {
-    float v = 0.0;
-    float a = 0.5;
-    mat3 m = mat3(
-         0.00,  0.80,  0.60,
-        -0.80,  0.36, -0.48,
-        -0.60, -0.48,  0.64
-    );
-    for (int i = 0; i < 4; ++i) {
-        v += a * noise3D(p);
-        p = m * p * 2.03 + vec3(13.7, 29.1, 7.3);
-        a *= 0.5;
-    }
-    return v;
-}
-
-vec3 curlNoise(vec3 p) {
-    const float e = 0.05;
-    vec3 dx = vec3(e, 0.0, 0.0);
-    vec3 dy = vec3(0.0, e, 0.0);
-    vec3 dz = vec3(0.0, 0.0, e);
-    float n_y1 = noise3D(p + dy), n_y0 = noise3D(p - dy);
-    float n_z1 = noise3D(p + dz), n_z0 = noise3D(p - dz);
-    float n_x1 = noise3D(p + dx), n_x0 = noise3D(p - dx);
-    return normalize(vec3(
-        (n_y1 - n_y0) - (n_z1 - n_z0),
-        (n_z1 - n_z0) - (n_x1 - n_x0),
-        (n_x1 - n_x0) - (n_y1 - n_y0)
-    ) / (2.0 * e) + 1e-5);
-}
-
-// Blackbody Planckian Locus Approximation (T in Kelvin)
-vec3 planckColor(float tempK) {
-    float tK = clamp(tempK, 2500.0, 30000.0) / 100.0;
-    vec3 c;
-    if (tK <= 66.0) {
-        c.r = 1.0;
-        c.g = clamp(0.39008157 * log(tK) - 0.63184144, 0.0, 1.0);
-    } else {
-        c.r = clamp(1.29293618 * pow(tK - 60.0, -0.13320476), 0.0, 1.0);
-        c.g = clamp(1.12989086 * pow(tK - 60.0, -0.07551485), 0.0, 1.0);
-    }
-    if (tK >= 66.0) {
-        c.b = 1.0;
-    } else if (tK <= 19.0) {
-        c.b = 0.0;
-    } else {
-        c.b = clamp(0.54320679 * log(tK - 10.0) - 1.1962541, 0.0, 1.0);
-    }
-    return c;
-}
-
-// True 3D Craniofacial Sculptural SDF Relief (returns Z offset in [0, 110] LY and feature weight)
-vec2 evaluateAnatomicalRelief(vec2 uv, float laughFactor) {
-    vec2 p = (uv - AJNA_UV) * vec2(2.0, 2.2); // Centered at Ajna bridge (0, 0)
-
-    // Cranial ellipsoid dome base
-    float r2 = dot(p * vec2(1.05, 0.85), p * vec2(1.05, 0.85));
-    float cranium = max(0.0, sqrt(max(0.0, 1.0 - r2 * 0.85)));
-
-    // Nasal bridge and pronasale tip extrusion
-    float noseY = clamp((0.02 - p.y) / 0.34, 0.0, 1.0);
-    float noseWidth = mix(0.065, 0.11, noseY * noseY);
-    float noseBridge = exp(-(p.x * p.x) / (noseWidth * noseWidth)) *
-                       smoothstep(0.08, -0.02, p.y) *
-                       smoothstep(-0.38, -0.26, p.y) *
-                       (0.38 + 0.28 * sin(noseY * PI * 0.82));
-
-    // Supraorbital brow ridge
-    float browCurve = 0.07 - 0.035 * cos(clamp(p.x * 4.5, -PI, PI));
-    float brow = exp(-pow((p.y - browCurve) / 0.055, 2.0)) *
-                 smoothstep(0.52, 0.08, abs(p.x)) * 0.24;
-
-    // Orbital sockets (recessed cavities) & ocular globes (convex spheres)
-    vec2 eyePosL = vec2(-0.22, -0.02);
-    vec2 eyePosR = vec2( 0.22, -0.02);
-    float dEyeL = length((p - eyePosL) * vec2(1.0, 1.45));
-    float dEyeR = length((p - eyePosR) * vec2(1.0, 1.45));
-    float dEye = min(dEyeL, dEyeR);
-    float socketRecess = -0.18 * exp(-pow(dEye / 0.14, 2.0));
-    float ocularGlobe  =  0.14 * exp(-pow(dEye / 0.065, 2.0));
-
-    // Zygomatic arches (cheekbones elevate dynamically with celestial laughter)
-    float cheekLift = 0.035 * laughFactor;
-    vec2 cheekP = vec2(abs(p.x) - 0.31, p.y + 0.19 - cheekLift);
-    float cheekbones = (0.22 + 0.06 * laughFactor) *
-                       exp(-(cheekP.x * cheekP.x) / 0.032 - (cheekP.y * cheekP.y) / 0.028);
-
-    // Labial (lips) & mental protuberance (chin)
-    float smileCurve = 0.035 * laughFactor * (p.x * p.x * 8.0);
-    vec2 lipP = vec2(p.x, p.y + 0.44 - smileCurve);
-    float lips = 0.21 * exp(-(lipP.x * lipP.x) / 0.045 - (lipP.y * lipP.y) / 0.0065);
-    float chin = 0.19 * exp(-(p.x * p.x) / 0.035 - pow(p.y + 0.62, 2.0) / 0.018);
-
-    float totalRelief = cranium * 0.55 + noseBridge + brow + socketRecess + ocularGlobe + cheekbones + lips + chin;
-    float ajnaPin = exp(-dot(p, p) * 65.0);
-    float featureWeight = clamp(
-        noseBridge * 1.8 + ocularGlobe * 3.2 + brow * 1.5 + lips * 2.1 + ajnaPin * 2.0,
-        0.0, 1.0
-    );
-
-    return vec2(totalRelief, featureWeight);
-}
-
-void main() {
-    vTexCoord = aUV;
-
-    // 1. Asynchronous Video Luminance Validation & Seamless Laughter Morphing
-    float camLaugh = smoothstep(-1550.0, -1680.0, cp.z);
-    float activeLaugh = max(uLaugh, camLaugh);
-
-    vec2 sampleUV = vec2(aUV.x, 1.0 - aUV.y);
-    vec3 colStill = texture(uTexStill, sampleUV).rgb;
-    vec3 colVideo = texture(uTexVideo, sampleUV).rgb;
-    float vidLum  = dot(colVideo, vec3(0.2126, 0.7152, 0.0722));
-    vec3 validVideo = mix(colStill, colVideo, step(0.03, vidLum));
-    vec3 photoCol   = mix(colStill, validVideo, activeLaugh);
-    float lum       = dot(photoCol, vec3(0.2126, 0.7152, 0.0722));
-
-    float F = mix(2.0503, 1.45, uWarp);
-
-    // 2. Special Handling for Vertex Marked as the Exact Ajna Singularity Star (aSeed.z > 1.5)
-    if (aSeed.z > 1.5) {
-        vec3 ajnaCam = rot * (AJNA_POS - cp);
-        float ajnaDist = -ajnaCam.z;
-        if (ajnaDist <= 0.1) {
-            gl_Position = vec4(2.0, 2.0, 2.0, 1.0);
-            return;
-        }
-        vColor      = vec3(0.92, 0.96, 1.0);
-        vAlpha      = gain * (1.0 - fb);
-        vStarClass  = 3.0;
-        vErosion    = 0.0;
-        vDispersion = 1.0;
-        gl_Position = vec4(ajnaCam.x * F / (ajnaDist * asp), ajnaCam.y * F / ajnaDist, 0.0, 1.0);
-        gl_PointSize = clamp((hpx * 28.0 * F) / ajnaDist, 14.0, 72.0);
-        return;
-    }
-
-    // 3. Evaluate 3D Anatomical Relief & Base World Coordinates
-    vec2 anat = evaluateAnatomicalRelief(aUV, activeLaugh);
-    float reliefHeight  = anat.x;
-    float featureWeight = anat.y;
-
-    // Base XY spans [-68, +68] around AJNA_POS.xy = [-1.94, 21.6]
-    vec2 relXY = (aUV - AJNA_UV) * vec2(132.0, 148.0);
-    // Depth spans from Z = -1850 (deep cranium / Ajna singularity plane) to Z = -1740 (nasal tip & foreground relief)
-    float stratumDepth = aSeed.y * (4.5 + 14.0 * (1.0 - featureWeight));
-    float zWorld = -1850.0 + (reliefHeight * 78.0 + lum * 32.0) + stratumDepth;
-
-    vec3 pos = vec3(AJNA_POS.x + relXY.x, AJNA_POS.y + relXY.y, zWorld);
-
-    // 4. Organic 3D FBM Boundary Dissolution (Zero Analytical Oval / Egg-Halo)
-    float dAnat = length((aUV - vec2(0.50, 0.52)) * vec2(0.96, 0.88));
-    float nFBM  = fbm(pos * 0.08 + vec3(0.0, t * 0.025, 0.0));
-    float boundaryErosion = smoothstep(0.32, 0.48, dAnat + 0.18 * nFBM);
-    vErosion = boundaryErosion;
-
-    // Curl-noise filament stream advection at periphery (stars drift into cosmic web)
-    vec3 filamentDrift = curlNoise(pos * 0.022 + vec3(t * 0.018)) * pow(boundaryErosion, 1.55) * 92.0;
-    pos += filamentDrift;
-
-    // 5. Puzzle Restoration Integrity (Entropy Scatter when uIntegrity < 1.0)
-    float disarray = 1.0 - clamp(uIntegrity, 0.25, 1.0);
-    if (disarray > 0.001) {
-        vec3 chaosVec = hash33(vec3(aUV * 500.0, aSeed.x * 100.0));
-        pos += chaosVec * disarray * 180.0;
-    }
-
-    // 6. Soft Gravitational Spacetime Curvature (Einstein Deflection within R < 35 LY of Ajna)
-    vec3 toAjna = pos - AJNA_POS;
-    float rAjna = length(toAjna.xy);
-    if (rAjna > 0.35 && rAjna < 35.0) {
-        float lensWeight = smoothstep(35.0, 1.5, rAjna) * (1.0 - featureWeight * 0.65);
-        float einsteinShift = (4.8 / (rAjna + 0.8)) * lensWeight;
-        pos.xy += normalize(toAjna.xy) * einsteinShift;
-        vDispersion = clamp(lensWeight * 1.4, 0.0, 1.0);
-    } else {
-        vDispersion = 0.15 * featureWeight;
-    }
-
-    // 7. Multi-Tier Stellar Spectral Classification
-    bool isCrownNebula = (aUV.y > 0.66 && dAnat > 0.24) || (boundaryErosion > 0.38);
-    if (featureWeight > 0.42 && lum > 0.28) {
-        // Core Facial Features: O/B-type incandescent blue-white/gold hypergiants (10,000K - 30,000K)
-        vStarClass = 2.0;
-        float temp = mix(10500.0, 28000.0, aSeed.x * featureWeight);
-        vec3 obSpec = mix(planckColor(temp), vec3(1.0, 0.94, 0.82), 0.35);
-        vColor = mix(photoCol * 1.8, obSpec, 0.45);
-    } else if (!isCrownNebula) {
-        // Cheeks, Forehead, Jawline: Warm solar gold G-type stars (5,800K)
-        vStarClass = 1.0;
-        vec3 gSpec = planckColor(5800.0 + (aSeed.x - 0.5) * 900.0);
-        vColor = mix(photoCol * 1.5, gSpec * vec3(1.05, 0.92, 0.72), 0.40);
-    } else {
-        // Hair & Crown Nebula: Cool M-type red giants + H-alpha (656.3nm) & violet emission nebula
-        vStarClass = 0.0;
-        vec3 mGiant  = planckColor(3100.0 + aSeed.x * 700.0);
-        vec3 hAlpha  = vec3(0.98, 0.16, 0.42);
-        vec3 vNebula = vec3(0.52, 0.18, 0.92);
-        vec3 nebMix  = mix(vNebula, hAlpha, 0.5 + 0.5 * sin(aSeed.x * 12.0 + t * 0.4));
-        vColor = mix(nebMix, mGiant, step(0.68, aSeed.x)) * (0.8 + 0.6 * lum);
-    }
-
-    // Laughter radiance boost
-    vColor *= (1.0 + 0.35 * activeLaugh * featureWeight);
-
-    // 8. Camera Projection & Point Sizing
-    vec3 camPos = rot * (pos - cp);
-    float vDist = -camPos.z;
-    if (vDist <= 0.2) {
-        gl_Position = vec4(2.0, 2.0, 2.0, 1.0);
-        return;
-    }
-
-    float twinkle = 0.82 + 0.18 * sin(t * (2.2 + 4.0 * aSeed.x) + aSeed.x * 62.8);
-    float filamentMask = mix(1.0, step(0.35, fract(aSeed.x * 17.3 + nFBM)), boundaryErosion);
-    vAlpha = gain * (1.0 - fb) * (0.65 + 0.45 * lum) * (1.0 - pow(boundaryErosion, 1.4)) * filamentMask * twinkle;
-
-    gl_Position = vec4(camPos.x * F / (vDist * asp), camPos.y * F / vDist, 0.0, 1.0);
-
-    float baseRadius = (vStarClass > 1.5) ? (1.8 + 2.0 * featureWeight)
-                     : (vStarClass > 0.5) ? (1.3 + 1.4 * lum)
-                     : (2.4 + 3.4 * boundaryErosion);
-    float warpScale  = 1.0 + uWarp * 2.5;
-    gl_PointSize = clamp((hpx * baseRadius * warpScale * F) / vDist, 1.0, 24.0);
-}
-`));
+ vec3 v=rot*(w-cp);vDist=-v.z;vPos=v;
+ if(vDist<0.35){gl_Position=vec4(2.,2.,2.,1.);return;}
+ float F=mix(2.0503,1.45,uWarp);
+ gl_Position=vec4(v.x*F/asp,v.y*F,0.0,vDist);
+}`));
 gl.attachShader(pjFace,sh(gl.FRAGMENT_SHADER,`#version 300 es
 precision highp float;
+in vec2 vUv;in float vDist;in vec3 vPos;in float vHairWeight;
+uniform sampler2D uTexStill,uTexVideo;uniform float t,gain,fb,uLaugh,uIntegrity;
+out vec4 o;
+void main(){
+ vec2 uv=clamp(vUv,0.0,1.0);
+ vec3 colStill=texture(uTexStill,uv).rgb;
+ vec3 colVideo=texture(uTexVideo,uv).rgb;
+ float vidLum=dot(colVideo,vec3(0.299,0.587,0.114));
+ vec3 validVideo=mix(colStill,colVideo,step(0.03,vidLum));
+ vec3 col=mix(colStill,validVideo,uLaugh);
 
-in vec3 vColor;
-in vec2 vTexCoord;
-in float vAlpha;
-in float vStarClass;
-in float vErosion;
-in float vDispersion;
+ float lum=dot(col,vec3(0.299,0.587,0.114));
+ vec2 cUv=(vUv-vec2(0.485,0.46))*vec2(1.0,0.76);
+ float dAnat=length(cUv);
 
-uniform float t;
-uniform float uLaugh;
-uniform float uWarp;
+ // Zero Egg-Halo / Zero Rectangular Border: Natural Luminance Gating + Simplex FBM Boundary Dissolution
+ float erosion=(sin(vUv.x*28.0+t*0.25)*cos(vUv.y*28.0-t*0.2)+sin(vUv.x*52.0-vUv.y*44.0)*0.5)*0.045;
+ float borderFade=1.0-smoothstep(0.36,0.50,dAnat+erosion);
+ float al=clamp(lum*3.2,0.0,1.0)*borderFade*uIntegrity;
+ if(al<0.003)discard;
 
-out vec4 fragColor;
+ // Subtle 3D Celestial Rim Lighting as traveler flies around
+ vec3 norm=normalize(vec3(cUv.x*2.2,-cUv.y*2.2,1.0-dAnat*1.2));
+ vec3 viewDir=normalize(-vPos);
+ float rim=pow(1.0-max(0.0,dot(norm,viewDir)),3.0)*0.35;
+ col+=vec3(0.98,0.86,0.62)*rim;
 
-const float PI = 3.14159265359;
+ // Pinned Ajna Singularity Star: Delicate 8-Point Diamond Star Glint between brows
+ vec2 ajnaUv=(vUv-vec2(0.481,0.359))*vec2(1.0,1.35);
+ float dAjna=length(ajnaUv);
+ float ajnaStar=exp(-dAjna*dAjna*5400.0)*(0.85+0.15*sin(t*3.6));
+ float ajnaSpikes=(exp(-abs(vUv.x-0.481)*220.0)*exp(-abs(vUv.y-0.359)*45.0)+
+                   exp(-abs(vUv.y-0.359)*220.0)*exp(-abs(vUv.x-0.481)*45.0)+
+                   exp(-abs((vUv.x-0.481)+(vUv.y-0.359)*0.75)*140.0)*exp(-abs((vUv.x-0.481)-(vUv.y-0.359)*0.75)*140.0)*0.5)*0.35;
+ vec3 ajnaCol=vec3(0.96,0.98,1.0)*(ajnaStar*2.0+ajnaSpikes);
+ col+=ajnaCol;
 
-float diffraction8Point(float theta, float sharpness) {
-    float spike = 0.0;
-    for (int k = 0; k < 4; ++k) {
-        float angle = theta - float(k) * (PI * 0.25);
-        spike += exp(-abs(sin(angle)) * sharpness);
-    }
-    return spike;
-}
-
-void main() {
-    if (vAlpha <= 0.002) discard;
-
-    vec2 p = gl_PointCoord * 2.0 - 1.0;
-    float r = length(p);
-    if (r > 1.0) discard;
-
-    float theta = atan(p.y, p.x);
-
-    // Tier 3: Ajna (Third Eye) Wormhole Singularity & 8-Point Cauchy Diffraction Star
-    if (vStarClass > 2.5) {
-        float rR = r * 0.91;
-        float rG = r * 1.00;
-        float rB = r * 1.09;
-
-        float spikeG = diffraction8Point(theta, 80.0);
-        float spikeR = diffraction8Point(theta + 0.008, 76.0);
-        float spikeB = diffraction8Point(theta - 0.008, 84.0);
-
-        vec3 spikeCol = vec3(
-            spikeR * exp(-rR * 2.6),
-            spikeG * exp(-rG * 2.9),
-            spikeB * exp(-rB * 3.2)
-        );
-
-        float einsteinRing = exp(-pow((r - 0.30) / 0.05, 2.0)) * (0.8 + 0.2 * sin(theta * 8.0 - t * 3.5));
-        float core = exp(-r * r * 54.0) * 2.2 + exp(-r * r * 16.0) * 0.8;
-
-        vec3 prismaticRing = vec3(
-            exp(-pow((rR - 0.30) / 0.055, 2.0)),
-            einsteinRing,
-            exp(-pow((rB - 0.30) / 0.055, 2.0))
-        ) * vec3(0.75, 0.92, 1.35);
-
-        vec3 ajnaColor = vec3(1.0, 0.98, 0.95) * core
-                       + spikeCol * vec3(0.85, 0.95, 1.25) * (1.2 + 0.3 * uLaugh)
-                       + prismaticRing;
-
-        float alpha = clamp((core + spikeG * 0.85 + einsteinRing) * (1.0 - smoothstep(0.75, 1.0, r)), 0.0, 1.0) * vAlpha;
-        fragColor = vec4(ajnaColor * alpha, alpha);
-        return;
-    }
-
-    // Additive overlap density compensation for 76,800 stellar lattice nodes
-    const float OVERLAP_COMP = 0.38;
-
-    // Tier 2: Incandescent O/B-Type Core Feature Stars (Eyes, Lips, Brow, Nose Bridge)
-    if (vStarClass > 1.5) {
-        float core = exp(-r * r * 14.0);
-        float halo = exp(-r * 3.6);
-        float spikes = diffraction8Point(theta, 55.0) * exp(-r * 3.8) * 0.45;
-
-        vec3 dispShift = vec3(
-            exp(-r * 0.92 * 3.6),
-            halo,
-            exp(-r * 1.08 * 3.6)
-        );
-        vec3 col = vColor * mix(vec3(halo), dispShift, vDispersion) + vec3(1.0, 0.98, 0.95) * (core + spikes);
-        float alpha = (core + halo * 0.65 + spikes) * (1.0 - r * r) * vAlpha * OVERLAP_COMP;
-        fragColor = vec4(col * alpha, alpha);
-        return;
-    }
-
-    // Tier 1: Warm Solar G-Type Stars (Cheeks, Forehead, Jawline)
-    if (vStarClass > 0.5) {
-        float core = exp(-r * r * 10.0);
-        float corona = exp(-r * 3.1) * (1.0 - r);
-        vec3 col = mix(vColor, vec3(1.0, 0.96, 0.86), core * 0.7);
-        float alpha = (core * 0.9 + corona * 0.75) * vAlpha * OVERLAP_COMP;
-        fragColor = vec4(col * alpha, alpha);
-        return;
-    }
-
-    // Tier 0: Crown H-Alpha / Violet Emission Nebula & M-Type Red Giants
-    float softCloud = exp(-r * r * 3.2) * (1.0 - r * r);
-    float embeddedStar = exp(-r * r * 18.0) * (1.0 - vErosion * 0.6);
-    vec3 col = vColor * softCloud + vec3(1.0, 0.72, 0.65) * embeddedStar * 0.6;
-    float alpha = (softCloud * 0.48 + embeddedStar * 0.65) * vAlpha * OVERLAP_COMP;
-    fragColor = vec4(col * alpha, alpha);
-}
-`));
+ float nearFade=smoothstep(1.0,16.0,vDist),farFade=1.0-smoothstep(2400.0,4200.0,vDist);
+ float finalAlpha=gain*al*nearFade*farFade*(1.0-fb);
+ o=vec4(col*al,finalAlpha);
+}`));
 gl.linkProgram(pjFace);if(!gl.getProgramParameter(pjFace,gl.LINK_STATUS))throw gl.getProgramInfoLog(pjFace);
 
-// Living 3D Coronal Mass Ejections (CME) - Argon Helical MHD Flux Tube Prominences
+// Living 3D Coronal Mass Ejections (CME) and Solar Flares (Streamers, NOT static bars)
 const pjCME=gl.createProgram();
 gl.attachShader(pjCME,sh(gl.VERTEX_SHADER,`#version 300 es
 precision highp float;
-
-layout(location = 0) in vec3 aTubeCoord;
-layout(location = 1) in vec4 aLoopParams;
-
-uniform mat3 rot;
-uniform vec3 cp;
-uniform float t;
-uniform float asp;
-uniform float hpx;
-uniform float gain;
-uniform float fb;
-uniform float uWarp;
-uniform float uLaugh;
-uniform float uIntegrity;
-
-out vec3 vTubeUVW;
-out float vReconnect;
-out float vEdgeDot;
-out float vMasterGain;
-
-const vec3 CROWN_CENTER = vec3(-1.94, 34.0, -1798.0);
-const float PI = 3.14159265359;
-
-vec3 evalMagneticArch(float u, float anchorAngle, float span, float altitude, float loopID, out float eruption) {
-    float cyclePhase = fract(t * 0.085 + loopID * 0.371);
-    eruption = smoothstep(0.55, 0.88, cyclePhase) * (1.0 - smoothstep(0.88, 0.99, cyclePhase));
-
-    float ang0 = anchorAngle - span * 0.5;
-    float ang1 = anchorAngle + span * 0.5;
-    vec2 ellipR = vec2(44.0, 48.0);
-
-    vec3 rAnchor0 = CROWN_CENTER + vec3(cos(ang0) * ellipR.x, sin(ang0) * ellipR.y, -8.0 * sin(loopID));
-    vec3 rAnchor1 = CROWN_CENTER + vec3(cos(ang1) * ellipR.x, sin(ang1) * ellipR.y,  8.0 * cos(loopID));
-    vec3 rBase    = mix(rAnchor0, rAnchor1, u);
-
-    float midAng = anchorAngle;
-    vec3 radialOut = normalize(vec3(cos(midAng) * 1.1, sin(midAng) * 1.25, 0.28 * sin(loopID * 2.3)));
-    vec3 shearVec  = normalize(cross(radialOut, vec3(0.0, 0.0, 1.0)));
-
-    float dynAlt = altitude * (1.0 + 0.55 * uLaugh + 1.15 * eruption);
-    vec3 vecA = radialOut * dynAlt;
-    vec3 vecB = shearVec * (altitude * 0.28 * sin(t * 0.6 + loopID * 1.9));
-
-    return rBase + vecA * sin(u * PI) + vecB * sin(2.0 * u * PI);
-}
-
-void main() {
-    float u      = aTubeCoord.x;
-    float theta  = aTubeCoord.y;
-    float loopID = aTubeCoord.z;
-
-    float anchorAngle = aLoopParams.x;
-    float span        = aLoopParams.y;
-    float altitude    = aLoopParams.z;
-    float twistFreq   = aLoopParams.w;
-
-    float eruption = 0.0;
-    const float du = 0.008;
-    vec3 p0 = evalMagneticArch(u, anchorAngle, span, altitude, loopID, eruption);
-    float dummy = 0.0;
-    vec3 p1 = evalMagneticArch(min(1.0, u + du), anchorAngle, span, altitude, loopID, dummy);
-
-    vec3 tangent = normalize(p1 - p0 + 1e-5);
-    vec3 refUp   = abs(tangent.z) < 0.9 ? vec3(0.0, 0.0, 1.0) : vec3(0.0, 1.0, 0.0);
-    vec3 normal  = normalize(cross(tangent, refUp));
-    vec3 binorm  = cross(tangent, normal);
-
-    float helicalPhase = theta + u * twistFreq * PI * 2.0 - t * 2.4;
-    float rTube = (1.6 + 3.8 * sin(u * PI) * (1.0 + 0.7 * eruption)) * clamp(uIntegrity, 0.35, 1.0);
-
-    vec3 tubeNorm = normal * cos(helicalPhase) + binorm * sin(helicalPhase);
-    vec3 worldPos = p0 + tubeNorm * rTube;
-
-    vec3 camPos = rot * (worldPos - cp);
-    float vDist = -camPos.z;
-    if (vDist <= 0.2) {
-        gl_Position = vec4(2.0, 2.0, 2.0, 1.0);
-        return;
-    }
-
-    vec3 viewDir = normalize(worldPos - cp);
-    float nDotV = clamp(dot(tubeNorm, viewDir), -1.0, 1.0);
-    vEdgeDot    = sqrt(max(0.0, 1.0 - nDotV * nDotV));
-    vTubeUVW    = vec3(u, helicalPhase, loopID);
-    vReconnect  = eruption;
-    vMasterGain = gain * (1.0 - fb) * clamp(uIntegrity, 0.25, 1.0);
-
-    float F = mix(2.0503, 1.45, uWarp);
-    gl_Position = vec4(camPos.x * F / (vDist * asp), camPos.y * F / vDist, 0.0, 1.0);
-}
-`));
+in vec3 cme_pos;in vec3 cme_dir;in vec2 cme_attr;
+uniform mat3 rot;uniform vec3 cp;uniform float t,asp,uWarp,hpx,uIntegrity;
+out float vDist;out float vAlpha;out vec3 vCol;
+void main(){
+ float seed=cme_attr.x;float flareSpeed=cme_attr.y;
+ float cycle=fract(t*flareSpeed+seed*13.71);
+ float arc=sin(cycle*3.14159);
+ vec3 curlNoise=vec3(sin(t*2.1+seed*18.0),cos(t*1.7+seed*14.0),sin(t*2.8+seed*9.0));
+ vec3 w=cme_pos+cme_dir*(arc*48.0)+curlNoise*(arc*16.0);
+ if(uIntegrity<0.999){
+  float decay=(1.0-uIntegrity)*40.0;
+  w+=vec3(sin(seed*55.0)*decay,cos(seed*41.0)*decay,sin(seed*29.0)*decay);
+ }
+ vec3 v=rot*(w-cp);vDist=-v.z;
+ if(vDist<0.35){gl_Position=vec4(2.,2.,2.,1.);gl_PointSize=0.;return;}
+ float F=mix(2.0503,1.45,uWarp);
+ gl_Position=vec4(v.x*F/asp,v.y*F,0.0,vDist);
+ gl_PointSize=clamp(3.4*F*hpx/vDist,1.0,22.0);
+ vAlpha=arc*uIntegrity*0.92;
+ vCol=mix(mix(vec3(1.0,0.98,0.92),vec3(0.98,0.65,0.18),cycle),vec3(0.85,0.30,0.65),cycle*cycle);
+}`));
 gl.attachShader(pjCME,sh(gl.FRAGMENT_SHADER,`#version 300 es
 precision highp float;
-
-in vec3 vTubeUVW;
-in float vReconnect;
-in float vEdgeDot;
-in float vMasterGain;
-
-uniform float t;
-uniform float uLaugh;
-
-out vec4 fragColor;
-
-const float PI = 3.14159265359;
-
-float hash21(vec2 p) {
-    p = fract(p * vec2(123.34, 456.21));
-    p += dot(p, p + 45.32);
-    return fract(p.x * p.y);
-}
-
-float plasmaNoise(vec2 p) {
-    vec2 i = floor(p);
-    vec2 f = fract(p);
-    vec2 u = f * f * (3.0 - 2.0 * f);
-    return mix(
-        mix(hash21(i + vec2(0,0)), hash21(i + vec2(1,0)), u.x),
-        mix(hash21(i + vec2(0,1)), hash21(i + vec2(1,1)), u.x), u.y
-    );
-}
-
-vec3 mhdPlasmaGrade(float heat) {
-    vec3 hAlphaCrimson = vec3(0.92, 0.12, 0.28);
-    vec3 solarGold     = vec3(1.00, 0.62, 0.14);
-    vec3 coronalWhite  = vec3(1.00, 0.96, 0.88);
-    vec3 reconnectCyan = vec3(0.72, 0.88, 1.00);
-
-    vec3 c = mix(hAlphaCrimson, solarGold, smoothstep(0.0, 0.45, heat));
-    c = mix(c, coronalWhite, smoothstep(0.45, 0.82, heat));
-    c = mix(c, reconnectCyan, smoothstep(0.82, 1.0, heat));
-    return c;
-}
-
-void main() {
-    float u      = vTubeUVW.x;
-    float theta  = vTubeUVW.y;
-    float loopID = vTubeUVW.z;
-
-    float flowForward = u * 10.0 - t * (1.8 + 0.9 * uLaugh);
-    float flowCounter = u * 16.0 + t * 1.1;
-
-    float fibril1 = plasmaNoise(vec2(flowForward, theta * 1.5 + loopID * 7.1));
-    float fibril2 = plasmaNoise(vec2(flowCounter, theta * 3.0 - loopID * 3.7));
-    float strand  = 0.5 + 0.5 * sin(theta * 4.0 + fibril1 * 4.5);
-
-    float archEnvelope = sin(u * PI);
-    float plasmaDensity = (0.45 * fibril1 + 0.35 * fibril2 + 0.20 * strand) *
-                          smoothstep(0.0, 0.12, u) * smoothstep(1.0, 0.88, u);
-
-    float coreCyl = pow(clamp(vEdgeDot, 0.0, 1.0), 1.6);
-    float heat = clamp(
-        plasmaDensity * 0.75 + coreCyl * 0.35 + vReconnect * archEnvelope * 0.65 + uLaugh * 0.2,
-        0.0, 1.0
-    );
-
-    vec3 col = mhdPlasmaGrade(heat) * (1.6 + 2.2 * vReconnect * archEnvelope);
-    float alpha = plasmaDensity * coreCyl * (0.65 + 0.45 * archEnvelope) * vMasterGain;
-
-    if (alpha <= 0.003) discard;
-    fragColor = vec4(col * alpha, alpha);
-}
-`));
+in float vDist;in float vAlpha;in vec3 vCol;
+uniform float gain,fb;out vec4 o;
+void main(){
+ vec2 pc=(gl_PointCoord-0.5)*2.0;float r=length(pc);if(r>1.0)discard;
+ float soft=exp(-r*r*3.2);
+ float nearFade=smoothstep(1.0,16.0,vDist),farFade=1.0-smoothstep(2400.0,4200.0,vDist);
+ o=vec4(vCol*(1.2+0.4*exp(-r*r*6.0)),gain*vAlpha*soft*nearFade*farFade*(1.0-fb));
+}`));
 gl.linkProgram(pjCME);if(!gl.getProgramParameter(pjCME,gl.LINK_STATUS))throw gl.getProgramInfoLog(pjCME);
 
 // 3D Cosmic Web & Dendritic Connectome Lines
@@ -985,11 +561,11 @@ void main(){
  float terminalFlash=(level>=2.0)?isTract*exp(-pow(uNeuroProg-0.96,2.0)*160.0)*1.8:0.0;
  float totalSpark=clamp(spark*2.4+trail+symp+terminalFlash,0.0,3.0);
 
- float restingAlpha=mix(0.24,0.12,level/3.0)*(0.82+0.18*sin(t*1.6+seed*6.28));
+ float restingAlpha=mix(0.035,0.015,level/3.0)*(0.8+0.2*sin(t*1.5+seed*6.28));
  vAlpha=mix(restingAlpha,0.98,clamp(totalSpark,0.0,1.0));
 
- vec3 restingCol=mix(vec3(0.28,0.20,0.52),vec3(0.16,0.26,0.48),seed);
- vec3 sparkCol=mix(vec3(1.0,0.80,0.34),vec3(1.0,0.98,0.92),clamp(spark*1.6+terminalFlash,0.0,1.0));
+ vec3 restingCol=mix(vec3(0.12,0.10,0.25),vec3(0.08,0.14,0.22),seed);
+ vec3 sparkCol=mix(vec3(1.0,0.88,0.45),vec3(1.0,0.98,0.95),clamp(spark*1.5+terminalFlash,0.0,1.0));
  vCol=mix(restingCol,sparkCol,clamp(totalSpark,0.0,1.0));
 }`));
 gl.attachShader(pNeuro,sh(gl.FRAGMENT_SHADER,`#version 300 es
@@ -1019,10 +595,10 @@ void main(){
  float pulse=isTract*exp(-pow(uNeuroProg-(isSoma>0.5?0.08:0.96),2.0)*(isSoma>0.5?120.0:180.0))*step(0.001,uNeuroProg);
  float sz=baseRad*(1.0+pulse*2.6)*F*hpx/vDist;
  gl_PointSize=clamp(sz,1.5,isSoma>0.5?52.0:24.0);
- float restingAlpha=(isSoma>0.5?0.48:0.25)*(0.85+0.15*sin(t*2.0+seed*6.28));
- vAlpha=clamp(restingAlpha+pulse*1.8,0.0,2.0);
- vec3 restingCol=isSoma>0.5?vec3(0.42,0.30,0.78):vec3(0.24,0.38,0.68);
- vec3 flashCol=isSoma>0.5?vec3(1.0,0.95,0.82):vec3(1.0,0.78,0.35);
+ float restingAlpha=(isSoma>0.5?0.18:0.06)*(0.85+0.15*sin(t*2.0+seed*6.28));
+ vAlpha=clamp(restingAlpha+pulse*2.2,0.0,2.5);
+ vec3 restingCol=isSoma>0.5?vec3(0.24,0.18,0.45):vec3(0.14,0.22,0.38);
+ vec3 flashCol=isSoma>0.5?vec3(1.0,0.96,0.85):vec3(1.0,0.82,0.42);
  vCol=mix(restingCol,flashCol,clamp(pulse*1.6,0.0,1.0));
  vIsSoma=isSoma;
 }`));
@@ -1039,128 +615,75 @@ void main(){
 }`));
 gl.linkProgram(pSoma);if(!gl.getProgramParameter(pSoma,gl.LINK_STATUS))throw gl.getProgramInfoLog(pSoma);
 
-// Volumetric 3-Stratum Stellar Face Lattice & Helical MHD Flux Tube Prominences (Argon)
-let jFaceVAO = null, jFaceCount = 0;
-let jCMEVAO  = null, jCMECount  = 0;
+// Jamestellation Continuous 3D Subdivided Face Mesh (6,400 Vertices, 12,482 Triangles)
+const GW=80,GH=80;
+const J_MESH_VERTS=GW*GH;
+const J_POS=new Float32Array(J_MESH_VERTS*3);
+const J_UV=new Float32Array(J_MESH_VERTS*2);
+const J_ATTR=new Float32Array(J_MESH_VERTS*3);
+let jMeshIdx=0;
+for(let gy=0;gy<GH;gy++){
+ const v=gy/(GH-1);
+ for(let gx=0;gx<GW;gx++){
+  const u=gx/(GW-1);
+  const px=(u-0.5)*150.0+1.10;
+  const py=-(v-0.5)*200.0-9.42;
+  const dNose=Math.hypot((u-0.481)/0.09,(v-0.359)/0.12);
+  const zNose=22.0*Math.exp(-dNose*dNose*2.4);
+  const dCheek=Math.hypot((u-0.481)/0.22,(v-0.42)/0.25);
+  const zCheek=12.0*Math.exp(-dCheek*dCheek*2.0);
+  const dFace=Math.hypot((u-0.485)/0.18,(v-0.45)/0.25);
+  const hairWeight=Math.min(1.0,Math.max(0.0,(dFace-0.65)/0.45));
+  const zHair=-18.0*hairWeight;
+  const pz=-1850.0+zNose+zCheek+zHair;
 
-function initJamestellationBuffers(gl) {
-    // 1. Volumetric 3-Stratum Stellar Face Lattice + Ajna Singularity Node
-    const GRID_X = 160;
-    const GRID_Y = 160;
-    const STRATA = 3;
-    const totalStars = GRID_X * GRID_Y * STRATA + 1; // +1 for exact Ajna Singularity Star
-    const faceData = new Float32Array(totalStars * 5); // [u, v, seedX, stratumY, classFlag]
-
-    let ptr = 0;
-    const strataOffsets = [-0.85, 0.0, 0.85];
-
-    // Deterministic low-discrepancy Halton/Golden-Ratio sub-pixel jitter
-    for (let s = 0; s < STRATA; s++) {
-        const stratumZ = strataOffsets[s];
-        for (let iy = 0; iy < GRID_Y; iy++) {
-            for (let ix = 0; ix < GRID_X; ix++) {
-                const idx = s * (GRID_X * GRID_Y) + iy * GRID_X + ix;
-                const h1 = (Math.sin(idx * 12.9898 + 78.233) * 43758.5453) % 1;
-                const h2 = (Math.sin(idx * 93.9898 + 12.456) * 24634.6345) % 1;
-                const rand01 = h1 < 0 ? h1 + 1.0 : h1;
-                const rand02 = h2 < 0 ? h2 + 1.0 : h2;
-
-                const u = (ix + 0.5 + (rand01 - 0.5) * 0.75) / GRID_X;
-                const v = (iy + 0.5 + (rand02 - 0.5) * 0.75) / GRID_Y;
-
-                faceData[ptr++] = u;
-                faceData[ptr++] = v;
-                faceData[ptr++] = rand01;
-                faceData[ptr++] = stratumZ + (rand02 - 0.5) * 0.35;
-                faceData[ptr++] = s / STRATA; // < 1.5 -> regular multi-tier star
-            }
-        }
-    }
-
-    // Exact Ajna Singularity Star pinned at [-1.94, 21.6, -1850.0] (classFlag = 2.0)
-    faceData[ptr++] = 0.50;
-    faceData[ptr++] = 0.58;
-    faceData[ptr++] = 0.999;
-    faceData[ptr++] = 0.0;
-    faceData[ptr++] = 2.0; // Triggers exact Ajna 8-point Cauchy diffraction branch
-
-    jFaceCount = totalStars;
-    window.jFaceCount = jFaceCount;
-    jFaceVAO = gl.createVertexArray();
-    gl.bindVertexArray(jFaceVAO);
-
-    const faceVBO = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, faceVBO);
-    gl.bufferData(gl.ARRAY_BUFFER, faceData, gl.STATIC_DRAW);
-
-    const STRIDE_FACE = 5 * 4;
-    gl.enableVertexAttribArray(0);
-    gl.vertexAttribPointer(0, 2, gl.FLOAT, false, STRIDE_FACE, 0);
-    gl.enableVertexAttribArray(1);
-    gl.vertexAttribPointer(1, 3, gl.FLOAT, false, STRIDE_FACE, 2 * 4);
-    gl.bindVertexArray(null);
-
-    // 2. 3D MHD Helical Flux Tube Prominence Loops (Triangulated Tubular Arches)
-    const NUM_LOOPS = 14;
-    const SEG_U = 48; // Longitudinal segments along magnetic arch
-    const SEG_V = 8;  // Azimuthal segments around flux tube cross-section
-
-    const vertsPerLoop = SEG_U * SEG_V * 6;
-    const totalCMEVerts = NUM_LOOPS * vertsPerLoop;
-    const cmeData = new Float32Array(totalCMEVerts * 7); // [u, theta, loopID, anchorAngle, span, altitude, twist]
-
-    let cPtr = 0;
-    for (let l = 0; l < NUM_LOOPS; l++) {
-        // Distribute prominence arches across the upper crown & lateral temples
-        const tNorm = l / (NUM_LOOPS - 1);
-        const anchorAngle = Math.PI * (0.08 + 0.84 * tNorm) + Math.sin(l * 4.1) * 0.08;
-        const span        = 0.26 + 0.22 * Math.abs(Math.sin(l * 2.73));
-        const altitude    = 14.0 + 22.0 * Math.abs(Math.cos(l * 1.91));
-        const twist       = (l % 2 === 0 ? 1.0 : -1.0) * (2.0 + (l % 3));
-
-        for (let iu = 0; iu < SEG_U; iu++) {
-            const u0 = iu / SEG_U;
-            const u1 = (iu + 1) / SEG_U;
-
-            for (let iv = 0; iv < SEG_V; iv++) {
-                const th0 = (iv / SEG_V) * Math.PI * 2.0;
-                const th1 = ((iv + 1) / SEG_V) * Math.PI * 2.0;
-
-                const quad = [
-                    [u0, th0], [u1, th0], [u1, th1],
-                    [u0, th0], [u1, th1], [u0, th1]
-                ];
-
-                for (let k = 0; k < 6; k++) {
-                    cmeData[cPtr++] = quad[k][0];
-                    cmeData[cPtr++] = quad[k][1];
-                    cmeData[cPtr++] = l;
-                    cmeData[cPtr++] = anchorAngle;
-                    cmeData[cPtr++] = span;
-                    cmeData[cPtr++] = altitude;
-                    cmeData[cPtr++] = twist;
-                }
-            }
-        }
-    }
-
-    jCMECount = totalCMEVerts;
-    window.jCMECount = jCMECount;
-    jCMEVAO = gl.createVertexArray();
-    gl.bindVertexArray(jCMEVAO);
-
-    const cmeVBO = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, cmeVBO);
-    gl.bufferData(gl.ARRAY_BUFFER, cmeData, gl.STATIC_DRAW);
-
-    const STRIDE_CME = 7 * 4;
-    gl.enableVertexAttribArray(0);
-    gl.vertexAttribPointer(0, 3, gl.FLOAT, false, STRIDE_CME, 0);
-    gl.enableVertexAttribArray(1);
-    gl.vertexAttribPointer(1, 4, gl.FLOAT, false, STRIDE_CME, 3 * 4);
-    gl.bindVertexArray(null);
+  J_POS[jMeshIdx*3]=px;J_POS[jMeshIdx*3+1]=py;J_POS[jMeshIdx*3+2]=pz;
+  J_UV[jMeshIdx*2]=u;J_UV[jMeshIdx*2+1]=v;
+  J_ATTR[jMeshIdx*3]=0.0;J_ATTR[jMeshIdx*3+1]=hairWeight;J_ATTR[jMeshIdx*3+2]=Math.random();
+  jMeshIdx++;
+ }
 }
-initJamestellationBuffers(gl);
+const jIndices=[];
+for(let gy=0;gy<GH-1;gy++){
+ for(let gx=0;gx<GW-1;gx++){
+  const i0=gy*GW+gx,i1=i0+1,i2=(gy+1)*GW+gx,i3=i2+1;
+  jIndices.push(i0,i2,i1);
+  jIndices.push(i1,i2,i3);
+ }
+}
+const J_INDEX_COUNT=jIndices.length;
+
+const jFaceVao=gl.createVertexArray();
+gl.bindVertexArray(jFaceVao);
+const attJF=(name,arr,sz)=>{const b=gl.createBuffer(),l=gl.getAttribLocation(pjFace,name);gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,arr,gl.STATIC_DRAW);gl.enableVertexAttribArray(l);gl.vertexAttribPointer(l,sz,gl.FLOAT,false,0,0);};
+attJF('a_pos',J_POS,3);attJF('a_uv',J_UV,2);attJF('a_attr',J_ATTR,3);
+const jIndexBuf=gl.createBuffer();
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,jIndexBuf);
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,new Uint16Array(jIndices),gl.STATIC_DRAW);
+gl.bindVertexArray(null);
+
+// Jamestellation 3D Coronal Mass Ejection Particles (4,000 Prominence Flares)
+const J_CME_COUNT=4000;
+const CME_POS=new Float32Array(J_CME_COUNT*3);
+const CME_DIR=new Float32Array(J_CME_COUNT*3);
+const CME_ATTR=new Float32Array(J_CME_COUNT*2);
+for(let i=0;i<J_CME_COUNT;i++){
+ const th=Math.random()*Math.PI*2.0;
+ const rHead=58.0+Math.random()*14.0;
+ const x=1.10+Math.cos(th)*rHead;
+ const y=-9.42+Math.sin(th)*rHead*1.25;
+ const z=-1850.0+(Math.random()-0.5)*20.0;
+ CME_POS.set([x,y,z],i*3);
+ const dir=[Math.cos(th)+(Math.random()-0.5)*0.4, Math.sin(th)*1.25+(Math.random()-0.5)*0.4, (Math.random()-0.5)*0.8];
+ const len=Math.hypot(...dir);
+ CME_DIR.set([dir[0]/len,dir[1]/len,dir[2]/len],i*3);
+ CME_ATTR.set([Math.random(),0.32+Math.random()*0.45],i*2);
+}
+const jCmeVao=gl.createVertexArray();
+gl.bindVertexArray(jCmeVao);
+const attC=(name,arr,sz)=>{const b=gl.createBuffer(),l=gl.getAttribLocation(pjCME,name);gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,arr,gl.STATIC_DRAW);gl.enableVertexAttribArray(l);gl.vertexAttribPointer(l,sz,gl.FLOAT,false,0,0);};
+attC('cme_pos',CME_POS,3);attC('cme_dir',CME_DIR,3);attC('cme_attr',CME_ATTR,2);
+gl.bindVertexArray(null);
 
 // 3D Neural Connectome Network Generation (Living Dendritic Arborization across Front Sanctuary & Void)
 const SOMA_HUBS=[
@@ -1768,7 +1291,7 @@ function enterOrbit(W){if(!W)return;
  VD.orbitRadius=W.radius*1.55;VD.orbitT0=performance.now()/1000;VD.mode='orbit';
  const toX=W.pos[0]-VD.pos[0],toY=W.pos[1]-VD.pos[1],toZ=W.pos[2]-VD.pos[2];
  const distH=Math.hypot(toX,toZ);
- VD.yaw=Math.atan2(-toX,-toZ);
+ VD.yaw=Math.atan2(toX,-toZ);
  VD.pitch=Math.atan2(toY,distH);
  const ob=document.getElementById('orbit-banner');if(ob){document.getElementById('ob-title').textContent=W.name;ob.classList.add('on');}
  const promptEl=document.getElementById('galaxy-prompt');if(promptEl)promptEl.classList.remove('active');
@@ -1845,16 +1368,14 @@ function voidTick(t,dt){const m=VD.mode;if(m==='front'){VD.frontGain=Math.min(1,
  if(m==='orbit'){const gp=document.getElementById('galaxy-prompt');if(gp){gp.classList.remove('active');gp.style.display='none';}VD.targetedGalaxy=null;VD.gain=Math.min(1,VD.gain+dt/1.2);VD.bg=[0,0,0];const W=VD.orbitTarget;
   if(!W){VD.mode='fly';return false}
   VD.orbitAngle=(VD.orbitAngle||0)+dt*.24;const rOrb=W.radius*1.55;
-  const targetPos=[W.pos[0]+Math.cos(VD.orbitAngle)*rOrb,W.pos[1]+Math.sin(VD.orbitAngle*.5)*5.,W.pos[2]+Math.sin(VD.orbitAngle)*rOrb];
-  VD.pos[0]=lerp(VD.pos[0],targetPos[0],Math.min(1,dt*2.8));VD.pos[1]=lerp(VD.pos[1],targetPos[1],Math.min(1,dt*2.8));VD.pos[2]=lerp(VD.pos[2],targetPos[2],Math.min(1,dt*2.8));
-  // Continuous Inward Radial Vector Tidal Lock (targetPos - shipPos)
+  VD.pos[0]=W.pos[0]+Math.cos(VD.orbitAngle)*rOrb;
+  VD.pos[1]=W.pos[1]+Math.sin(VD.orbitAngle*.5)*4.0;
+  VD.pos[2]=W.pos[2]+Math.sin(VD.orbitAngle)*rOrb;
+  // Continuous Inward Radial Vector Tidal Lock (Galaxy is pinned dead center on screen; cosmos revolves around user)
   const toX=W.pos[0]-VD.pos[0],toY=W.pos[1]-VD.pos[1],toZ=W.pos[2]-VD.pos[2];
-  const targetYaw=Math.atan2(-toX,-toZ),targetPitch=Math.atan2(toY,Math.hypot(toX,toZ));
-  let diffYaw=(targetYaw-VD.yaw)%(Math.PI*2);
-  if(diffYaw<-Math.PI)diffYaw+=Math.PI*2;
-  if(diffYaw>Math.PI)diffYaw-=Math.PI*2;
-  VD.yaw+=diffYaw*Math.min(1.0,dt*8.0);
-  VD.pitch=lerp(VD.pitch,targetPitch,Math.min(1.0,dt*8.0));return true}
+  VD.yaw=Math.atan2(toX,-toZ);
+  VD.pitch=Math.atan2(toY,Math.hypot(toX,toZ));
+  return true}
  if(m==='fly'){VD.gain=Math.min(1,VD.gain+dt/1.2);VD.bg=[0,0,0];
   if(VD.hudTimer>0){VD.hudTimer-=dt;const hud=document.getElementById('void-hud');if(hud)hud.classList.toggle('active',VD.hudTimer>0||VD.hudHover);}
 
@@ -1866,7 +1387,7 @@ function voidTick(t,dt){const m=VD.mode;if(m==='front'){VD.frontGain=Math.min(1,
    const tPos=AUTOPILOT.targetPos;
    const dx=tPos[0]-VD.pos[0],dy=tPos[1]-VD.pos[1],dz=tPos[2]-VD.pos[2];
    const dist=Math.hypot(dx,dy,dz);
-   const tYaw=Math.atan2(-dx,-dz),tPitch=Math.atan2(dy,Math.hypot(dx,dz));
+   const tYaw=Math.atan2(dx,-dz),tPitch=Math.atan2(dy,Math.hypot(dx,dz));
    VD.yaw=lerp(VD.yaw,tYaw,Math.min(1.0,dt*4.0));
    VD.pitch=lerp(VD.pitch,tPitch,Math.min(1.0,dt*4.0));
 
@@ -1962,11 +1483,25 @@ function voidTick(t,dt){const m=VD.mode;if(m==='front'){VD.frontGain=Math.min(1,
   setKeyAct('hr-stop',isCmdX);
 
   const z=VD.pos[2];
-  if(z<-1620){playJamestellation();const pull=sstep(-1700,-1845,z);
-   VD.pos[0]=lerp(VD.pos[0],-1.94,Math.min(1,dt*2.2*pull));VD.pos[1]=lerp(VD.pos[1],21.6,Math.min(1,dt*2.2*pull));
-   VD.yaw*=(1-Math.min(1,dt*2.0));VD.pitch*=(1-Math.min(1,dt*2.0));}
-  if(z<=RING.center[2]+5&&Math.hypot(VD.pos[0]-(-1.94),VD.pos[1]-21.6)<32){
-   VD.pos=[-1.94,21.6,RING.center[2]];VD.mode='close';VD.t0=t;vsetVol(-3);window.COE_EVENTS?.dispatch('coe:wormhole-dive',{target:'third-eye'});}
+  if(z<-1620)playJamestellation();
+  // Wormhole dive threshold only when user is close and flying forward into the Third Eye
+  const dWormhole=Math.hypot(VD.pos[0]-(-1.94),VD.pos[1]-21.6,VD.pos[2]-(-1850));
+  if(dWormhole<32.0&&VD.sp>0){
+   VD.pos=[-1.94,21.6,RING.center[2]];VD.mode='close';VD.t0=t;vsetVol(-3);
+   window.COE_EVENTS?.dispatch('coe:wormhole-dive',{target:'third-eye'});
+  }
+  // Sector Boundary Inertial Containment (Prevents jettisoning into deep void)
+  const distRadial=Math.hypot(VD.pos[0],VD.pos[1]);
+  if(distRadial>750||VD.pos[2]>180||VD.pos[2]<-1950){
+   if(distRadial>750){
+    const ang=Math.atan2(VD.pos[1],VD.pos[0]);
+    VD.pos[0]-=Math.cos(ang)*(distRadial-750)*Math.min(1,dt*3.0);
+    VD.pos[1]-=Math.sin(ang)*(distRadial-750)*Math.min(1,dt*3.0);
+   }
+   if(VD.pos[2]>180)VD.pos[2]-=(VD.pos[2]-180)*Math.min(1,dt*3.0);
+   if(VD.pos[2]<-1950)VD.pos[2]-=(VD.pos[2]-(-1950))*Math.min(1,dt*3.0);
+   VD.sp*=Math.max(0,1-dt*1.5);
+  }
   window.COE_EVENTS?.dispatch('coe:flight-tick',{pos:VD.pos,yaw:VD.yaw,pitch:VD.pitch,speed:VD.sp,warp:VD.warp,targetedGalaxy:VD.targetedGalaxy?VD.targetedGalaxy.name:null});
   return true}
  if(m==='close'){const gp=document.getElementById('galaxy-prompt');if(gp){gp.classList.remove('active');gp.style.display='none';}VD.targetedGalaxy=null;const u=Math.min(1,e/1.5);VD.bg=[0,0,0];if(reduced){VD.fb=1;VD.gain=1}else{VD.fb=eio(u);VD.pos[2]=RING.center[2]-110*eio(u)}VD.pos[0]*=.9;VD.pos[1]*=.9;VD.yaw*=.9;VD.pitch*=.9;
@@ -2007,64 +1542,30 @@ function drawVoid(t){if(!vao||VD.gain<=0.001)return;gl.useProgram(pv);gl.bindVer
   gl.drawArrays(gl.POINTS,0,SOMA_VERT_COUNT);
  }
 
- // Render Volumetric Jamestellation Stellar Face & 3D Helical MHD Coronal Mass Ejections (Argon Masterpiece)
- if(jFaceVAO && jCMEVAO){
-  if(jVid && jVid.readyState>=jVid.HAVE_CURRENT_DATA){
-   gl.activeTexture(gl.TEXTURE1);gl.bindTexture(gl.TEXTURE_2D,jTexVideo);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,jVid);
-  }
-  // Proximity laughter blend factor: begins at Z = -1550, full presence at Z = -1680
-  const proxLaugh = Math.max(0.0, Math.min(1.0, (VD.pos[2] - (-1550.0)) / (-1680.0 - (-1550.0))));
-  const activeLaugh = Math.max(typeof window.coeLaughOverride !== 'undefined' ? window.coeLaughOverride : 0.0, proxLaugh);
-  const activeIntegrity = window.coeJamestellationIntegrity !== undefined ? window.coeJamestellationIntegrity : 1.0;
+ // Render Continuous High-Resolution Jamestellation Face & 3D Coronal Mass Ejections
+ if(jReady){
+  if(jVid.readyState>=jVid.HAVE_CURRENT_DATA){gl.activeTexture(gl.TEXTURE1);gl.bindTexture(gl.TEXTURE_2D,jTexVideo);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,jVid)}
+  gl.useProgram(pjFace);gl.bindVertexArray(jFaceVao);
+  gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,jTexStill);
+  gl.activeTexture(gl.TEXTURE1);gl.bindTexture(gl.TEXTURE_2D,jTexVideo);
+  const JF=n=>gl.getUniformLocation(pjFace,n);
+  gl.uniformMatrix3fv(JF('rot'),false,colm);gl.uniform3fv(JF('cp'),VD.pos);
+  gl.uniform1f(JF('t'),vt);gl.uniform1f(JF('asp'),aspect);gl.uniform1f(JF('gain'),VD.gain);gl.uniform1f(JF('fb'),VD.fb);gl.uniform1f(JF('uWarp'),VD.warp||0);
+  const proxLaugh=sstep(-1550,-1680,VD.pos[2]);
+  const activeLaugh=Math.max(typeof window.coeLaughOverride!=='undefined'?window.coeLaughOverride:0.0,proxLaugh);
+  gl.uniform1f(JF('uLaugh'),activeLaugh);
+  gl.uniform1f(JF('uIntegrity'),window.coeJamestellationIntegrity!==undefined?window.coeJamestellationIntegrity:1.0);
+  gl.uniform1i(JF('uTexStill'),0);gl.uniform1i(JF('uTexVideo'),1);
+  gl.drawElements(gl.TRIANGLES,J_INDEX_COUNT,gl.UNSIGNED_SHORT,0);
 
-  gl.enable(gl.BLEND);
-  gl.blendFunc(gl.ONE, gl.ONE);
-
-  // Pass 1: 3D MHD Helical Flux Tube Prominence Loops (pjCME)
-  gl.useProgram(pjCME);
-  gl.bindVertexArray(jCMEVAO);
-  const JC = n => gl.getUniformLocation(pjCME, n);
-  gl.uniformMatrix3fv(JC('rot'), false, colm);
-  gl.uniform3fv(JC('cp'), VD.pos);
-  gl.uniform1f(JC('t'), vt);
-  gl.uniform1f(JC('asp'), aspect);
-  gl.uniform1f(JC('hpx'), cv.height / 2);
-  gl.uniform1f(JC('gain'), VD.gain);
-  gl.uniform1f(JC('fb'), VD.fb);
-  gl.uniform1f(JC('uWarp'), VD.warp || 0);
-  gl.uniform1f(JC('uLaugh'), activeLaugh);
-  gl.uniform1f(JC('uIntegrity'), activeIntegrity);
-  gl.drawArrays(gl.TRIANGLES, 0, jCMECount);
-
-  // Pass 2: Volumetric 3-Stratum Stellar Face Lattice & Ajna Singularity (pjFace)
-  gl.useProgram(pjFace);
-  gl.bindVertexArray(jFaceVAO);
-  const JF = n => gl.getUniformLocation(pjFace, n);
-  gl.uniformMatrix3fv(JF('rot'), false, colm);
-  gl.uniform3fv(JF('cp'), VD.pos);
-  gl.uniform1f(JF('t'), vt);
-  gl.uniform1f(JF('asp'), aspect);
-  gl.uniform1f(JF('hpx'), cv.height / 2);
-  gl.uniform1f(JF('gain'), VD.gain);
-  gl.uniform1f(JF('fb'), VD.fb);
-  gl.uniform1f(JF('uWarp'), VD.warp || 0);
-  gl.uniform1f(JF('uLaugh'), activeLaugh);
-  gl.uniform1f(JF('uIntegrity'), activeIntegrity);
-
-  gl.activeTexture(gl.TEXTURE0);
-  gl.bindTexture(gl.TEXTURE_2D, jTexStill);
-  gl.uniform1i(JF('uTexStill'), 0);
-
-  gl.activeTexture(gl.TEXTURE1);
-  if (jVid && jVid.readyState >= 2) {
-      gl.bindTexture(gl.TEXTURE_2D, jTexVideo);
-  } else {
-      gl.bindTexture(gl.TEXTURE_2D, jTexStill);
-  }
-  gl.uniform1i(JF('uTexVideo'), 1);
-
-  gl.drawArrays(gl.POINTS, 0, jFaceCount);
-  gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
+  // Render Living 3D CME Flares in Space
+  gl.useProgram(pjCME);gl.bindVertexArray(jCmeVao);
+  const JC=n=>gl.getUniformLocation(pjCME,n);
+  gl.uniformMatrix3fv(JC('rot'),false,colm);gl.uniform3fv(JC('cp'),VD.pos);
+  gl.uniform1f(JC('t'),vt);gl.uniform1f(JC('asp'),aspect);gl.uniform1f(JC('hpx'),cv.height/2);
+  gl.uniform1f(JC('gain'),VD.gain);gl.uniform1f(JC('fb'),VD.fb);gl.uniform1f(JC('uWarp'),VD.warp||0);
+  gl.uniform1f(JC('uIntegrity'),window.coeJamestellationIntegrity!==undefined?window.coeJamestellationIntegrity:1.0);
+  gl.drawArrays(gl.POINTS,0,J_CME_COUNT);
  }
  gl.bindVertexArray(null);gl.useProgram(pr);
 
@@ -2197,7 +1698,7 @@ $('of-bn').onclick=()=>{BN.playing?BN.stop(3):(BN.start(ac(),+$('of-vol').value)
 $('of-vol').oninput=e=>BN.setVolume(+e.target.value);$('of-tm').onchange=e=>BN.setTimer(+e.target.value);
 const stopMed=()=>{const M=window.coeMed;if(M&&bowlNow&&bowlNow.ctx.currentTime<bowlNow.t)bowlStop(0);/* Stop: a bowl not yet struck (pending end bowl) is cancelled; a sounding bowl rings out */medHalt(M);window.coeMed=null;capWait=1e12;window.speechSynthesis?.cancel();window.coeHughSpeaking=false;$('of-go').textContent='Begin';if(active&&active.cap&&active.scatterAt===null)active.scatterAt=performance.now()/1000};
 let MODE='meditation';const modeEls=[...document.querySelectorAll('#of-mode span')];
-const setMode=m=>{MODE=m;modeEls.forEach(e=>{const on=e.dataset.m===m;e.classList.toggle('sel',on);e.setAttribute('aria-checked',on)});$('of-medl').style.display=m==='meditation'?'':'none';$('of-poeml').style.display=m==='poetry'?'':'none'};
+const setMode=m=>{MODE=m;modeEls.forEach(e=>{const on=e.dataset.m===m;e.classList.toggle('sel',on);e.setAttribute('aria-checked',on)});$('of-medl').style.display=m==='meditation'?'':'none';const ml=$('of-med-levell');if(ml)ml.style.display=m==='meditation'?'':'none';$('of-poeml').style.display=m==='poetry'?'':'none'};
 modeEls.forEach(e=>{e.onclick=()=>{if(MODE!==e.dataset.m){stopMed();stopPoetry()}setMode(e.dataset.m)};e.onkeydown=k=>{if(k.key==='Enter'||k.key===' '){k.preventDefault();e.click()}}});
 // Poetry mode: poems form over brown noise. HUGH_POEM_CLIPS is the slot for Hugh's readings (none recorded yet): {poemId:[clip per section]}.
 // Hugh's readings: one per poem, starts 1.2 s after the poem's first section has formed; brown noise ducks ~6 dB over 400 ms; never overlaps.
@@ -2228,7 +1729,9 @@ const clipBuf=new Map(),loadClip=f=>{if(!clipBuf.has(f))clipBuf.set(f,fetch('voi
 let pauseMapP=null;const pauseMap=()=>pauseMapP??=fetch('pause-map.json').then(r=>r.ok?r.json():null).catch(()=>null);
 const trackKey=m=>(m.steps[0].f||'').replace(/-short-\d+\.mp3$/,'');
 const medPlan=async m=>{const [bufs,PM]=await Promise.all([Promise.all(m.steps.map(s=>s.f?loadClip(s.f):null)),pauseMap()]),d=bufs.map(b=>b?b.duration:0),n=m.steps.length,key=trackKey(m),flags=[];
- const base=m.steps.slice(0,-1).map(s=>s.p+.8),clips=d.reduce((a,b)=>a+b,0),fixed=MED_LEAD0+clips+MED_QUIET0+MED_RING+MED_TAIL,E=MED_TOTAL-fixed-base.reduce((a,b)=>a+b,0);
+ const level=$('of-med-level')?$('of-med-level').value:'intermediate';
+ const medTotalTarget=level==='beginner'?300:level==='advanced'?1200:600;
+ const base=m.steps.slice(0,-1).map(s=>s.p+.8),clips=d.reduce((a,b)=>a+b,0),fixed=MED_LEAD0+clips+MED_QUIET0+MED_RING+MED_TAIL,E=medTotalTarget-fixed-base.reduce((a,b)=>a+b,0);
  const w=base.map(()=>0),cap=base.map(()=>MED_GAP_MAX),ent=PM&&PM.tracks&&PM.tracks[key];if(ent&&Array.isArray(ent.pauses))ent.pauses.forEach(q=>{if(Number.isInteger(q.boundary)&&q.boundary>=0&&q.boundary<base.length&&q.weight>=0){w[q.boundary]+=q.weight;if(q.maxSeconds>0)cap[q.boundary]=Math.min(cap[q.boundary],Math.max(base[q.boundary],q.maxSeconds))}else flags.push('bad boundary '+q.boundary)});
  const W=w.reduce((a,b)=>a+b,0);if(!ent)flags.push('unmapped');else if(!(W>0))flags.push('no weights');/* floor = v23.5 gap; ceiling 120 s per gap (capped share goes to the other weighted gaps); leftover goes to closing silence before the end-bowl lead */
  const g=base.slice();let rem=Math.max(0,E),live=w.map((x,i)=>x>0&&g[i]<cap[i]),cappedAt=[];
