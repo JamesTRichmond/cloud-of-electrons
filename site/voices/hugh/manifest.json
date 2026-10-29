@@ -1,0 +1,2082 @@
+{
+  "the-usual-short-01.mp3": {
+    "text": "Sit down and let the chair take your weight.",
+    "pause": "5",
+    "duration": 3.892
+  },
+  "the-usual-short-02.mp3": {
+    "text": "Keep the eyes open, with a soft gaze.",
+    "pause": "5",
+    "duration": 3.631
+  },
+  "the-usual-short-03.mp3": {
+    "text": "Point at something in front of you — a wall, a cup, a window.",
+    "pause": "5",
+    "duration": 5.172
+  },
+  "the-usual-short-04.mp3": {
+    "text": "Now turn the finger around, and point at the place where others would see your face.",
+    "pause": "8",
+    "duration": 5.956
+  },
+  "the-usual-short-05.mp3": {
+    "text": "Looking now, not from memory — is there a face here, or open space?",
+    "pause": "12",
+    "duration": 6.922
+  },
+  "the-usual-short-06.mp3": {
+    "text": "Thoughts will arrive. Treat them as trains. You can watch them pass without boarding.",
+    "pause": "10",
+    "duration": 6.452
+  },
+  "the-usual-short-07.mp3": {
+    "text": "If you already got on one, notice that. Step back onto the platform.",
+    "pause": "8",
+    "duration": 5.721
+  },
+  "the-usual-short-08.mp3": {
+    "text": "Rest as the space this is all happening in.",
+    "pause": "16",
+    "duration": 4.049
+  },
+  "the-usual-short-09.mp3": {
+    "text": "When you stand, stand as the same space.",
+    "pause": "5",
+    "duration": 4.127
+  },
+  "the-usual-long-01.mp3": {
+    "text": "Find a seat you can stay in without fussing.",
+    "pause": "5",
+    "duration": 3.474
+  },
+  "the-usual-long-02.mp3": {
+    "text": "Let the chair take your weight. You do not have to hold yourself up.",
+    "pause": "6",
+    "duration": 5.251
+  },
+  "the-usual-long-03.mp3": {
+    "text": "Keep the eyes open. A soft gaze is enough — not staring, not shut.",
+    "pause": "6",
+    "duration": 6.034
+  },
+  "the-usual-long-04.mp3": {
+    "text": "Take in whatever is in front of you — the color, the light, the simple fact of seeing.",
+    "pause": "8",
+    "duration": 7.158
+  },
+  "the-usual-long-05.mp3": {
+    "text": "Now point at something out there. A wall, a cup, a window.",
+    "pause": "6",
+    "duration": 5.564
+  },
+  "the-usual-long-06.mp3": {
+    "text": "Notice that it is a thing, with color and shape, at a distance.",
+    "pause": "6",
+    "duration": 5.799
+  },
+  "the-usual-long-07.mp3": {
+    "text": "Turn the finger around, and point at the place where others would see your face.",
+    "pause": "8",
+    "duration": 5.486
+  },
+  "the-usual-long-08.mp3": {
+    "text": "On present evidence — looking now, not from memory — is there a color here? A shape? A face?",
+    "pause": "14",
+    "duration": 8.438
+  },
+  "the-usual-long-09.mp3": {
+    "text": "What is actually given on this side of the finger?",
+    "pause": "12",
+    "duration": 3.553
+  },
+  "the-usual-long-10.mp3": {
+    "text": "If you find space instead of a face, you are not missing something. You are seeing what is here.",
+    "pause": "8",
+    "duration": 7.549
+  },
+  "the-usual-long-11.mp3": {
+    "text": "Thoughts will arrive. Treat them as trains. You can read the destination without getting on.",
+    "pause": "10",
+    "duration": 7.001
+  },
+  "the-usual-long-12.mp3": {
+    "text": "If you already boarded, that boarding is just another train, visible from the platform.",
+    "pause": "10",
+    "duration": 6.113
+  },
+  "the-usual-long-13.mp3": {
+    "text": "You are not a passenger. You are the space the trains pass through.",
+    "pause": "12",
+    "duration": 6.034
+  },
+  "the-usual-long-14.mp3": {
+    "text": "A memory of the past is an image appearing now. A plan for the future is a picture appearing now.",
+    "pause": "12",
+    "duration": 8.202
+  },
+  "the-usual-long-15.mp3": {
+    "text": "I will be quiet for a while. Stay with this looking. If you get lost, point in again.",
+    "pause": "24",
+    "duration": 6.922
+  },
+  "the-usual-long-16.mp3": {
+    "text": "Let the finger rest. The looking can stay without the gesture.",
+    "pause": "8",
+    "duration": 5.251
+  },
+  "the-usual-long-17.mp3": {
+    "text": "Carry this into the next ordinary thing.",
+    "pause": "5",
+    "duration": 3.239
+  },
+  "big-head-mode-short-01.mp3": {
+    "text": "Sit so you can forget the sitting. Eyes open.",
+    "pause": "5",
+    "duration": 4.676
+  },
+  "big-head-mode-short-02.mp3": {
+    "text": "Point out at a thing. See it clearly — color, shape, distance.",
+    "pause": "6",
+    "duration": 6.113
+  },
+  "big-head-mode-short-03.mp3": {
+    "text": "Now point back at where others see your face.",
+    "pause": "8",
+    "duration": 3.788
+  },
+  "big-head-mode-short-04.mp3": {
+    "text": "What is here, on this side of the finger?",
+    "pause": "12",
+    "duration": 3.553
+  },
+  "big-head-mode-short-05.mp3": {
+    "text": "The world is there. Space is here. Both at once.",
+    "pause": "10",
+    "duration": 5.407
+  },
+  "big-head-mode-short-06.mp3": {
+    "text": "Let a thought pass through that space. Do not follow it.",
+    "pause": "10",
+    "duration": 4.519
+  },
+  "big-head-mode-short-07.mp3": {
+    "text": "Check again. Still no face?",
+    "pause": "10",
+    "duration": 2.769
+  },
+  "big-head-mode-short-08.mp3": {
+    "text": "Rest as that.",
+    "pause": "14",
+    "duration": 2.116
+  },
+  "big-head-mode-long-01.mp3": {
+    "text": "Sit so you can forget the sitting.",
+    "pause": "5",
+    "duration": 3.082
+  },
+  "big-head-mode-long-02.mp3": {
+    "text": "Eyes stay open. Take in the room without naming it well.",
+    "pause": "6",
+    "duration": 5.251
+  },
+  "big-head-mode-long-03.mp3": {
+    "text": "Point at a wall, or a cup, or a window. A thing, out there.",
+    "pause": "6",
+    "duration": 5.642
+  },
+  "big-head-mode-long-04.mp3": {
+    "text": "Now point at your chest. Also a thing, with a location.",
+    "pause": "6",
+    "duration": 4.989
+  },
+  "big-head-mode-long-05.mp3": {
+    "text": "Now point at the place others see your face.",
+    "pause": "8",
+    "duration": 3.631
+  },
+  "big-head-mode-long-06.mp3": {
+    "text": "Single question: looking at what is given, is there a face here?",
+    "pause": "14",
+    "duration": 5.564
+  },
+  "big-head-mode-long-07.mp3": {
+    "text": "Color? Shape? A pair of eyes? Or space, for the whole world to appear in?",
+    "pause": "14",
+    "duration": 7.314
+  },
+  "big-head-mode-long-08.mp3": {
+    "text": "Keep one finger pointing in, and one pointing out.",
+    "pause": "8",
+    "duration": 4.206
+  },
+  "big-head-mode-long-09.mp3": {
+    "text": "The world is there. No face here. Both at once. This is two-way looking.",
+    "pause": "12",
+    "duration": 7.471
+  },
+  "big-head-mode-long-10.mp3": {
+    "text": "You can rest the hands. The looking does not need the gesture.",
+    "pause": "8",
+    "duration": 4.598
+  },
+  "big-head-mode-long-11.mp3": {
+    "text": "Sounds appear in this same space. Thoughts appear in this same space.",
+    "pause": "10",
+    "duration": 6.922
+  },
+  "big-head-mode-long-12.mp3": {
+    "text": "Nothing to improve, and no one behind the view who needs to wake up.",
+    "pause": "10",
+    "duration": 5.329
+  },
+  "big-head-mode-long-13.mp3": {
+    "text": "I will be quiet. If you drift, point in again. What is here?",
+    "pause": "22",
+    "duration": 6.609
+  },
+  "big-head-mode-long-14.mp3": {
+    "text": "Stand as the same no-face the room is appearing in.",
+    "pause": "6",
+    "duration": 4.519
+  },
+  "open-focus-short-01.mp3": {
+    "text": "Sit easy. Eyes can close, or stay softly open.",
+    "pause": "5",
+    "duration": 5.172
+  },
+  "open-focus-short-02.mp3": {
+    "text": "Is it possible to imagine the space between your eyes?",
+    "pause": "10",
+    "duration": 4.206
+  },
+  "open-focus-short-03.mp3": {
+    "text": "The space between your ears.",
+    "pause": "10",
+    "duration": 2.847
+  },
+  "open-focus-short-04.mp3": {
+    "text": "The space inside the mouth, and the throat.",
+    "pause": "10",
+    "duration": 3.709
+  },
+  "open-focus-short-05.mp3": {
+    "text": "Now the space around the body — behind you, above you, below the seat.",
+    "pause": "12",
+    "duration": 6.609
+  },
+  "open-focus-short-06.mp3": {
+    "text": "See if inside and outside can be one continuous space.",
+    "pause": "12",
+    "duration": 5.721
+  },
+  "open-focus-short-07.mp3": {
+    "text": "Rest in that. Diffuse is enough.",
+    "pause": "14",
+    "duration": 3.892
+  },
+  "open-focus-long-01.mp3": {
+    "text": "Sit easy. You can close the eyes, or leave them soft.",
+    "pause": "5",
+    "duration": 4.989
+  },
+  "open-focus-long-02.mp3": {
+    "text": "Is it possible to imagine the space between your eyes?",
+    "pause": "10",
+    "duration": 4.206
+  },
+  "open-focus-long-03.mp3": {
+    "text": "Can you imagine the space between your ears?",
+    "pause": "10",
+    "duration": 3.631
+  },
+  "open-focus-long-04.mp3": {
+    "text": "The space inside your throat. Not the throat. The space.",
+    "pause": "10",
+    "duration": 5.564
+  },
+  "open-focus-long-05.mp3": {
+    "text": "Can you imagine space between the fingers — all of them at once?",
+    "pause": "10",
+    "duration": 5.172
+  },
+  "open-focus-long-06.mp3": {
+    "text": "Hands filled with space. Arms filled with space.",
+    "pause": "10",
+    "duration": 5.564
+  },
+  "open-focus-long-07.mp3": {
+    "text": "The whole body filled with space, as if the body were a volume, not a surface.",
+    "pause": "12",
+    "duration": 6.844
+  },
+  "open-focus-long-08.mp3": {
+    "text": "Now include the space around the body. Behind you. Above. Below the seat.",
+    "pause": "12",
+    "duration": 7.628
+  },
+  "open-focus-long-09.mp3": {
+    "text": "See if inside and outside can be one continuous space.",
+    "pause": "14",
+    "duration": 5.721
+  },
+  "open-focus-long-10.mp3": {
+    "text": "Sounds happening in that space. Thoughts too. You do not have to hold it tight.",
+    "pause": "12",
+    "duration": 6.922
+  },
+  "open-focus-long-11.mp3": {
+    "text": "Diffuse attention is enough. Wide, not sharp.",
+    "pause": "10",
+    "duration": 4.989
+  },
+  "open-focus-long-12.mp3": {
+    "text": "I will be quiet. Stay with space, not with objects.",
+    "pause": "22",
+    "duration": 5.329
+  },
+  "open-focus-long-13.mp3": {
+    "text": "Gently come back. The room is still here.",
+    "pause": "6",
+    "duration": 4.049
+  },
+  "just-breathe-short-01.mp3": {
+    "text": "Sit or lie down. Close the mouth. Breathe through the nose.",
+    "pause": "6",
+    "duration": 6.348
+  },
+  "just-breathe-short-02.mp3": {
+    "text": "Let the breath be light. This is not a performance.",
+    "pause": "8",
+    "duration": 4.519
+  },
+  "just-breathe-short-03.mp3": {
+    "text": "A little slower, only if that is easy.",
+    "pause": "10",
+    "duration": 3.318
+  },
+  "just-breathe-short-04.mp3": {
+    "text": "If the mind runs, let it. Keep the nose breathing.",
+    "pause": "12",
+    "duration": 4.676
+  },
+  "just-breathe-short-05.mp3": {
+    "text": "Stay with the next breath only.",
+    "pause": "16",
+    "duration": 3.004
+  },
+  "just-breathe-short-06.mp3": {
+    "text": "That is the whole practice.",
+    "pause": "8",
+    "duration": 2.769
+  },
+  "just-breathe-long-01.mp3": {
+    "text": "Sit or lie down. Mouth closed. Breathe through the nose.",
+    "pause": "6",
+    "duration": 5.799
+  },
+  "just-breathe-long-02.mp3": {
+    "text": "Let the breath be light, and quiet. Not a performance.",
+    "pause": "8",
+    "duration": 5.172
+  },
+  "just-breathe-long-03.mp3": {
+    "text": "A little slower, if that is easy. No strain.",
+    "pause": "10",
+    "duration": 4.049
+  },
+  "just-breathe-long-04.mp3": {
+    "text": "Feel the air at the nostrils. In. Out.",
+    "pause": "12",
+    "duration": 5.068
+  },
+  "just-breathe-long-05.mp3": {
+    "text": "If you can, let the belly move a little more than the chest.",
+    "pause": "10",
+    "duration": 4.598
+  },
+  "just-breathe-long-06.mp3": {
+    "text": "If the mind runs, let it. You are not failing. Keep the nose breathing.",
+    "pause": "12",
+    "duration": 6.687
+  },
+  "just-breathe-long-07.mp3": {
+    "text": "No need to empty anything. The breath is already happening.",
+    "pause": "10",
+    "duration": 5.407
+  },
+  "just-breathe-long-08.mp3": {
+    "text": "Light. Slow. Low in the body.",
+    "pause": "14",
+    "duration": 4.598
+  },
+  "just-breathe-long-09.mp3": {
+    "text": "I will be quiet. Stay with the next breath only.",
+    "pause": "24",
+    "duration": 4.519
+  },
+  "just-breathe-long-10.mp3": {
+    "text": "That is the whole practice. Nothing else to get right.",
+    "pause": "6",
+    "duration": 4.598
+  },
+  "dzogchen-short-01.mp3": {
+    "text": "Sit. Eyes open. Leave the view as it is.",
+    "pause": "6",
+    "duration": 4.833
+  },
+  "dzogchen-short-02.mp3": {
+    "text": "There is already knowing here. You do not have to make it.",
+    "pause": "10",
+    "duration": 4.728
+  },
+  "dzogchen-short-03.mp3": {
+    "text": "A thought appears. Let it be a thought. Do not follow, do not fight.",
+    "pause": "12",
+    "duration": 6.269
+  },
+  "dzogchen-short-04.mp3": {
+    "text": "Rest as the knowing in which the thought appeared.",
+    "pause": "14",
+    "duration": 3.971
+  },
+  "dzogchen-short-05.mp3": {
+    "text": "If you get involved, notice that. That noticing is the same knowing.",
+    "pause": "10",
+    "duration": 6.269
+  },
+  "dzogchen-short-06.mp3": {
+    "text": "Leave it. Already awake is not a future state.",
+    "pause": "14",
+    "duration": 4.911
+  },
+  "dzogchen-long-01.mp3": {
+    "text": "Sit. Eyes open. Leave the view as it is.",
+    "pause": "6",
+    "duration": 4.833
+  },
+  "dzogchen-long-02.mp3": {
+    "text": "You do not need a special state. Knowing is already happening.",
+    "pause": "8",
+    "duration": 5.642
+  },
+  "dzogchen-long-03.mp3": {
+    "text": "Look: who is looking? Do not answer with a story. Look.",
+    "pause": "12",
+    "duration": 5.878
+  },
+  "dzogchen-long-04.mp3": {
+    "text": "Whatever appears — sound, thought, the room — appears in this knowing.",
+    "pause": "10",
+    "duration": 7.079
+  },
+  "dzogchen-long-05.mp3": {
+    "text": "You do not have to hold the knowing. It holds the appearances.",
+    "pause": "10",
+    "duration": 5.068
+  },
+  "dzogchen-long-06.mp3": {
+    "text": "A thought about practice is just another appearance. Let it go by.",
+    "pause": "10",
+    "duration": 5.407
+  },
+  "dzogchen-long-07.mp3": {
+    "text": "No need to improve this moment, or to become someone who is meditating well.",
+    "pause": "10",
+    "duration": 6.191
+  },
+  "dzogchen-long-08.mp3": {
+    "text": "If you get lost, that getting lost is known. Rest there.",
+    "pause": "12",
+    "duration": 5.564
+  },
+  "dzogchen-long-09.mp3": {
+    "text": "I will be quiet. Leave everything as it is.",
+    "pause": "24",
+    "duration": 4.362
+  },
+  "dzogchen-long-10.mp3": {
+    "text": "This was not a technique to keep. It is what is always the case.",
+    "pause": "6",
+    "duration": 5.721
+  },
+  "mahamudra-short-01.mp3": {
+    "text": "Sit upright, at ease. Eyes open or barely so.",
+    "pause": "5",
+    "duration": 5.172
+  },
+  "mahamudra-short-02.mp3": {
+    "text": "Turn attention around, as if mind were looking at mind.",
+    "pause": "10",
+    "duration": 4.911
+  },
+  "mahamudra-short-03.mp3": {
+    "text": "What does mind look like, when you look directly?",
+    "pause": "14",
+    "duration": 3.971
+  },
+  "mahamudra-short-04.mp3": {
+    "text": "If you find no thing there, do not fill the gap. Leave it.",
+    "pause": "12",
+    "duration": 5.251
+  },
+  "mahamudra-short-05.mp3": {
+    "text": "Thoughts can move. Mind remains unstained, like space.",
+    "pause": "12",
+    "duration": 6.034
+  },
+  "mahamudra-short-06.mp3": {
+    "text": "Rest. Do not meddle.",
+    "pause": "14",
+    "duration": 2.847
+  },
+  "mahamudra-long-01.mp3": {
+    "text": "Sit upright, at ease. Eyes open, or barely open.",
+    "pause": "5",
+    "duration": 5.642
+  },
+  "mahamudra-long-02.mp3": {
+    "text": "For a moment, let attention rest on the breath. Then let even that go.",
+    "pause": "8",
+    "duration": 6.766
+  },
+  "mahamudra-long-03.mp3": {
+    "text": "Turn the looking around. Let mind look at mind.",
+    "pause": "10",
+    "duration": 4.598
+  },
+  "mahamudra-long-04.mp3": {
+    "text": "What do you find? A shape? A color? A watcher sitting behind the eyes?",
+    "pause": "14",
+    "duration": 6.609
+  },
+  "mahamudra-long-05.mp3": {
+    "text": "If you find no object there, that is not a failure. That is the look.",
+    "pause": "10",
+    "duration": 6.269
+  },
+  "mahamudra-long-06.mp3": {
+    "text": "Thoughts may still arise. Let them arise and dissolve, like writing on water.",
+    "pause": "12",
+    "duration": 6.844
+  },
+  "mahamudra-long-07.mp3": {
+    "text": "You do not have to stop them. You do not have to follow them.",
+    "pause": "10",
+    "duration": 4.676
+  },
+  "mahamudra-long-08.mp3": {
+    "text": "Leave mind as it is. Fresh. Uncontrived. Already free.",
+    "pause": "12",
+    "duration": 6.766
+  },
+  "mahamudra-long-09.mp3": {
+    "text": "I will be quiet. If you start managing the mind, drop the managing.",
+    "pause": "22",
+    "duration": 6.034
+  },
+  "mahamudra-long-10.mp3": {
+    "text": "Nothing to take with you. The looking is already yours.",
+    "pause": "6",
+    "duration": 4.989
+  },
+  "zen-short-01.mp3": {
+    "text": "Sit upright. Not stiff. Awake.",
+    "pause": "5",
+    "duration": 3.892
+  },
+  "zen-short-02.mp3": {
+    "text": "Eyes lowered. Soft gaze on the floor ahead.",
+    "pause": "6",
+    "duration": 4.127
+  },
+  "zen-short-03.mp3": {
+    "text": "This is the practice. Nothing extra.",
+    "pause": "10",
+    "duration": 3.396
+  },
+  "zen-short-04.mp3": {
+    "text": "A thought arrives. Open the hand of thought. Let it go.",
+    "pause": "12",
+    "duration": 5.251
+  },
+  "zen-short-05.mp3": {
+    "text": "Return is not a failure. Return is the practice.",
+    "pause": "12",
+    "duration": 5.329
+  },
+  "zen-short-06.mp3": {
+    "text": "Just sit.",
+    "pause": "18",
+    "duration": 1.959
+  },
+  "zen-long-01.mp3": {
+    "text": "Sit upright. Not stiff. Awake.",
+    "pause": "5",
+    "duration": 3.892
+  },
+  "zen-long-02.mp3": {
+    "text": "Eyes lowered. Soft gaze on the floor a few feet ahead.",
+    "pause": "6",
+    "duration": 4.676
+  },
+  "zen-long-03.mp3": {
+    "text": "Hands at rest. Jaw unclenched. This is enough.",
+    "pause": "6",
+    "duration": 6.191
+  },
+  "zen-long-04.mp3": {
+    "text": "You are not here to improve this moment.",
+    "pause": "8",
+    "duration": 3.396
+  },
+  "zen-long-05.mp3": {
+    "text": "A thought arrives. Open the hand of thought.",
+    "pause": "12",
+    "duration": 4.362
+  },
+  "zen-long-06.mp3": {
+    "text": "Return is not a failure. Return is the practice.",
+    "pause": "12",
+    "duration": 5.329
+  },
+  "zen-long-07.mp3": {
+    "text": "Sounds, pressure, breath — they belong to the same sitting.",
+    "pause": "10",
+    "duration": 5.799
+  },
+  "zen-long-08.mp3": {
+    "text": "Do not add a story about how well this is going.",
+    "pause": "10",
+    "duration": 3.971
+  },
+  "zen-long-09.mp3": {
+    "text": "I will be quiet. Just sit.",
+    "pause": "24",
+    "duration": 3.161
+  },
+  "zen-long-10.mp3": {
+    "text": "When the time ends, stand without leaving.",
+    "pause": "6",
+    "duration": 3.709
+  },
+  "who-am-i-short-01.mp3": {
+    "text": "Sit. Let the body be quiet.",
+    "pause": "5",
+    "duration": 3.553
+  },
+  "who-am-i-short-02.mp3": {
+    "text": "A thought is here. Ask, gently: who is this appearing to?",
+    "pause": "12",
+    "duration": 5.721
+  },
+  "who-am-i-short-03.mp3": {
+    "text": "Do not answer with a name, or a story. Look.",
+    "pause": "12",
+    "duration": 4.676
+  },
+  "who-am-i-short-04.mp3": {
+    "text": "Whatever you find — or fail to find — stay with that.",
+    "pause": "12",
+    "duration": 5.068
+  },
+  "who-am-i-short-05.mp3": {
+    "text": "The one who would finish this practice is another thought.",
+    "pause": "10",
+    "duration": 4.127
+  },
+  "who-am-i-short-06.mp3": {
+    "text": "Rest as what does not come and go.",
+    "pause": "14",
+    "duration": 3.631
+  },
+  "who-am-i-long-01.mp3": {
+    "text": "Sit. Let the body be quiet. Soft eyes, or closed.",
+    "pause": "5",
+    "duration": 6.113
+  },
+  "who-am-i-long-02.mp3": {
+    "text": "Notice a thought, or a feeling, as it appears.",
+    "pause": "8",
+    "duration": 4.362
+  },
+  "who-am-i-long-03.mp3": {
+    "text": "Ask, gently: who is this appearing to?",
+    "pause": "12",
+    "duration": 4.284
+  },
+  "who-am-i-long-04.mp3": {
+    "text": "Do not answer with a name. Do not answer with a biography. Look.",
+    "pause": "12",
+    "duration": 5.956
+  },
+  "who-am-i-long-05.mp3": {
+    "text": "If a person appears as the answer, that person is another object. Who is it appearing to?",
+    "pause": "14",
+    "duration": 6.844
+  },
+  "who-am-i-long-06.mp3": {
+    "text": "You are not looking for a better thought. You are looking for the one who thinks.",
+    "pause": "10",
+    "duration": 6.034
+  },
+  "who-am-i-long-07.mp3": {
+    "text": "What remains when the answer falls silent?",
+    "pause": "14",
+    "duration": 3.553
+  },
+  "who-am-i-long-08.mp3": {
+    "text": "I will be quiet. Keep the question alive, without chasing it.",
+    "pause": "22",
+    "duration": 5.381
+  },
+  "who-am-i-long-09.mp3": {
+    "text": "There is nothing to conclude. Leave it open.",
+    "pause": "6",
+    "duration": 3.788
+  },
+  "vipassana-short-01.mp3": {
+    "text": "Sit still. Eyes closed if that helps.",
+    "pause": "5",
+    "duration": 3.788
+  },
+  "vipassana-short-02.mp3": {
+    "text": "Feel the breath at the nostrils, or the belly. That is the home base.",
+    "pause": "8",
+    "duration": 6.113
+  },
+  "vipassana-short-03.mp3": {
+    "text": "When a thought pulls you, note it — thinking — and return.",
+    "pause": "10",
+    "duration": 5.407
+  },
+  "vipassana-short-04.mp3": {
+    "text": "When a sound appears, note hearing, and return.",
+    "pause": "10",
+    "duration": 4.519
+  },
+  "vipassana-short-05.mp3": {
+    "text": "You are not trying to stop anything. You are seeing it change.",
+    "pause": "10",
+    "duration": 5.251
+  },
+  "vipassana-short-06.mp3": {
+    "text": "Keep returning. That is the practice.",
+    "pause": "16",
+    "duration": 3.631
+  },
+  "vipassana-long-01.mp3": {
+    "text": "Sit still. Eyes closed if that helps.",
+    "pause": "5",
+    "duration": 3.788
+  },
+  "vipassana-long-02.mp3": {
+    "text": "Feel the breath at the nostrils, or at the belly. Let that be home base.",
+    "pause": "8",
+    "duration": 6.531
+  },
+  "vipassana-long-03.mp3": {
+    "text": "When attention wanders, you will notice. That noticing is mindfulness.",
+    "pause": "8",
+    "duration": 6.348
+  },
+  "vipassana-long-04.mp3": {
+    "text": "Note it simply. Thinking. Hearing. Pressure. Then return to the breath.",
+    "pause": "12",
+    "duration": 7.758
+  },
+  "vipassana-long-05.mp3": {
+    "text": "Do not narrate a story about the thought. One word is enough. Then let it go.",
+    "pause": "10",
+    "duration": 7.079
+  },
+  "vipassana-long-06.mp3": {
+    "text": "Pleasant or unpleasant — same instruction. See it. Let it change.",
+    "pause": "12",
+    "duration": 6.452
+  },
+  "vipassana-long-07.mp3": {
+    "text": "Nothing here is a problem to solve. Everything here is passing.",
+    "pause": "10",
+    "duration": 5.799
+  },
+  "vipassana-long-08.mp3": {
+    "text": "I will be quiet. Note, and return.",
+    "pause": "24",
+    "duration": 4.206
+  },
+  "vipassana-long-09.mp3": {
+    "text": "Open the eyes. The same seeing can walk out of the room.",
+    "pause": "6",
+    "duration": 4.754
+  },
+  "samatha-short-01.mp3": {
+    "text": "Sit comfortably. Close the eyes.",
+    "pause": "5",
+    "duration": 3.553
+  },
+  "samatha-short-02.mp3": {
+    "text": "Rest attention on the breath, wherever it is easiest to feel.",
+    "pause": "8",
+    "duration": 4.833
+  },
+  "samatha-short-03.mp3": {
+    "text": "When you wander, come back. No commentary.",
+    "pause": "12",
+    "duration": 4.127
+  },
+  "samatha-short-04.mp3": {
+    "text": "The breath does not need to be special. Ordinary breathing is the object.",
+    "pause": "10",
+    "duration": 5.564
+  },
+  "samatha-short-05.mp3": {
+    "text": "Stay. Return. Stay.",
+    "pause": "18",
+    "duration": 3.788
+  },
+  "samatha-long-01.mp3": {
+    "text": "Sit comfortably, with a straight back. Close the eyes.",
+    "pause": "5",
+    "duration": 4.989
+  },
+  "samatha-long-02.mp3": {
+    "text": "Rest attention on the breath, wherever it is easiest — nostrils, chest, or belly.",
+    "pause": "8",
+    "duration": 6.922
+  },
+  "samatha-long-03.mp3": {
+    "text": "Let the breath be natural. You are watching, not driving.",
+    "pause": "10",
+    "duration": 4.911
+  },
+  "samatha-long-04.mp3": {
+    "text": "When attention wanders, notice, and place it back. That is the whole skill.",
+    "pause": "12",
+    "duration": 7.079
+  },
+  "samatha-long-05.mp3": {
+    "text": "No drama about wandering. A wandering mind is the reason for the practice.",
+    "pause": "10",
+    "duration": 6.191
+  },
+  "samatha-long-06.mp3": {
+    "text": "If it helps, feel one whole in-breath, then one whole out-breath.",
+    "pause": "12",
+    "duration": 6.034
+  },
+  "samatha-long-07.mp3": {
+    "text": "I will be quiet. Stay with the breath. Return as many times as you need.",
+    "pause": "24",
+    "duration": 6.452
+  },
+  "samatha-long-08.mp3": {
+    "text": "Let the attention widen. Then open the eyes.",
+    "pause": "6",
+    "duration": 4.911
+  },
+  "metta-short-01.mp3": {
+    "text": "Sit easy. Soften the face.",
+    "pause": "5",
+    "duration": 3.396
+  },
+  "metta-short-02.mp3": {
+    "text": "Bring to mind yourself, as you are right now. Not the improved version.",
+    "pause": "8",
+    "duration": 5.878
+  },
+  "metta-short-03.mp3": {
+    "text": "Quietly: may I be safe. May I be at ease.",
+    "pause": "12",
+    "duration": 5.329
+  },
+  "metta-short-04.mp3": {
+    "text": "If that feels false, do not force it. Offer the wish anyway, like setting a cup down.",
+    "pause": "10",
+    "duration": 7.079
+  },
+  "metta-short-05.mp3": {
+    "text": "Now someone easy to care for. May you be safe. May you be at ease.",
+    "pause": "12",
+    "duration": 6.844
+  },
+  "metta-short-06.mp3": {
+    "text": "Let that be enough.",
+    "pause": "10",
+    "duration": 1.933
+  },
+  "metta-long-01.mp3": {
+    "text": "Sit easy. Soften the face and the hands.",
+    "pause": "5",
+    "duration": 4.519
+  },
+  "metta-long-02.mp3": {
+    "text": "Bring to mind yourself, as you actually are. Not a better edition.",
+    "pause": "8",
+    "duration": 5.956
+  },
+  "metta-long-03.mp3": {
+    "text": "Say, inwardly, and slowly: may I be safe. May I be at ease. May I not be governed by these trains of thought.",
+    "pause": "14",
+    "duration": 11.389
+  },
+  "metta-long-04.mp3": {
+    "text": "If warmth does not come, that is fine. The words are the practice, not the mood.",
+    "pause": "10",
+    "duration": 6.687
+  },
+  "metta-long-05.mp3": {
+    "text": "Now someone who is easy to care for. See their face. May you be safe. May you be at ease.",
+    "pause": "14",
+    "duration": 9.012
+  },
+  "metta-long-06.mp3": {
+    "text": "A neutral person — someone you pass and do not think about. The same wish.",
+    "pause": "12",
+    "duration": 5.878
+  },
+  "metta-long-07.mp3": {
+    "text": "If you can, include someone difficult, without pretending the history is gone. May you be free from suffering.",
+    "pause": "12",
+    "duration": 8.829
+  },
+  "metta-long-08.mp3": {
+    "text": "Widen once: all of us, in this same predicament. May we be at ease.",
+    "pause": "12",
+    "duration": 7.001
+  },
+  "metta-long-09.mp3": {
+    "text": "I will be quiet. Rest in the wish, or in the simple fact of sitting.",
+    "pause": "18",
+    "duration": 6.452
+  },
+  "metta-long-10.mp3": {
+    "text": "Come back. Keep one phrase if you want it: may I be at ease.",
+    "pause": "6",
+    "duration": 6.191
+  },
+  "parts-short-01.mp3": {
+    "text": "Sit. Close the eyes if you like.",
+    "pause": "5",
+    "duration": 3.396
+  },
+  "parts-short-02.mp3": {
+    "text": "Notice who is here. A worried part, a driven part, a tired part. Do not pick a fight.",
+    "pause": "10",
+    "duration": 9.091
+  },
+  "parts-short-03.mp3": {
+    "text": "Ask, inwardly: how old does this part feel? Then wait.",
+    "pause": "12",
+    "duration": 6.034
+  },
+  "parts-short-04.mp3": {
+    "text": "You are not the part. You are the space it is appearing in.",
+    "pause": "10",
+    "duration": 5.172
+  },
+  "parts-short-05.mp3": {
+    "text": "Thank it for trying to help. You can drive from the platform.",
+    "pause": "10",
+    "duration": 4.362
+  },
+  "parts-short-06.mp3": {
+    "text": "Rest as that wider space.",
+    "pause": "12",
+    "duration": 3.161
+  },
+  "parts-long-01.mp3": {
+    "text": "Sit. Close the eyes if you like.",
+    "pause": "5",
+    "duration": 3.396
+  },
+  "parts-long-02.mp3": {
+    "text": "Notice who showed up. A worried part, a critic, a pusher, a tired one.",
+    "pause": "8",
+    "duration": 7.158
+  },
+  "parts-long-03.mp3": {
+    "text": "Do not merge with it, and do not exile it. See it, as you would see a train.",
+    "pause": "10",
+    "duration": 6.922
+  },
+  "parts-long-04.mp3": {
+    "text": "Ask, inwardly: what are you afraid would happen if you did not do this job?",
+    "pause": "12",
+    "duration": 6.452
+  },
+  "parts-long-05.mp3": {
+    "text": "Wait. Parts speak in images, in tightness, in half-sentences. That counts.",
+    "pause": "12",
+    "duration": 7.889
+  },
+  "parts-long-06.mp3": {
+    "text": "You are not the part. You are the one who can listen. The platform, not the passenger.",
+    "pause": "10",
+    "duration": 7.236
+  },
+  "parts-long-07.mp3": {
+    "text": "If another part jumps in to manage this one, notice that too. Room for both.",
+    "pause": "10",
+    "duration": 6.269
+  },
+  "parts-long-08.mp3": {
+    "text": "Thank them. They have been working. You can take the wheel for now.",
+    "pause": "10",
+    "duration": 4.754
+  },
+  "parts-long-09.mp3": {
+    "text": "I will be quiet. Stay in the space that can hold all of them.",
+    "pause": "20",
+    "duration": 5.329
+  },
+  "parts-long-10.mp3": {
+    "text": "Come back slowly. No need to resolve the story.",
+    "pause": "6",
+    "duration": 4.284
+  },
+  "humming-short-01.mp3": {
+    "text": "Sit or stand. Mouth closed. Breathe in through the nose.",
+    "pause": "5",
+    "duration": 5.956
+  },
+  "humming-short-02.mp3": {
+    "text": "On the next out-breath, hum a single easy tone. Not loud. Just a hum.",
+    "pause": "12",
+    "duration": 6.844
+  },
+  "humming-short-03.mp3": {
+    "text": "Again. In through the nose. Hum on the way out. Let the chest and face vibrate.",
+    "pause": "12",
+    "duration": 7.811
+  },
+  "humming-short-04.mp3": {
+    "text": "If a thought comes, let the tone hold you instead of the thought.",
+    "pause": "10",
+    "duration": 5.251
+  },
+  "humming-short-05.mp3": {
+    "text": "Keep humming. I will be quiet while you do.",
+    "pause": "20",
+    "duration": 3.553
+  },
+  "humming-short-06.mp3": {
+    "text": "Stop. Feel the silence after the sound.",
+    "pause": "8",
+    "duration": 4.284
+  },
+  "humming-long-01.mp3": {
+    "text": "Sit or stand. Shoulders easy. Mouth closed.",
+    "pause": "5",
+    "duration": 5.329
+  },
+  "humming-long-02.mp3": {
+    "text": "Breathe in through the nose. On the out-breath, hum a single easy tone.",
+    "pause": "8",
+    "duration": 6.687
+  },
+  "humming-long-03.mp3": {
+    "text": "Not a performance. A low, ordinary hum, as if warming the voice.",
+    "pause": "8",
+    "duration": 6.269
+  },
+  "humming-long-04.mp3": {
+    "text": "Feel it in the chest, the throat, the face. Let the vibration be the object.",
+    "pause": "10",
+    "duration": 7.471
+  },
+  "humming-long-05.mp3": {
+    "text": "Again. In through the nose. Hum on the way out.",
+    "pause": "12",
+    "duration": 4.754
+  },
+  "humming-long-06.mp3": {
+    "text": "If the mind runs, you are not failing. Come back to the next hum.",
+    "pause": "10",
+    "duration": 5.642
+  },
+  "humming-long-07.mp3": {
+    "text": "You can pause between hums. The silence is part of it.",
+    "pause": "10",
+    "duration": 4.598
+  },
+  "humming-long-08.mp3": {
+    "text": "I will be quiet. Keep an easy rhythm. Stop if you get lightheaded.",
+    "pause": "24",
+    "duration": 5.878
+  },
+  "humming-long-09.mp3": {
+    "text": "Let the last hum fade. Sit in the after-sound.",
+    "pause": "10",
+    "duration": 5.329
+  },
+  "humming-long-10.mp3": {
+    "text": "Open the eyes. The room is still humming, in its way.",
+    "pause": "5",
+    "duration": 5.068
+  },
+  "chanting-short-01.mp3": {
+    "text": "Sit. Choose one simple sound. Ah, om, or a word you already use.",
+    "pause": "6",
+    "duration": 7.811
+  },
+  "chanting-short-02.mp3": {
+    "text": "On the out-breath, say it. Out loud if you can, or under the breath.",
+    "pause": "10",
+    "duration": 5.59
+  },
+  "chanting-short-03.mp3": {
+    "text": "Again. Same sound. No melody required.",
+    "pause": "12",
+    "duration": 4.127
+  },
+  "chanting-short-04.mp3": {
+    "text": "Let the sound carry the attention. You do not have to think the sound.",
+    "pause": "10",
+    "duration": 5.721
+  },
+  "chanting-short-05.mp3": {
+    "text": "Continue. I will be quiet.",
+    "pause": "18",
+    "duration": 2.691
+  },
+  "chanting-short-06.mp3": {
+    "text": "Stop. Hear the room.",
+    "pause": "6",
+    "duration": 2.847
+  },
+  "chanting-long-01.mp3": {
+    "text": "Sit. Choose one simple sound. Ah, om, or a mantra you already trust.",
+    "pause": "6",
+    "duration": 8.124
+  },
+  "chanting-long-02.mp3": {
+    "text": "This is not theater. One word, repeated, until it holds you.",
+    "pause": "6",
+    "duration": 6.191
+  },
+  "chanting-long-03.mp3": {
+    "text": "On the next out-breath, say it. Out loud if the room allows, or quietly.",
+    "pause": "8",
+    "duration": 6.269
+  },
+  "chanting-long-04.mp3": {
+    "text": "Again. Same sound. Same pace as the breath.",
+    "pause": "10",
+    "duration": 4.519
+  },
+  "chanting-long-05.mp3": {
+    "text": "If you lose the word, pick it up on the next out-breath. That is the practice.",
+    "pause": "10",
+    "duration": 6.034
+  },
+  "chanting-long-06.mp3": {
+    "text": "Thoughts will try to board. Let the sound be the platform.",
+    "pause": "10",
+    "duration": 4.989
+  },
+  "chanting-long-07.mp3": {
+    "text": "I will be quiet. Keep the sound going, easy and even.",
+    "pause": "24",
+    "duration": 5.407
+  },
+  "chanting-long-08.mp3": {
+    "text": "Let the last repetition fade. Sit in what remains.",
+    "pause": "10",
+    "duration": 5.407
+  },
+  "chanting-long-09.mp3": {
+    "text": "Open the eyes. You can keep the word in the pocket of the day.",
+    "pause": "5",
+    "duration": 4.754
+  },
+  "body-scan-short-01.mp3": {
+    "text": "Lie down, or sit. Close the eyes if that helps.",
+    "pause": "5",
+    "duration": 4.911
+  },
+  "body-scan-short-02.mp3": {
+    "text": "Feel the feet. No need to change them. Just the sensation.",
+    "pause": "10",
+    "duration": 5.068
+  },
+  "body-scan-short-03.mp3": {
+    "text": "Feel the lower legs, the knees, the thighs.",
+    "pause": "10",
+    "duration": 4.754
+  },
+  "body-scan-short-04.mp3": {
+    "text": "Belly, chest, the small movement of breathing.",
+    "pause": "10",
+    "duration": 4.989
+  },
+  "body-scan-short-05.mp3": {
+    "text": "Feel the hands, the arms, the shoulders, the face.",
+    "pause": "10",
+    "duration": 5.878
+  },
+  "body-scan-short-06.mp3": {
+    "text": "The whole body as one field of sensation. Rest there.",
+    "pause": "14",
+    "duration": 5.486
+  },
+  "body-scan-long-01.mp3": {
+    "text": "Lie down, or sit supported. Close the eyes if that helps.",
+    "pause": "5",
+    "duration": 5.251
+  },
+  "body-scan-long-02.mp3": {
+    "text": "Feel the feet. Warmth, pressure, tingling — whatever is actually here.",
+    "pause": "10",
+    "duration": 7.158
+  },
+  "body-scan-long-03.mp3": {
+    "text": "Move to the lower legs, and the knees. No need to fix anything.",
+    "pause": "10",
+    "duration": 5.642
+  },
+  "body-scan-long-04.mp3": {
+    "text": "Thighs. Pelvis. The contact with the seat or the floor.",
+    "pause": "10",
+    "duration": 5.956
+  },
+  "body-scan-long-05.mp3": {
+    "text": "Belly. Chest. Notice the breath moving, without taking it over.",
+    "pause": "10",
+    "duration": 6.766
+  },
+  "body-scan-long-06.mp3": {
+    "text": "Hands. Arms. Shoulders. Let them be heavy.",
+    "pause": "10",
+    "duration": 5.799
+  },
+  "body-scan-long-07.mp3": {
+    "text": "Neck. Jaw. The space of the mouth. The eyes in their sockets.",
+    "pause": "10",
+    "duration": 7.393
+  },
+  "body-scan-long-08.mp3": {
+    "text": "Now the whole body at once, as one field of sensation.",
+    "pause": "14",
+    "duration": 5.564
+  },
+  "body-scan-long-09.mp3": {
+    "text": "I will be quiet. Stay with the whole, or return to any part that calls.",
+    "pause": "20",
+    "duration": 6.113
+  },
+  "body-scan-long-10.mp3": {
+    "text": "Wiggle the fingers. Open the eyes. Come back slowly.",
+    "pause": "6",
+    "duration": 5.564
+  },
+  "walking-short-01.mp3": {
+    "text": "Stand. Phone away. Eyes open.",
+    "pause": "4",
+    "duration": 4.284
+  },
+  "walking-short-02.mp3": {
+    "text": "Feel the weight in both feet.",
+    "pause": "6",
+    "duration": 3.004
+  },
+  "walking-short-03.mp3": {
+    "text": "Begin to walk, slower than usual. Heel, then sole, then toes.",
+    "pause": "10",
+    "duration": 6.531
+  },
+  "walking-short-04.mp3": {
+    "text": "When the mind leaves, it is not a problem. Come back to the next step.",
+    "pause": "12",
+    "duration": 5.642
+  },
+  "walking-short-05.mp3": {
+    "text": "Keep walking. The step is the sit.",
+    "pause": "18",
+    "duration": 3.709
+  },
+  "walking-short-06.mp3": {
+    "text": "Stop. Feel the standing. Then go on with the day.",
+    "pause": "6",
+    "duration": 5.329
+  },
+  "walking-long-01.mp3": {
+    "text": "Stand. Put the phone away. Eyes open. This is an outdoor practice if you can.",
+    "pause": "5",
+    "duration": 7.314
+  },
+  "walking-long-02.mp3": {
+    "text": "Feel the weight in both feet before you move.",
+    "pause": "6",
+    "duration": 3.918
+  },
+  "walking-long-03.mp3": {
+    "text": "Begin to walk a little slower than usual. No need to look strange. Just unhurried.",
+    "pause": "8",
+    "duration": 6.922
+  },
+  "walking-long-04.mp3": {
+    "text": "Heel, then sole, then toes. Then the other foot.",
+    "pause": "10",
+    "duration": 5.329
+  },
+  "walking-long-05.mp3": {
+    "text": "The eyes can take in the world. You are not staring at your feet.",
+    "pause": "8",
+    "duration": 5.172
+  },
+  "walking-long-06.mp3": {
+    "text": "When a train of thought boards, notice. Come back to the next step.",
+    "pause": "12",
+    "duration": 5.512
+  },
+  "walking-long-07.mp3": {
+    "text": "Sound, air, light — they belong. They do not need a story.",
+    "pause": "10",
+    "duration": 6.452
+  },
+  "walking-long-08.mp3": {
+    "text": "I will be quiet. Keep walking. If you stop at a corner, that standing is the sit too.",
+    "pause": "24",
+    "duration": 7.732
+  },
+  "walking-long-09.mp3": {
+    "text": "Stop. Feel both feet. Then walk on as the same looking.",
+    "pause": "6",
+    "duration": 6.113
+  },
+  "the-circle-short-01.mp3": {
+    "text": "Stand. Feel the floor.",
+    "pause": "5",
+    "duration": 3.004
+  },
+  "the-circle-short-02.mp3": {
+    "text": "Imagine a simple boundary around this place — a circle, a room, enough space to be in.",
+    "pause": "8",
+    "duration": 7.549
+  },
+  "the-circle-short-03.mp3": {
+    "text": "Look to one direction. See what is there. Then turn, and see the next.",
+    "pause": "12",
+    "duration": 6.452
+  },
+  "the-circle-short-04.mp3": {
+    "text": "Four directions, then back to the center. You are the space in the middle.",
+    "pause": "12",
+    "duration": 6.348
+  },
+  "the-circle-short-05.mp3": {
+    "text": "Rest as that center. Nothing to banish but distraction.",
+    "pause": "12",
+    "duration": 5.251
+  },
+  "the-circle-short-06.mp3": {
+    "text": "When you are done, the circle can go. The looking can stay.",
+    "pause": "6",
+    "duration": 4.989
+  },
+  "the-circle-long-01.mp3": {
+    "text": "Stand. If you know a banishing ritual, you may use its form. If not, this is enough.",
+    "pause": "6",
+    "duration": 7.68
+  },
+  "the-circle-long-02.mp3": {
+    "text": "Feel the floor. You are in a place, at a time. That is the altar.",
+    "pause": "6",
+    "duration": 7.314
+  },
+  "the-circle-long-03.mp3": {
+    "text": "Imagine a quiet boundary around this space. Not to keep the world out. To remember where you are.",
+    "pause": "8",
+    "duration": 7.967
+  },
+  "the-circle-long-04.mp3": {
+    "text": "Face one direction. Look. What is actually there — wall, tree, sky, furniture.",
+    "pause": "10",
+    "duration": 8.673
+  },
+  "the-circle-long-05.mp3": {
+    "text": "Turn to the next direction. Look again. Then the next. Then the next.",
+    "pause": "12",
+    "duration": 6.609
+  },
+  "the-circle-long-06.mp3": {
+    "text": "Four looks. Then return to the center. You are not on the perimeter. You are the space inside it.",
+    "pause": "12",
+    "duration": 9.352
+  },
+  "the-circle-long-07.mp3": {
+    "text": "If thoughts crowd, they are visitors in the circle. They do not run the place.",
+    "pause": "10",
+    "duration": 6.034
+  },
+  "the-circle-long-08.mp3": {
+    "text": "I will be quiet. Stand in the middle. Eyes open.",
+    "pause": "20",
+    "duration": 5.172
+  },
+  "the-circle-long-09.mp3": {
+    "text": "When you are done, let the boundary dissolve. Walk out as the same center.",
+    "pause": "6",
+    "duration": 6.609
+  },
+  "afterglow-short-01.mp3": {
+    "text": "Sit. You do not need to hold on to what happened.",
+    "pause": "6",
+    "duration": 4.362
+  },
+  "afterglow-short-02.mp3": {
+    "text": "If images or feelings are still here, let them be trains. Watch them pass.",
+    "pause": "12",
+    "duration": 6.452
+  },
+  "afterglow-short-03.mp3": {
+    "text": "Do not build a religion out of a state. States end.",
+    "pause": "10",
+    "duration": 5.172
+  },
+  "afterglow-short-04.mp3": {
+    "text": "What is here now, without the story of last night or last year?",
+    "pause": "12",
+    "duration": 5.407
+  },
+  "afterglow-short-05.mp3": {
+    "text": "Rest as the space those leftovers are moving through.",
+    "pause": "12",
+    "duration": 4.362
+  },
+  "afterglow-short-06.mp3": {
+    "text": "The ordinary day is the integration.",
+    "pause": "8",
+    "duration": 3.318
+  },
+  "afterglow-long-01.mp3": {
+    "text": "Sit. You do not need to recreate anything, or to hold on.",
+    "pause": "6",
+    "duration": 5.642
+  },
+  "afterglow-long-02.mp3": {
+    "text": "If images, insights, or feelings are still moving, let them be trains.",
+    "pause": "10",
+    "duration": 6.348
+  },
+  "afterglow-long-03.mp3": {
+    "text": "You can watch them with interest. You do not have to board every one.",
+    "pause": "10",
+    "duration": 4.989
+  },
+  "afterglow-long-04.mp3": {
+    "text": "A beautiful state is still a state. It will end. That is not a failure.",
+    "pause": "10",
+    "duration": 6.922
+  },
+  "afterglow-long-05.mp3": {
+    "text": "Do not build a religion, a new identity, or a grand theory out of what visited.",
+    "pause": "10",
+    "duration": 6.766
+  },
+  "afterglow-long-06.mp3": {
+    "text": "Ask only: what is here now, on present evidence?",
+    "pause": "12",
+    "duration": 5.068
+  },
+  "afterglow-long-07.mp3": {
+    "text": "Point in, if you want. Space here. World there. Same as always.",
+    "pause": "12",
+    "duration": 6.766
+  },
+  "afterglow-long-08.mp3": {
+    "text": "I will be quiet. Let the leftovers pass. Stay on the platform.",
+    "pause": "22",
+    "duration": 5.878
+  },
+  "afterglow-long-09.mp3": {
+    "text": "Drink water. Walk. The ordinary day is the practice now.",
+    "pause": "6",
+    "duration": 5.799
+  },
+  "focused-short-01.mp3": {
+    "text": "Sit. Pick one simple object — the breath, a sound, or a spot on the wall.",
+    "pause": "6",
+    "duration": 7.549
+  },
+  "focused-short-02.mp3": {
+    "text": "Rest attention there. When it leaves, you will notice. That noticing is the practice.",
+    "pause": "10",
+    "duration": 7.628
+  },
+  "focused-short-03.mp3": {
+    "text": "Return without a story about how you failed.",
+    "pause": "12",
+    "duration": 3.788
+  },
+  "focused-short-04.mp3": {
+    "text": "The object does not have to be interesting. Ordinary is better.",
+    "pause": "10",
+    "duration": 5.172
+  },
+  "focused-short-05.mp3": {
+    "text": "I will be quiet. Stay, wander, return.",
+    "pause": "18",
+    "duration": 5.407
+  },
+  "focused-short-06.mp3": {
+    "text": "Let the focus soften. The same attention can go wide.",
+    "pause": "6",
+    "duration": 5.172
+  },
+  "focused-long-01.mp3": {
+    "text": "Sit. Choose one object of attention: the breath at the nostrils, or a visual spot.",
+    "pause": "6",
+    "duration": 7.549
+  },
+  "focused-long-02.mp3": {
+    "text": "Place attention there the way you would rest a hand on a table. No grip.",
+    "pause": "8",
+    "duration": 5.329
+  },
+  "focused-long-03.mp3": {
+    "text": "When attention wanders — and it will — notice the wandering as a train leaving.",
+    "pause": "10",
+    "duration": 6.531
+  },
+  "focused-long-04.mp3": {
+    "text": "Step back onto the platform, which is this object, now.",
+    "pause": "12",
+    "duration": 4.676
+  },
+  "focused-long-05.mp3": {
+    "text": "Do not add a second object. One is enough.",
+    "pause": "10",
+    "duration": 4.389
+  },
+  "focused-long-06.mp3": {
+    "text": "If the object itself becomes a thought about the object, return to the raw feel of it.",
+    "pause": "12",
+    "duration": 6.792
+  },
+  "focused-long-07.mp3": {
+    "text": "I will be quiet. Stay, wander, return. That loop is the sit.",
+    "pause": "24",
+    "duration": 7.628
+  },
+  "focused-long-08.mp3": {
+    "text": "Release the object. Notice that attention can rest without a target.",
+    "pause": "8",
+    "duration": 5.982
+  },
+  "transcendental-short-01.mp3": {
+    "text": "Sit easy. Close the eyes.",
+    "pause": "5",
+    "duration": 3.396
+  },
+  "transcendental-short-02.mp3": {
+    "text": "Take a word you already use, or the word one. This is not a secret. It is a vehicle.",
+    "pause": "8",
+    "duration": 7.549
+  },
+  "transcendental-short-03.mp3": {
+    "text": "Think it easily, on the breath or off it. No force. No concentration contest.",
+    "pause": "12",
+    "duration": 7.079
+  },
+  "transcendental-short-04.mp3": {
+    "text": "If it fades, let it fade. If you remember it, pick it up again. Both are correct.",
+    "pause": "12",
+    "duration": 7.158
+  },
+  "transcendental-short-05.mp3": {
+    "text": "I will be quiet. Easy repetition. No managing.",
+    "pause": "18",
+    "duration": 5.068
+  },
+  "transcendental-short-06.mp3": {
+    "text": "Drop the word. Sit in what is already here.",
+    "pause": "6",
+    "duration": 4.598
+  },
+  "transcendental-long-01.mp3": {
+    "text": "Sit easy. Close the eyes. Nothing to get right.",
+    "pause": "5",
+    "duration": 4.989
+  },
+  "transcendental-long-02.mp3": {
+    "text": "Use a sound you already know. If you do not have one, use the word one, silently.",
+    "pause": "8",
+    "duration": 7.001
+  },
+  "transcendental-long-03.mp3": {
+    "text": "Let it repeat itself, lightly, as if humming inwardly. No strain.",
+    "pause": "10",
+    "duration": 6.269
+  },
+  "transcendental-long-04.mp3": {
+    "text": "Thoughts will come. That is not a problem. The word is not fighting them.",
+    "pause": "12",
+    "duration": 5.721
+  },
+  "transcendental-long-05.mp3": {
+    "text": "If you forget the word for a while, you were not failing. Pick it up when you notice.",
+    "pause": "12",
+    "duration": 5.956
+  },
+  "transcendental-long-06.mp3": {
+    "text": "This is not concentration. It is an easy vehicle, then the space it moves in.",
+    "pause": "10",
+    "duration": 6.766
+  },
+  "transcendental-long-07.mp3": {
+    "text": "I will be quiet. Repeat without effort.",
+    "pause": "24",
+    "duration": 3.971
+  },
+  "transcendental-long-08.mp3": {
+    "text": "Let the word go. Rest. Then open the eyes.",
+    "pause": "8",
+    "duration": 5.799
+  },
+  "visualization-short-01.mp3": {
+    "text": "Sit or lie down. Close the eyes.",
+    "pause": "5",
+    "duration": 4.206
+  },
+  "visualization-short-02.mp3": {
+    "text": "Picture a simple room you know, just for a moment. Walls, light, a chair.",
+    "pause": "10",
+    "duration": 7.001
+  },
+  "visualization-short-03.mp3": {
+    "text": "Now drop the picture. What remains is the seeing itself, even with eyes closed.",
+    "pause": "12",
+    "duration": 7.393
+  },
+  "visualization-short-04.mp3": {
+    "text": "If the image comes back, let it. Then notice the space it appears in.",
+    "pause": "12",
+    "duration": 5.956
+  },
+  "visualization-short-05.mp3": {
+    "text": "I will be quiet. Image or no image — same space.",
+    "pause": "16",
+    "duration": 5.486
+  },
+  "visualization-short-06.mp3": {
+    "text": "Open the eyes. The room you are in is not a picture.",
+    "pause": "6",
+    "duration": 4.676
+  },
+  "visualization-long-01.mp3": {
+    "text": "Sit or lie down. Close the eyes.",
+    "pause": "5",
+    "duration": 4.206
+  },
+  "visualization-long-02.mp3": {
+    "text": "Call up a simple place — a room, a path, a tree. Not a fantasy epic. One scene.",
+    "pause": "8",
+    "duration": 8.438
+  },
+  "visualization-long-03.mp3": {
+    "text": "See it long enough to be sure it is an image, happening now.",
+    "pause": "10",
+    "duration": 5.407
+  },
+  "visualization-long-04.mp3": {
+    "text": "Now let it go. Do not smash it. Just stop feeding it.",
+    "pause": "10",
+    "duration": 5.669
+  },
+  "visualization-long-05.mp3": {
+    "text": "What is here when the picture leaves? Darkness, after-image, space — check.",
+    "pause": "12",
+    "duration": 7.314
+  },
+  "visualization-long-06.mp3": {
+    "text": "If another picture arrives, that is another train. You are the platform.",
+    "pause": "12",
+    "duration": 6.113
+  },
+  "visualization-long-07.mp3": {
+    "text": "The point is not a better movie. The point is to see that seeing is already happening.",
+    "pause": "10",
+    "duration": 7.079
+  },
+  "visualization-long-08.mp3": {
+    "text": "I will be quiet. Stay with the space images appear in.",
+    "pause": "20",
+    "duration": 4.676
+  },
+  "visualization-long-09.mp3": {
+    "text": "Open the eyes. Two-way looking: world there, space here.",
+    "pause": "6",
+    "duration": 6.191
+  },
+  "hypnosis-short-01.mp3": {
+    "text": "Sit or lie down. You can open your eyes or stop this at any time.",
+    "pause": "6",
+    "duration": 6.034
+  },
+  "hypnosis-short-02.mp3": {
+    "text": "Feel the heaviness of the hands, the feet, the jaw.",
+    "pause": "10",
+    "duration": 5.329
+  },
+  "hypnosis-short-03.mp3": {
+    "text": "Each out-breath, a little heavier, as if the chair were doing the work.",
+    "pause": "12",
+    "duration": 5.068
+  },
+  "hypnosis-short-04.mp3": {
+    "text": "You are not going anywhere. You are still the space these sensations appear in.",
+    "pause": "10",
+    "duration": 6.531
+  },
+  "hypnosis-short-05.mp3": {
+    "text": "I will be quiet. Heavy, and aware.",
+    "pause": "16",
+    "duration": 4.049
+  },
+  "hypnosis-short-06.mp3": {
+    "text": "Wiggle the fingers. The heaviness can go. The awareness does not.",
+    "pause": "6",
+    "duration": 6.191
+  },
+  "hypnosis-long-01.mp3": {
+    "text": "Sit or lie down. You can open your eyes, move, or end this whenever you want.",
+    "pause": "6",
+    "duration": 7.001
+  },
+  "hypnosis-long-02.mp3": {
+    "text": "This is not medical treatment. It is attention, using heaviness as an anchor.",
+    "pause": "6",
+    "duration": 6.609
+  },
+  "hypnosis-long-03.mp3": {
+    "text": "Feel the hands. Let them be heavy. No need to make it happen.",
+    "pause": "10",
+    "duration": 5.878
+  },
+  "hypnosis-long-04.mp3": {
+    "text": "The feet, the legs, the jaw. Each out-breath, a little more given to gravity.",
+    "pause": "12",
+    "duration": 7.889
+  },
+  "hypnosis-long-05.mp3": {
+    "text": "If a part of you stays alert, that is fine. Alertness is not the enemy of rest.",
+    "pause": "10",
+    "duration": 6.609
+  },
+  "hypnosis-long-06.mp3": {
+    "text": "Thoughts may drift. Treat them as trains. Heavy body, open platform.",
+    "pause": "12",
+    "duration": 6.687
+  },
+  "hypnosis-long-07.mp3": {
+    "text": "You are not disappearing. You are the space a heavy body is appearing in.",
+    "pause": "10",
+    "duration": 6.113
+  },
+  "hypnosis-long-08.mp3": {
+    "text": "I will be quiet. Stay heavy, and here.",
+    "pause": "20",
+    "duration": 4.284
+  },
+  "hypnosis-long-09.mp3": {
+    "text": "Count one, two, three. Wiggle the fingers. Open the eyes if they were closed.",
+    "pause": "8",
+    "duration": 7.549
+  },
+  "movement-short-01.mp3": {
+    "text": "Stand, or sit if standing is not available. Eyes open.",
+    "pause": "5",
+    "duration": 5.642
+  },
+  "movement-short-02.mp3": {
+    "text": "Feel both feet. Begin a slow sway, as small as you like.",
+    "pause": "8",
+    "duration": 5.799
+  },
+  "movement-short-03.mp3": {
+    "text": "The movement is the sit. You do not have to freeze to be present.",
+    "pause": "10",
+    "duration": 5.878
+  },
+  "movement-short-04.mp3": {
+    "text": "When a thought boards, keep swaying. Come back to the next shift of weight.",
+    "pause": "12",
+    "duration": 5.904
+  },
+  "movement-short-05.mp3": {
+    "text": "I will be quiet. Slow movement. Eyes open.",
+    "pause": "16",
+    "duration": 5.068
+  },
+  "movement-short-06.mp3": {
+    "text": "Stillness now. Same space, not moving.",
+    "pause": "6",
+    "duration": 4.519
+  },
+  "movement-long-01.mp3": {
+    "text": "Stand if you can. Eyes open. Phone down.",
+    "pause": "5",
+    "duration": 4.519
+  },
+  "movement-long-02.mp3": {
+    "text": "Feel the weight in both feet. Then begin a slow sway, or a slow stretch.",
+    "pause": "8",
+    "duration": 7.628
+  },
+  "movement-long-03.mp3": {
+    "text": "This is not exercise. It is looking, with the body allowed to move.",
+    "pause": "8",
+    "duration": 6.217
+  },
+  "movement-long-04.mp3": {
+    "text": "Notice the next shift of weight. Heel, toe, hip. Ordinary.",
+    "pause": "10",
+    "duration": 6.766
+  },
+  "movement-long-05.mp3": {
+    "text": "Thoughts will try to make this a workout, or a performance. Let those trains pass.",
+    "pause": "12",
+    "duration": 6.531
+  },
+  "movement-long-06.mp3": {
+    "text": "If you want, raise the arms slowly, then let them fall. Same space throughout.",
+    "pause": "12",
+    "duration": 7.079
+  },
+  "movement-long-07.mp3": {
+    "text": "I will be quiet. Keep moving slowly, or pause when the body wants to.",
+    "pause": "20",
+    "duration": 6.113
+  },
+  "movement-long-08.mp3": {
+    "text": "Stand still. The stillness is not more spiritual than the sway.",
+    "pause": "8",
+    "duration": 5.721
+  },
+  "power-breath-short-01.mp3": {
+    "text": "Sit or lie down. Never do this in water, or while driving. Stop if you feel dizzy.",
+    "pause": "6",
+    "duration": 7.549
+  },
+  "power-breath-short-02.mp3": {
+    "text": "Mouth or nose — take thirty somewhat stronger breaths. Full in, relaxed out.",
+    "pause": "16",
+    "duration": 8.046
+  },
+  "power-breath-short-03.mp3": {
+    "text": "After the last exhale, rest with empty lungs, only as long as it is easy.",
+    "pause": "20",
+    "duration": 6.348
+  },
+  "power-breath-short-04.mp3": {
+    "text": "A full breath in, hold a few seconds, then let it go. Ordinary breathing now.",
+    "pause": "12",
+    "duration": 7.236
+  },
+  "power-breath-short-05.mp3": {
+    "text": "Feel the body. You are the space this energy is happening in, not the storm.",
+    "pause": "10",
+    "duration": 7.001
+  },
+  "power-breath-short-06.mp3": {
+    "text": "That is one round. Enough.",
+    "pause": "6",
+    "duration": 3.135
+  },
+  "power-breath-long-01.mp3": {
+    "text": "Sit or lie down. Not in water. Not while driving. Stop at the first sign of dizziness.",
+    "pause": "6",
+    "duration": 8.281
+  },
+  "power-breath-long-02.mp3": {
+    "text": "This is one or two rounds only. You are not chasing a state.",
+    "pause": "6",
+    "duration": 5.329
+  },
+  "power-breath-long-03.mp3": {
+    "text": "Thirty stronger breaths. In fully, out without force. I will leave space for that.",
+    "pause": "24",
+    "duration": 7.732
+  },
+  "power-breath-long-04.mp3": {
+    "text": "Now, after an exhale, rest empty, only while it is comfortable. No heroics.",
+    "pause": "20",
+    "duration": 7.549
+  },
+  "power-breath-long-05.mp3": {
+    "text": "Breathe in fully. Hold a few seconds. Let it go. Normal breathing.",
+    "pause": "10",
+    "duration": 6.922
+  },
+  "power-breath-long-06.mp3": {
+    "text": "Notice the buzz, if there is one, as a sensation. A train, not a self.",
+    "pause": "10",
+    "duration": 6.766
+  },
+  "power-breath-long-07.mp3": {
+    "text": "If you want a second round, take it now, same way. Or rest.",
+    "pause": "24",
+    "duration": 5.564
+  },
+  "power-breath-long-08.mp3": {
+    "text": "Ordinary breath. You are the platform. The chemistry is traffic.",
+    "pause": "10",
+    "duration": 6.113
+  },
+  "power-breath-long-09.mp3": {
+    "text": "Sit until you feel ordinary again. Then stand slowly.",
+    "pause": "8",
+    "duration": 5.486
+  },
+  "mahayana-short-01.mp3": {
+    "text": "Sit. Soft eyes.",
+    "pause": "5",
+    "duration": 2.926
+  },
+  "mahayana-short-02.mp3": {
+    "text": "This space you are sitting in is not private. The same awareness holds others too.",
+    "pause": "10",
+    "duration": 6.609
+  },
+  "mahayana-short-03.mp3": {
+    "text": "Wish, simply: may the one who suffers — including you — be free of the extra story.",
+    "pause": "12",
+    "duration": 8.202
+  },
+  "mahayana-short-04.mp3": {
+    "text": "Now look: the wisher is also an appearance in the same space.",
+    "pause": "12",
+    "duration": 5.486
+  },
+  "mahayana-short-05.mp3": {
+    "text": "I will be quiet. Open, and kind, without a project.",
+    "pause": "16",
+    "duration": 5.59
+  },
+  "mahayana-short-06.mp3": {
+    "text": "Carry both — space, and the wish — into the next conversation.",
+    "pause": "6",
+    "duration": 5.642
+  },
+  "mahayana-long-01.mp3": {
+    "text": "Sit. Soft eyes. Nothing to become.",
+    "pause": "5",
+    "duration": 4.676
+  },
+  "mahayana-long-02.mp3": {
+    "text": "Rest as the space in which this body and these thoughts are appearing.",
+    "pause": "8",
+    "duration": 5.721
+  },
+  "mahayana-long-03.mp3": {
+    "text": "That space is not a private room. Other lives appear in the same kind of knowing.",
+    "pause": "10",
+    "duration": 6.609
+  },
+  "mahayana-long-04.mp3": {
+    "text": "Let a simple wish form: may we not be governed by the trains we did not choose.",
+    "pause": "12",
+    "duration": 7.079
+  },
+  "mahayana-long-05.mp3": {
+    "text": "If that wish turns into a project, or a self-image, see that. Return to space.",
+    "pause": "12",
+    "duration": 7.314
+  },
+  "mahayana-long-06.mp3": {
+    "text": "Compassion without a manager. Emptiness without coldness.",
+    "pause": "10",
+    "duration": 5.486
+  },
+  "mahayana-long-07.mp3": {
+    "text": "Point in, if you want. No face here. A world there, full of others.",
+    "pause": "12",
+    "duration": 6.452
+  },
+  "mahayana-long-08.mp3": {
+    "text": "I will be quiet. Stay open. The wish can sit in the background.",
+    "pause": "20",
+    "duration": 6.034
+  },
+  "mahayana-long-09.mp3": {
+    "text": "Stand as the same space that includes the next person you meet.",
+    "pause": "6",
+    "duration": 5.068
+  },
+  "tree-of-life-short-01.mp3": {
+    "text": "Sit. This is a map of attention, not a belief you have to join.",
+    "pause": "6",
+    "duration": 6.034
+  },
+  "tree-of-life-short-02.mp3": {
+    "text": "Imagine ten places on a tree, from the ground to a crown of space.",
+    "pause": "8",
+    "duration": 6.113
+  },
+  "tree-of-life-short-03.mp3": {
+    "text": "Rest for a moment at the crown — open, unoccupied, like the sky.",
+    "pause": "12",
+    "duration": 6.269
+  },
+  "tree-of-life-short-04.mp3": {
+    "text": "Descend to the heart. Warmth, if it is there. If not, space will do.",
+    "pause": "12",
+    "duration": 6.922
+  },
+  "tree-of-life-short-05.mp3": {
+    "text": "Return to the crown. Same you, two places, one looking.",
+    "pause": "10",
+    "duration": 6.113
+  },
+  "tree-of-life-short-06.mp3": {
+    "text": "Drop the map. The tree was a scaffold. The space remains.",
+    "pause": "8",
+    "duration": 6.191
+  },
+  "tree-of-life-long-01.mp3": {
+    "text": "Sit. Eyes soft. This is pathworking as attention only — no ranks, no current to force.",
+    "pause": "6",
+    "duration": 8.829
+  },
+  "tree-of-life-long-02.mp3": {
+    "text": "Picture a simple tree of ten stations, from earth at the base to a crown of open sky.",
+    "pause": "8",
+    "duration": 7.811
+  },
+  "tree-of-life-long-03.mp3": {
+    "text": "Begin at the crown. Rest as space. Nothing to hold.",
+    "pause": "12",
+    "duration": 5.799
+  },
+  "tree-of-life-long-04.mp3": {
+    "text": "Move attention down to wisdom, then to understanding — two sides, one silence between them.",
+    "pause": "12",
+    "duration": 8.359
+  },
+  "tree-of-life-long-05.mp3": {
+    "text": "To the heart. If warmth is here, feel it. If not, do not invent it.",
+    "pause": "12",
+    "duration": 7.184
+  },
+  "tree-of-life-long-06.mp3": {
+    "text": "To the foundation, the body, the seat. Gravity. Contact.",
+    "pause": "10",
+    "duration": 6.609
+  },
+  "tree-of-life-long-07.mp3": {
+    "text": "Now look both ways: crown and root, sky and seat, in one view.",
+    "pause": "12",
+    "duration": 7.079
+  },
+  "tree-of-life-long-08.mp3": {
+    "text": "I will be quiet. You can walk the map, or sit as the space the map is drawn in.",
+    "pause": "18",
+    "duration": 6.452
+  },
+  "tree-of-life-long-09.mp3": {
+    "text": "Let the diagram go. Two-way looking is enough: world there, space here.",
+    "pause": "6",
+    "duration": 7.471
+  }
+}

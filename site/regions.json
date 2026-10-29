@@ -2,30 +2,44 @@
  {
   "id": "meditation",
   "name": "Meditation",
-  "kicker": "A sit",
-  "lead": "Open Field lives here. One practice, a voice, a stretch of time. The rest of the field keeps moving behind it.",
+  "kicker": "The Sit · Event Horizon & Coronal Singularity",
+  "lead": "Open Field lives here. One practice, an ancient Tibetan singing bowl, a stretch of time. The rest of the field keeps moving behind it.",
   "body": [
-   "This is not the whole page. It is one dense place inside it. Leave, and you are back in the empty."
+   "This is not the whole page. It is one dense place inside it. Leave, and you are back in the empty.",
+   "Acoustic cymatics resonate through the electron field upon each strike, sending 3D spherical wavefronts rippling across surrounding stardust."
+  ],
+  "links": []
+ },
+ {
+  "id": "lordai",
+  "name": "Biological Perception",
+  "kicker": "LordAi.nz · Cometary Globule",
+  "lead": "An inquiry into intelligence that smells, leans, and answers the room — botanical, olfactory, and tactile, not merely a token stream.",
+  "body": [
+   "Petrichor, plant electrophysiology, and the LordAi.nz telemetry grid sit here: machines treated as living sensory organisms.",
+   "The field around this spark is thinner on purpose. It is a research weather, trailing green-gold bioluminescent stardust through the void."
   ],
   "links": []
  },
  {
   "id": "poetry",
   "name": "Poetry",
-  "kicker": "The page",
+  "kicker": "The Stardust Word · Gravitational Accretion Disk",
   "lead": "The poems belong in this room. They are not pasted onto the field as a feed.",
   "body": [
-   "A line is a small dense region: mostly silence, then a few words that slow everything else down. When the pages are ready, they open here — not as a blog, as a reading."
+   "A line is a small dense region: mostly silence, then a few words that slow everything else down. When the pages are ready, they open here — not as a blog, as an audio reading.",
+   "Nineteen public poems emerge from stardust particles, lock into crisp warm cream typography, and sublimate into vapor tendrils upon completion."
   ],
   "links": []
  },
  {
   "id": "music",
   "name": "Music",
-  "kicker": "Spotify",
+  "kicker": "Sonic Resonance · Quadrupole Harmonic Resonator",
   "lead": "Listening is part of the same weather as the sit and the poems. The library stays on Spotify.",
   "body": [
-   "This room does not pretend to be the player. It is the place in the field where the music is acknowledged, then handed back to the app that actually has the songs."
+   "This room does not pretend to be the player. It is the place in the field where the music is acknowledged, then handed back to the app that actually has the songs.",
+   "Modeled after standing acoustic waves with four-fold harmonic lobes oscillating in deep twilight amethyst and resonance gold."
   ],
   "links": [
    {
@@ -35,12 +49,73 @@
   ]
  },
  {
+  "id": "otter",
+  "name": "Otter Creek",
+  "kicker": "The Metal · Supernova Remnant (Veil Nebula)",
+  "lead": "The nodes the rest of the work actually runs on. Not a product diagram — the machines.",
+  "body": [
+   "Distinct from the inventions, which are the things being built. This is the ground they run on: a heartbeat, a topology, the creek under the architecture.",
+   "Physical silicon clusters cooled along Vermont's Otter Creek, structured like the delicate ionized filament lace of the Veil Nebula."
+  ],
+  "links": []
+ },
+ {
+  "id": "fallout",
+  "name": "The Silo",
+  "kicker": "Nuclear Protocol · High-Consequence Magnetar",
+  "lead": "Nuclear weapons maintenance technician (W62/W78/W87 warheads), then eight years in an AP U.S. History classroom. Same question in both rooms: what happens when a procedure meets a person.",
+  "body": [
+   "United States Air Force Active Duty (2004–2010), Top Secret clearance, Airman of the Year in 2008, Certified Technical Instructor. Zero-defect checklists, strict chain-of-custody, high operational readiness under demanding defense conditions.",
+   "The software still fails closed because both environments severely punished an ambiguous or unverified step. Modeled as an ultra-magnetic pulsar with relativistic particle beams."
+  ],
+  "links": []
+ },
+ {
+  "id": "history",
+  "name": "The Agora",
+  "kicker": "Historiography & Pedagogy · Pillars of Creation",
+  "lead": "Eight consecutive years in the secondary social studies classroom. AP U.S. History, civics, humanities, and academic competition coaching.",
+  "body": [
+   "Lincoln High School (Tallahassee, FL) and Vergennes Union High School (Addison Northwest, VT). College Board AP Reader (2016–2020), 77% AP qualification rate, three consecutive Teacher of the Year nominations.",
+   "Designed instructional feedback loops, historical rubrics, and mentored over 130 students annually. Modeled after the towering gaseous columns of the Eagle Nebula, where newborn stars ignite."
+  ],
+  "links": []
+ },
+ {
+  "id": "cyber",
+  "name": "Digital Forensics",
+  "kicker": "DFIR & Incident Response · Cat's Eye Nebula (NGC 6543)",
+  "lead": "Master of Science in Information Technology (Champlain College, GPA 3.95) with graduate certificates in Digital Forensics, Cybersecurity, and Data Science.",
+  "body": [
+   "Architecture of immutable execution trails, default-deny security controls, cryptographic evidence custody, and threat containment.",
+   "Modeled after the intricate concentric gas shells of the Cat's Eye Nebula, surrounding an intensely dense, shielded core that prevents data leakage."
+  ],
+  "links": []
+ },
+ {
+  "id": "fog",
+  "name": "Late Night Brain Fog",
+  "kicker": "Late Night Dialogue · Diffuse Reflection Nebula",
+  "lead": "Two people talking. About an hour. Late. The person sitting brings the theme.",
+  "body": [
+   "Late Night Brain Fog is adjacent to the sit, but it is not silent and it is not alone. Always someone sitting. Never instead of him. The hours are not up yet; the room still exists.",
+   "A soft, luminous cloud of charcoal indigo and muted mauve drifting through the vast corridor."
+  ],
+  "links": [
+   {
+    "href": "https://brainfogpodcast.vercel.app/",
+    "label": "The show"
+   }
+  ]
+ },
+ {
   "id": "inventions",
-  "name": "Inventions",
-  "kicker": "What is being built",
+  "name": "The Workshop",
+  "kicker": "Mechanical Prototyping · Ring Nebula (M57)",
   "lead": "Current aspirations and the machines already in motion: closed loops, a robot with a day, tools that turn a repeated mess into a procedure.",
   "body": [
-   "Habitat is the robot who lives on a page and decides what to do with his afternoon. Braiding Rig, Gaurden, and the prompt instruments sit in the same workshop — things that are not finished, and are not slides about being unfinished."
+   "Habitat is the robot who lives on a page and decides what to do with his afternoon. Braiding Rig, Gaurden, and the physical fixtures sit in the same workshop — things that are not finished, and are not slides about being unfinished.",
+   "Visualized as multi-axial orthogonal gyroscopic rings spinning in precision alignment."
   ],
   "links": [
    {
@@ -55,30 +130,39 @@
  },
  {
   "id": "games",
-  "name": "Games",
-  "kicker": "Playable thought",
+  "name": "Playable Thought",
+  "kicker": "Philosophical Combat · Colliding Antennae Galaxies",
   "lead": "Where an argument, a loop, or a Vermont hillside becomes something you can move through.",
   "body": [
-   "Verbal Kombat treats a debate as a fight: sound reasoning lands, a fallacy misses or backfires. Stay, Dog Days, and HLS Aurora are the other weather systems. Preincarnation has its own well."
+   "Verbal Kombat treats a debate as a fight: sound reasoning lands, a fallacy misses or backfires. Stay, Dog Days, and HLS Aurora are the other weather systems.",
+   "Modeled after two colliding spiral galaxies exchanging gravitational tides of magenta stardust."
   ],
   "links": [
    {
     "href": "https://github.com/JamesTRichmond/Verbal_Kombat",
     "label": "Verbal Kombat"
-   },
-   {
-    "href": "https://github.com/JamesTRichmond/preincarnation",
-    "label": "Preincarnation"
    }
   ]
  },
  {
+  "id": "swarm",
+  "name": "The Swarm",
+  "kicker": "Socratic Consensus · Logarithmic Spiral Galaxy",
+  "lead": "Not a link to a repository. The friction of several agents arguing, scoring, and refusing to collapse into one confident voice.",
+  "body": [
+   "Socratic profiles, debate harnesses, evaluator swarms. The interesting part is the disagreement that stays on the record — who yielded, which claim failed a rubric, what the human still has to approve.",
+   "A massive swirling logarithmic density wave where distinct thought streams flock and interact."
+  ],
+  "links": []
+ },
+ {
   "id": "agents",
-  "name": "Agents",
-  "kicker": "Fail closed",
+  "name": "AgentiCubed",
+  "kicker": "Deterministic DAGs · Tri-Arm Barred Spiral",
   "lead": "AgentiCubed turns an objective into a task graph, runs it, judges it, and refuses to pretend a failed step succeeded.",
   "body": [
-   "Executor and evaluator stay apart. Tools are default-deny. The log is append-only. The human is still the gate. This is the engineering habit underneath the games and the consulting, not a second résumé."
+   "Executor and evaluator stay apart. Tools are default-deny. The log is append-only. 268 passing tests. The human is still the gate. This is the engineering habit underneath the consulting.",
+   "A tri-arm barred spiral galaxy whose central bar represents the immutable execution ledger."
   ],
   "links": [
    {
@@ -88,72 +172,51 @@
   ]
  },
  {
-  "id": "fog",
-  "name": "Fog",
-  "kicker": "Late night",
-  "lead": "Two people talking. About an hour. Late. The person sitting brings the theme.",
-  "body": [
-   "Late Night Brain Fog is adjacent to the sit, but it is not silent and it is not alone. Always someone sitting. Never instead of him. The hours are not up yet; the room still exists."
-  ],
-  "links": [
-   {
-    "href": "https://brainfogpodcast.vercel.app/",
-    "label": "The show"
-   }
-  ]
- },
- {
-  "id": "fallout",
-  "name": "Historical Fallout",
-  "kicker": "Protocol and timeline",
-  "lead": "Nuclear weapons technician, then eight years in an AP U.S. History classroom. Same question in both rooms: what happens when a procedure meets a person.",
-  "body": [
-   "Air Force munitions work, a Top Secret clearance, Airman of the Year in 2008. Later, curricula and rubrics for up to 130 students, a College Board reading table, a 77% AP qualification year. The software still fails closed because both jobs punished a vague step."
-  ],
-  "links": []
- },
- {
-  "id": "swarm",
-  "name": "The Swarm",
-  "kicker": "Many minds",
-  "lead": "Not a link to a repository. The friction of several agents arguing, scoring, and refusing to collapse into one confident voice.",
-  "body": [
-   "Socratic profiles, debate harnesses, evaluator swarms. The interesting part is the disagreement that stays on the record — who yielded, which claim failed a rubric, what the human still has to approve."
-  ],
-  "links": [
-   {
-    "href": "https://github.com/JamesTRichmond/Verbal_Kombat",
-    "label": "The debate harness"
-   }
-  ]
- },
- {
-  "id": "perception",
-  "name": "Biological Perception",
-  "kicker": "Sensing, not calculating",
-  "lead": "An interest in intelligence that smells, leans, and answers the room — botanical, olfactory, not only a token stream.",
-  "body": [
-   "Petrichor and the LordAi.nz work sit here: machines treated as sensory organisms. The field around this spark is thinner on purpose. It is a research weather, not a product page."
-  ],
-  "links": []
- },
- {
   "id": "homestead",
   "name": "The Homestead",
-  "kicker": "Vermont dirt",
-  "lead": "Vermont. The analog counterweight to the architectures: weather, animals, trails, a day that does not compile.",
+  "kicker": "Vermont Dirt · Sombrero Galaxy (M104)",
+  "lead": "Middlebury, Vermont. The analog counterweight to the architectures: weather, animals, trails, a day that does not compile.",
   "body": [
-   "Livestock, a rooster, the ordinary maintenance of a place. It keeps the cloud from becoming a diagram of jobs. The metal and the agents are downstream of someone who also has to be outside."
+   "Livestock, a rooster, woodstove, trail maintenance, the ordinary seasonal discipline of a place. It keeps the cloud from becoming a diagram of jobs. The metal and the agents are downstream of someone who also has to be outside.",
+   "A warm russet-gold galactic disk with a dense equatorial belt of starlight and loam."
   ],
   "links": []
+ },
+ {
+  "id": "sales",
+  "name": "Consultative Craft",
+  "kicker": "High-Touch Territory Mastery · Pleiades Jewel Box",
+  "lead": "Building lasting commercial relationships through consultative discovery, customer workflow mapping, and relentless technical follow-through.",
+  "body": [
+   "Territory Sales Representative for Würth USA across Vermont. Achieved 138% of sales plan in April 2026 and 106% in May, growing accounts by 56% and earning five-star customer feedback for structured problem resolution.",
+   "An open stellar cluster of brilliant sapphire and topaz stars representing client trust and craft."
+  ],
+  "links": []
+ },
+ {
+  "id": "preincarnation",
+  "name": "Preincarnation",
+  "kicker": "Memory Before Birth · Double-Helix Celestial Aurora",
+  "lead": "A narrative RPG and memory architecture exploring the quiet space before consciousness arrives in a body.",
+  "body": [
+   "Custom ROM-styled story engine, non-linear timeline branching, and interactive prose exploring identity, remembrance, and the weight of return.",
+   "A twisting double-helix nebula illuminated in radiant seafoam and emerald aurora."
+  ],
+  "links": [
+   {
+    "href": "https://github.com/JamesTRichmond/preincarnation",
+    "label": "Preincarnation"
+   }
+  ]
  },
  {
   "id": "streamkill",
   "name": "StreamKill",
-  "kicker": "Consent before action",
+  "kicker": "Autonomous Workflows · Relativistic Particle Jet",
   "lead": "A receipt becomes a ranked ledger of subscriptions. Nothing is cancelled until a person approves that one line.",
   "body": [
-   "Guarded actions, proof receipts, a redacted public demonstration, and the sensitive routes kept private. The same gate as the agents — applied to the boring, expensive drift of things that renew themselves."
+   "Guarded actions, proof receipts, a redacted public demonstration, and the sensitive routes kept private. The same gate as the agents — applied to the boring, expensive drift of recurring expenses.",
+   "A collimated relativistic particle jet beaming blue-white energy into the deep cosmos."
   ],
   "links": [
    {
@@ -163,32 +226,24 @@
   ]
  },
  {
-  "id": "otter",
-  "name": "Otter Creek",
-  "kicker": "The metal",
-  "lead": "The nodes the rest of the work actually runs on. Not a product diagram — the machines.",
-  "body": [
-   "Distinct from the inventions, which are the things being built. This is the ground they run on: a heartbeat, a topology, the creek under the architecture."
-  ],
-  "links": []
- },
- {
   "id": "absurd",
   "name": "The Absurd",
-  "kicker": "A working tool",
+  "kicker": "Epistemological Stress Test · Strange Attractor Galaxy",
   "lead": "Comedy is not a break from the work. It is one of the ways the work gets tested.",
   "body": [
-   "Reggie Watts, Monty Python, a Spanish Inquisition that arrives when the protocol said it would not, a Diet of Worms for an agent that refuses to yield. The absurd is how a weird claim gets a fair trial."
+   "Reggie Watts, Monty Python, a Spanish Inquisition that arrives when the protocol said it would not, a Diet of Worms for an agent that refuses to yield. The absurd is how a weird claim gets a fair trial.",
+   "A non-linear strange attractor whose orbits oscillate in unpredictable, iridescent hues."
   ],
   "links": []
  },
  {
   "id": "fermentation",
   "name": "Fermentation",
-  "kicker": "Slow yield",
-  "lead": "Sourdough, bagel batches, a dough that only changes if you leave it alone long enough.",
+  "kicker": "Slow Yield · Convective Toroidal Nebula",
+  "lead": "Sourdough, bagel batches, charcuterie — a dough that only changes if you leave it alone long enough.",
   "body": [
-   "The same move as the software and the music theory: plain inputs, then time, temperature, and a technique you do not rush. The cloud needs a room that finishes later than you want it to."
+   "The same move as the software and the music theory: plain inputs, then time, temperature, and a technique you do not rush. The cloud needs a room that finishes later than you want it to.",
+   "A warm bubbling nebula of molten amber and golden convective plumes rising into the dark."
   ],
   "links": []
  }
