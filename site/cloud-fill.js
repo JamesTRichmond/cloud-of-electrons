@@ -8,5 +8,5 @@ window.COE_FILL = [
   { name: "deep",     count: 40000,  inner: 5.5,  outer: 45.0,  size: 0.5, brightness: 0.85, swirl: 0.35 },
   { name: "abyss",    count: 25000,  inner: 45.0, outer: 350.0, size: 0.55, brightness: 0.75, swirl: 0.18 },
   { name: "infinite", count: 20000,  inner: 350.0, outer: 1600.0, size: 0.85, brightness: 0.9, swirl: 0.08 },
-  { name: "synapse",  count: 15000,  inner: 1.2,  outer: 5.5,   size: 1.5, brightness: 1.4,  swirl: 0.0 }
+  { name: "synapse",  count: 20000,  inner: 2.5,   outer: 16.0,   size: 0.85, brightness: 1.0, swirl: 0.0 }
 ];
