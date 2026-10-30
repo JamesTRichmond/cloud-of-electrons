@@ -416,6 +416,20 @@ else{float kind=ak.y,u=ap.x;if(kind>2.5)u=fract(ap.x+ak.w+t*.2);
  col=mix(vec3(${CRM.join(',')}),vec3(${AMBER.join(',')}),smoothstep(0.,1.,u));
  al*=kind>.5&&kind<1.5?ringA:kind>1.5&&kind<2.5?fb*.5:fb*mix(1.6,1.,u)*clamp(r/14.,.06,1.);sz*=mix(1.,.5,u);
  if(kind>2.5){vec3 w2=vec3(cos(an+.08)*r,sin(an+.08)*r,w.z-${FUN.depth}.*.08/(6.2831853*turns));vec3 a1=rot*(w-cp),a2=rot*(w2-cp);vec2 s1=a1.xy/max(.35,-a1.z),s2=a2.xy/max(.35,-a2.z);vec2 dd=s2-s1;st=length(dd)>1e-6?normalize(vec2(dd.x/asp,dd.y)):vec2(1,0);str=3.;}}
+// Relativistic Einstein-Ring Gravitational Lensing around Ajna Singularity
+if(k<2.5){
+ vec3 delta=w-vec3(-1.94,21.6,-1850.0);
+ float R=length(delta);
+ if(R<35.0){
+  float wLens=smoothstep(35.0,2.5,R);
+  float b2=dot(delta.xy,delta.xy)+1.44;
+  float b=sqrt(b2);
+  const float R_E=4.5;
+  float deflection=(R_E*R_E)/b2;
+  w.xy+=delta.xy*deflection*wLens;
+  al*=1.0+0.85*exp(-pow(b-R_E,2.0)/6.48)*wLens;
+ }
+}
 vec3 v=rot*(w-cp);float d=-v.z;if(d<.35){gl_Position=vec4(2.,2.,2.,1.);gl_PointSize=0.;va=0.;return;}
 float coc=smoothstep(16.,120.,abs(d-focus));
 float F=mix(2.0503,1.45,uWarp);
@@ -425,117 +439,311 @@ va=al*gain*(1.-.6*coc)*smoothstep(.35,3.,d)*(1.-smoothstep(2600.,4400.,d));vc=co
 gl.attachShader(pv,sh(gl.FRAGMENT_SHADER,`#version 300 es
 precision mediump float;in vec3 vc;in float va;in vec2 st;in float str;out vec4 o;void main(){vec2 pc=(gl_PointCoord-.5)*2.;pc.y=-pc.y;vec2 q=vec2(dot(pc,st),dot(pc,vec2(-st.y,st.x))*str);float r=length(q);if(r>1.)discard;float core=exp(-r*r*12.);float corona=exp(-r*r*2.2)*(1.-r*r);o=vec4(vc,va*(core*.6+corona*.5));}`));
 gl.linkProgram(pv);if(!gl.getProgramParameter(pv,gl.LINK_STATUS))throw gl.getProgramInfoLog(pv);
-// Continuous Masterpiece Jamestellation 3D Face Program (Sculpted Craniofacial Relief, Photographic Likeness, Zero Egg-Halo, Diamond Ajna)
+// Continuous Masterpiece Jamestellation 3D Face Program (Argon Masterpiece: Sculpted Relief, Crown Haze, Zero Egg-Halo, Diamond Ajna)
 const pjFace=gl.createProgram();
 gl.attachShader(pjFace,sh(gl.VERTEX_SHADER,`#version 300 es
 precision highp float;
-in vec3 a_pos;in vec2 a_uv;in vec3 a_attr;
-uniform mat3 rot;uniform vec3 cp;uniform float t,asp,uWarp,uLaugh,uIntegrity;
-out vec2 vUv;out float vDist;out vec3 vPos;out float vHairWeight;
-void main(){
- vUv=a_uv;
- float hairWeight=a_attr.y;
- float seed=a_attr.z;
- vHairWeight=hairWeight;
- vec3 w=a_pos;
+in vec3 a_pos;
+in vec2 a_uv;
+in vec3 a_attr; // x: anatomical relief weight, y: hairWeight, z: deterministic seed
 
- if(hairWeight>0.05){
-  float waveX=sin(t*1.3+a_uv.y*7.0+a_uv.x*4.0)*4.5;
-  float waveY=cos(t*1.1+a_uv.x*5.0+a_uv.y*6.0)*3.5;
-  float waveZ=sin(t*1.5+a_uv.x*6.0-a_uv.y*5.0)*9.0;
-  w+=vec3(waveX,waveY,waveZ)*(hairWeight*hairWeight)*(0.65+0.35*uLaugh);
- }
+uniform mat3 rot;
+uniform vec3 cp;
+uniform float t;
+uniform float asp;
+uniform float uWarp;
+uniform float uLaugh;
+uniform float uIntegrity;
 
- if(uIntegrity<0.999){
-  float decay=(1.0-uIntegrity)*35.0;
-  w+=vec3(sin(seed*45.0)*decay,cos(seed*33.0)*decay,sin(seed*21.0)*decay*1.5);
- }
+out vec2 vUv;
+out float vDist;
+out vec3 vPos;
+out vec3 vWorldPos;
+out float vHairWeight;
 
- vec3 v=rot*(w-cp);vDist=-v.z;vPos=v;
- if(vDist<0.35){gl_Position=vec4(2.,2.,2.,1.);return;}
- float F=mix(2.0503,1.45,uWarp);
- gl_Position=vec4(v.x*F/asp,v.y*F,0.0,vDist);
-}`));
+void main() {
+    vUv = a_uv;
+    float hairWeight = a_attr.y;
+    float seed = a_attr.z;
+    vHairWeight = hairWeight;
+
+    vec3 w = a_pos;
+
+    // Organic celestial wind across outer hair locks only (central face has hairWeight == 0.0)
+    if (hairWeight > 0.05) {
+        float waveX = sin(t * 1.3 + a_uv.y * 7.0 + a_uv.x * 4.0) * 4.5;
+        float waveY = cos(t * 1.1 + a_uv.x * 5.0 + a_uv.y * 6.0) * 3.5;
+        float waveZ = sin(t * 1.5 + a_uv.x * 6.0 - a_uv.y * 5.0) * 9.0;
+        w += vec3(waveX, waveY, waveZ) * (hairWeight * hairWeight) * (0.65 + 0.35 * uLaugh);
+    }
+
+    // Puzzle restoration integrity scatter
+    if (uIntegrity < 0.999) {
+        float decay = (1.0 - uIntegrity) * 35.0;
+        w += vec3(
+            sin(seed * 45.0) * decay,
+            cos(seed * 33.0) * decay,
+            sin(seed * 21.0) * decay * 1.5
+        );
+    }
+
+    vWorldPos = w;
+    vec3 v = rot * (w - cp);
+    vDist = -v.z;
+    vPos = v;
+
+    if (vDist < 0.35) {
+        gl_Position = vec4(2.0, 2.0, 2.0, 1.0);
+        return;
+    }
+
+    float F = mix(2.0503, 1.45, uWarp);
+    gl_Position = vec4(v.x * F / asp, v.y * F, 0.0, vDist);
+}
+`));
+
 gl.attachShader(pjFace,sh(gl.FRAGMENT_SHADER,`#version 300 es
 precision highp float;
-in vec2 vUv;in float vDist;in vec3 vPos;in float vHairWeight;
-uniform sampler2D uTexStill,uTexVideo;uniform float t,gain,fb,uLaugh,uIntegrity;
+
+in vec2 vUv;
+in float vDist;
+in vec3 vPos;
+in vec3 vWorldPos;
+in float vHairWeight;
+
+uniform sampler2D uTexStill;
+uniform sampler2D uTexVideo;
+uniform float t;
+uniform float gain;
+uniform float fb;
+uniform float uLaugh;
+uniform float uIntegrity;
+
 out vec4 o;
-void main(){
- vec2 uv=clamp(vUv,0.0,1.0);
- vec3 colStill=texture(uTexStill,uv).rgb;
- vec3 colVideo=texture(uTexVideo,uv).rgb;
- float vidLum=dot(colVideo,vec3(0.299,0.587,0.114));
- vec3 validVideo=mix(colStill,colVideo,step(0.03,vidLum));
- vec3 col=mix(colStill,validVideo,uLaugh);
 
- float lum=dot(col,vec3(0.299,0.587,0.114));
- vec2 cUv=(vUv-vec2(0.485,0.46))*vec2(1.0,0.76);
- float dAnat=length(cUv);
+// 3D Gradient Noise & 3-Octave Simplex/Value FBM for Volumetric Crown Scattering & Erosion
+vec3 hash33(vec3 p3) {
+    p3 = fract(p3 * vec3(0.1031, 0.1030, 0.0973));
+    p3 += dot(p3, p3.yxz + 33.33);
+    return fract((p3.xxy + p3.yxx) * p3.zyx) * 2.0 - 1.0;
+}
 
- // Zero Egg-Halo / Zero Rectangular Border: Natural Luminance Gating + Simplex FBM Boundary Dissolution
- float erosion=(sin(vUv.x*28.0+t*0.25)*cos(vUv.y*28.0-t*0.2)+sin(vUv.x*52.0-vUv.y*44.0)*0.5)*0.045;
- float borderFade=1.0-smoothstep(0.36,0.50,dAnat+erosion);
- float al=clamp(lum*3.2,0.0,1.0)*borderFade*uIntegrity;
- if(al<0.003)discard;
+float noise3D(vec3 p) {
+    vec3 i = floor(p);
+    vec3 f = fract(p);
+    vec3 u = f * f * (3.0 - 2.0 * f);
+    return mix(
+        mix(mix(dot(hash33(i + vec3(0,0,0)), f - vec3(0,0,0)),
+                dot(hash33(i + vec3(1,0,0)), f - vec3(1,0,0)), u.x),
+            mix(dot(hash33(i + vec3(0,1,0)), f - vec3(0,1,0)),
+                dot(hash33(i + vec3(1,1,0)), f - vec3(1,1,0)), u.x), u.y),
+        mix(mix(dot(hash33(i + vec3(0,0,1)), f - vec3(0,0,1)),
+                dot(hash33(i + vec3(1,0,1)), f - vec3(1,0,1)), u.x),
+            mix(dot(hash33(i + vec3(0,1,1)), f - vec3(0,1,1)),
+                dot(hash33(i + vec3(1,1,1)), f - vec3(1,1,1)), u.x), u.y), u.z
+    );
+}
 
- // Subtle 3D Celestial Rim Lighting as traveler flies around
- vec3 norm=normalize(vec3(cUv.x*2.2,-cUv.y*2.2,1.0-dAnat*1.2));
- vec3 viewDir=normalize(-vPos);
- float rim=pow(1.0-max(0.0,dot(norm,viewDir)),3.0)*0.35;
- col+=vec3(0.98,0.86,0.62)*rim;
+float fbm3D(vec3 p) {
+    float v = 0.0;
+    float a = 0.5;
+    mat3 m = mat3(0.00, 0.80, 0.60, -0.80, 0.36, -0.48, -0.60, -0.48, 0.64);
+    for (int i = 0; i < 3; ++i) {
+        v += a * noise3D(p);
+        p = m * p * 2.02 + vec3(7.1, 13.3, 4.9);
+        a *= 0.5;
+    }
+    return v;
+}
 
- // Pinned Ajna Singularity Star: Delicate 8-Point Diamond Star Glint between brows
- vec2 ajnaUv=(vUv-vec2(0.481,0.359))*vec2(1.0,1.35);
- float dAjna=length(ajnaUv);
- float ajnaStar=exp(-dAjna*dAjna*5400.0)*(0.85+0.15*sin(t*3.6));
- float ajnaSpikes=(exp(-abs(vUv.x-0.481)*220.0)*exp(-abs(vUv.y-0.359)*45.0)+
-                   exp(-abs(vUv.y-0.359)*220.0)*exp(-abs(vUv.x-0.481)*45.0)+
-                   exp(-abs((vUv.x-0.481)+(vUv.y-0.359)*0.75)*140.0)*exp(-abs((vUv.x-0.481)-(vUv.y-0.359)*0.75)*140.0)*0.5)*0.35;
- vec3 ajnaCol=vec3(0.96,0.98,1.0)*(ajnaStar*2.0+ajnaSpikes);
- col+=ajnaCol;
+void main() {
+    // 1. Sacred Photographic Likeness & Luminance-Validated Laughter Blending
+    vec2 uv = clamp(vUv, 0.0, 1.0);
+    vec3 colStill = texture(uTexStill, uv).rgb;
+    vec3 colVideo = texture(uTexVideo, uv).rgb;
+    float vidLum = dot(colVideo, vec3(0.299, 0.587, 0.114));
+    vec3 validVideo = mix(colStill, colVideo, step(0.03, vidLum));
+    vec3 col = mix(colStill, validVideo, uLaugh);
+    float lum = dot(col, vec3(0.299, 0.587, 0.114));
 
- float nearFade=smoothstep(1.0,16.0,vDist),farFade=1.0-smoothstep(2400.0,4200.0,vDist);
- float finalAlpha=gain*al*nearFade*farFade*(1.0-fb);
- o=vec4(col*al,finalAlpha);
-}`));
+    // 2. Zero Egg-Halo / Zero Rectangular Border: Natural Luminance Gating + 3D FBM Erosion
+    vec2 cUv = (vUv - vec2(0.485, 0.46)) * vec2(1.0, 0.76);
+    float dAnat = length(cUv);
+
+    float waveErosion = (sin(vUv.x * 28.0 + t * 0.25) * cos(vUv.y * 28.0 - t * 0.2) +
+                         sin(vUv.x * 52.0 - vUv.y * 44.0) * 0.5) * 0.042;
+    float fbmErosion = fbm3D(vWorldPos * 0.055 + vec3(0.0, t * 0.16, -t * 0.12)) * 0.068;
+    float erosion = waveErosion + fbmErosion;
+
+    float borderFade = 1.0 - smoothstep(0.36, 0.50, dAnat + erosion);
+    float al = clamp(lum * 3.2, 0.0, 1.0) * borderFade * uIntegrity;
+    if (al < 0.003) discard;
+
+    // 3. Subtle Volumetric Rim & Anisotropic Starlight Scattering Haze Around Hair Crown
+    vec3 norm = normalize(vec3(cUv.x * 2.2, -cUv.y * 2.2, 1.0 - dAnat * 1.2));
+    vec3 viewDir = normalize(-vPos);
+    float ndotv = max(0.0, dot(norm, viewDir));
+    float rim = pow(1.0 - ndotv, 3.0) * 0.35;
+    col += vec3(0.98, 0.86, 0.62) * rim;
+
+    // Volumetric crown scattering (strictly gated to outer hair crown so facial skin is 100% untouched)
+    float crownMask = vHairWeight * smoothstep(0.22, 0.42, dAnat);
+    if (crownMask > 0.001) {
+        float scatterNoise = 0.6 + 0.4 * fbm3D(vWorldPos * 0.085 - vec3(0.0, t * 0.22, 0.0));
+        float miePhase = pow(1.0 - ndotv, 2.2);
+        vec3 amberGlow  = vec3(0.98, 0.78, 0.44);
+        vec3 violetHaze = vec3(0.64, 0.34, 0.96);
+        vec3 crownTint  = mix(amberGlow, violetHaze, 0.5 + 0.5 * sin(vUv.y * 6.0 - t * 0.8));
+        col += crownTint * (crownMask * scatterNoise * (0.18 + 0.42 * miePhase));
+    }
+
+    // 4. Delicate, Razor-Sharp 8-Point Diamond Ajna Singularity Glint at UV [0.481, 0.359]
+    vec2 ajnaUv = (vUv - vec2(0.481, 0.359)) * vec2(1.0, 1.35);
+    float dAjna = length(ajnaUv);
+    float ajnaStar = exp(-dAjna * dAjna * 6200.0) * (0.88 + 0.12 * sin(t * 3.6));
+    float dxA = abs(vUv.x - 0.481);
+    float dyA = abs(vUv.y - 0.359);
+    float diag1 = abs((vUv.x - 0.481) + (vUv.y - 0.359) * 0.75);
+    float diag2 = abs((vUv.x - 0.481) - (vUv.y - 0.359) * 0.75);
+
+    float ajnaSpikes = (
+        exp(-dxA * 260.0) * exp(-dyA * 52.0) +
+        exp(-dyA * 260.0) * exp(-dxA * 52.0) +
+        (exp(-diag1 * 180.0) * exp(-diag2 * 65.0) + exp(-diag2 * 180.0) * exp(-diag1 * 65.0)) * 0.45
+    ) * 0.32;
+
+    vec3 ajnaCol = vec3(0.90, 0.97, 1.0) * (ajnaStar * 1.85 + ajnaSpikes);
+    col += ajnaCol;
+
+    // 5. Distance Attenuation & Premultiplied Output
+    float nearFade = smoothstep(1.0, 16.0, vDist);
+    float farFade  = 1.0 - smoothstep(2400.0, 4200.0, vDist);
+    float finalAlpha = gain * al * nearFade * farFade * (1.0 - fb);
+    o = vec4(col * al, finalAlpha);
+}
+`));
 gl.linkProgram(pjFace);if(!gl.getProgramParameter(pjFace,gl.LINK_STATUS))throw gl.getProgramInfoLog(pjFace);
 
-// Living 3D Coronal Mass Ejections (CME) and Solar Flares (Streamers, NOT static bars)
+// 3D Coronal Mass Ejection Shader (pjCME: 4,000 Living Streamers)
 const pjCME=gl.createProgram();
 gl.attachShader(pjCME,sh(gl.VERTEX_SHADER,`#version 300 es
 precision highp float;
-in vec3 cme_pos;in vec3 cme_dir;in vec2 cme_attr;
-uniform mat3 rot;uniform vec3 cp;uniform float t,asp,uWarp,hpx,uIntegrity;
-out float vDist;out float vAlpha;out vec3 vCol;
-void main(){
- float seed=cme_attr.x;float flareSpeed=cme_attr.y;
- float cycle=fract(t*flareSpeed+seed*13.71);
- float arc=sin(cycle*3.14159);
- vec3 curlNoise=vec3(sin(t*2.1+seed*18.0),cos(t*1.7+seed*14.0),sin(t*2.8+seed*9.0));
- vec3 w=cme_pos+cme_dir*(arc*48.0)+curlNoise*(arc*16.0);
- if(uIntegrity<0.999){
-  float decay=(1.0-uIntegrity)*40.0;
-  w+=vec3(sin(seed*55.0)*decay,cos(seed*41.0)*decay,sin(seed*29.0)*decay);
- }
- vec3 v=rot*(w-cp);vDist=-v.z;
- if(vDist<0.35){gl_Position=vec4(2.,2.,2.,1.);gl_PointSize=0.;return;}
- float F=mix(2.0503,1.45,uWarp);
- gl_Position=vec4(v.x*F/asp,v.y*F,0.0,vDist);
- gl_PointSize=clamp(3.4*F*hpx/vDist,1.0,22.0);
- vAlpha=arc*uIntegrity*0.92;
- vCol=mix(mix(vec3(1.0,0.98,0.92),vec3(0.98,0.65,0.18),cycle),vec3(0.85,0.30,0.65),cycle*cycle);
-}`));
+
+layout(location = 0) in vec3 a_cmePos;
+layout(location = 1) in vec3 a_cmeAttr;
+
+uniform mat3 rot;
+uniform vec3 cp;
+uniform float t;
+uniform float asp;
+uniform float hpx;
+uniform float gain;
+uniform float fb;
+uniform float uWarp;
+uniform float uLaugh;
+uniform float uIntegrity;
+
+out vec3 vColor;
+out float vAlpha;
+
+const vec3 JAMESTELLATION_CENTER = vec3(-1.94, 21.6, -1850.0);
+const float PI = 3.14159265359;
+
+void main() {
+    float baseAngle = a_cmePos.x;
+    float baseRad   = a_cmePos.y;
+    float basePhase = a_cmePos.z;
+
+    float archSpan  = a_cmeAttr.x;
+    float archAlt   = a_cmeAttr.y;
+    float seed      = a_cmeAttr.z;
+
+    // Continuous streamer flow along dipolar magnetic arch u in [0, 1]
+    float speed = (0.065 + 0.055 * fract(seed * 13.7)) * (1.0 + 0.35 * uLaugh);
+    float u = fract(basePhase + t * speed);
+    float archSin = sin(u * PI);
+
+    // Periodic magnetic reconnection surge
+    float reconnect = smoothstep(0.68, 0.98, sin(t * 0.85 + seed * 19.4)) * archSin;
+
+    // Interpolate angular footpoints around hair crown (r in [56, 80])
+    float theta = baseAngle + (u - 0.5) * archSpan;
+    vec2 radialDir = vec2(cos(theta), sin(theta));
+    vec2 tangentDir = vec2(-radialDir.y, radialDir.x);
+
+    // Elliptical hair crown locus + magnetic arch extrusion + helical Alfven wave twist
+    float rCurrent = baseRad + archAlt * (1.0 + 0.45 * reconnect + 0.25 * uLaugh) * archSin;
+    float shearShift = (0.22 * archAlt) * sin(2.0 * u * PI) * (seed > 0.5 ? 1.0 : -1.0);
+
+    float twistPhase = u * 14.0 - t * 2.4 + seed * 6.28318;
+    float rFilament = (1.8 + 2.6 * archSin) * (0.5 + 0.5 * fract(seed * 7.3));
+
+    vec2 xyOffset = radialDir * (rCurrent + rFilament * cos(twistPhase))
+                  + tangentDir * (shearShift + rFilament * 0.65 * sin(twistPhase));
+    float zOffset = 18.0 * sin(theta * 2.0 + seed * 6.28) + rFilament * sin(twistPhase) * 1.4;
+
+    vec3 w = JAMESTELLATION_CENTER + vec3(xyOffset.x, xyOffset.y * 1.12 + 6.0, zOffset + 32.0);
+
+    // Puzzle restoration integrity scatter
+    if (uIntegrity < 0.999) {
+        float decay = (1.0 - uIntegrity) * 45.0;
+        w += vec3(sin(seed * 51.0), cos(seed * 37.0), sin(seed * 29.0)) * decay;
+    }
+
+    vec3 v = rot * (w - cp);
+    float vDist = -v.z;
+    if (vDist < 0.5) {
+        gl_Position = vec4(2.0, 2.0, 2.0, 1.0);
+        return;
+    }
+
+    // Spectral palette: Radiant Solar Gold, Violet-Magenta Crown Nebula, and UV-Cyan Reconnection
+    vec3 solarGold   = vec3(1.00, 0.76, 0.32);
+    vec3 violetCrown = vec3(0.80, 0.36, 0.96);
+    vec3 uvStarlight = vec3(0.82, 0.95, 1.00);
+
+    vec3 baseCol = mix(solarGold, violetCrown, smoothstep(0.25, 0.75, fract(seed * 5.7 + 0.2 * sin(t * 0.4))));
+    vColor = mix(baseCol, uvStarlight, clamp(reconnect * 0.85 + 0.25 * archSin * uLaugh, 0.0, 1.0));
+
+    float nearFade = smoothstep(2.0, 20.0, vDist);
+    float farFade  = 1.0 - smoothstep(2200.0, 4000.0, vDist);
+    float twinkle  = 0.75 + 0.25 * sin(t * (3.0 + 4.0 * seed) + seed * 40.0);
+
+    vAlpha = gain * (1.0 - fb) * uIntegrity * archSin * nearFade * farFade * twinkle * (0.55 + 0.45 * reconnect);
+
+    float F = mix(2.0503, 1.45, uWarp);
+    gl_Position = vec4(v.x * F / asp, v.y * F, 0.0, vDist);
+
+    float pRadius = (2.2 + 3.2 * archSin + 2.4 * reconnect) * (0.7 + 0.6 * fract(seed * 11.1));
+    gl_PointSize = clamp((hpx * pRadius) / vDist, 1.2, 16.0);
+}
+`));
+
 gl.attachShader(pjCME,sh(gl.FRAGMENT_SHADER,`#version 300 es
 precision highp float;
-in float vDist;in float vAlpha;in vec3 vCol;
-uniform float gain,fb;out vec4 o;
-void main(){
- vec2 pc=(gl_PointCoord-0.5)*2.0;float r=length(pc);if(r>1.0)discard;
- float soft=exp(-r*r*3.2);
- float nearFade=smoothstep(1.0,16.0,vDist),farFade=1.0-smoothstep(2400.0,4200.0,vDist);
- o=vec4(vCol*(1.2+0.4*exp(-r*r*6.0)),gain*vAlpha*soft*nearFade*farFade*(1.0-fb));
-}`));
+
+in vec3 vColor;
+in float vAlpha;
+
+out vec4 o;
+
+void main() {
+    if (vAlpha < 0.003) discard;
+
+    vec2 p = gl_PointCoord * 2.0 - 1.0;
+    float r2 = dot(p, p);
+    if (r2 > 1.0) discard;
+
+    // Diaphanous Gaussian-Airy plasma streamer profile
+    float core = exp(-r2 * 9.0);
+    float halo = exp(-r2 * 2.8) * (1.0 - r2);
+    float intensity = core * 0.85 + halo * 0.65;
+
+    vec3 col = mix(vColor, vec3(1.0, 0.98, 0.94), core * 0.55);
+    float al = intensity * vAlpha;
+    o = vec4(col * al, al);
+}
+`));
 gl.linkProgram(pjCME);if(!gl.getProgramParameter(pjCME,gl.LINK_STATUS))throw gl.getProgramInfoLog(pjCME);
 
 // 3D Cosmic Web & Dendritic Connectome Lines
@@ -615,75 +823,189 @@ void main(){
 }`));
 gl.linkProgram(pSoma);if(!gl.getProgramParameter(pSoma,gl.LINK_STATUS))throw gl.getProgramInfoLog(pSoma);
 
-// Jamestellation Continuous 3D Subdivided Face Mesh (6,400 Vertices, 12,482 Triangles)
-const GW=80,GH=80;
-const J_MESH_VERTS=GW*GH;
-const J_POS=new Float32Array(J_MESH_VERTS*3);
-const J_UV=new Float32Array(J_MESH_VERTS*2);
-const J_ATTR=new Float32Array(J_MESH_VERTS*3);
-let jMeshIdx=0;
-for(let gy=0;gy<GH;gy++){
- const v=gy/(GH-1);
- for(let gx=0;gx<GW;gx++){
-  const u=gx/(GW-1);
-  const px=(u-0.5)*150.0+1.10;
-  const py=-(v-0.5)*200.0-9.42;
-  const dNose=Math.hypot((u-0.481)/0.09,(v-0.359)/0.12);
-  const zNose=22.0*Math.exp(-dNose*dNose*2.4);
-  const dCheek=Math.hypot((u-0.481)/0.22,(v-0.42)/0.25);
-  const zCheek=12.0*Math.exp(-dCheek*dCheek*2.0);
-  const dFace=Math.hypot((u-0.485)/0.18,(v-0.45)/0.25);
-  const hairWeight=Math.min(1.0,Math.max(0.0,(dFace-0.65)/0.45));
-  const zHair=-18.0*hairWeight;
-  const pz=-1850.0+zNose+zCheek+zHair;
+// ============================================================================
+// JAMESTELLATION GEOMETRY: 80x80 CONTINUOUS RELIEF MESH + 4,000 CME STREAMERS
+// ============================================================================
+let jFaceVAO = null, jFaceIndexCount = 0;
+let jCMEVAO  = null, jCMEParticleCount = 0;
 
-  J_POS[jMeshIdx*3]=px;J_POS[jMeshIdx*3+1]=py;J_POS[jMeshIdx*3+2]=pz;
-  J_UV[jMeshIdx*2]=u;J_UV[jMeshIdx*2+1]=v;
-  J_ATTR[jMeshIdx*3]=0.0;J_ATTR[jMeshIdx*3+1]=hairWeight;J_ATTR[jMeshIdx*3+2]=Math.random();
-  jMeshIdx++;
- }
-}
-const jIndices=[];
-for(let gy=0;gy<GH-1;gy++){
- for(let gx=0;gx<GW-1;gx++){
-  const i0=gy*GW+gx,i1=i0+1,i2=(gy+1)*GW+gx,i3=i2+1;
-  jIndices.push(i0,i2,i1);
-  jIndices.push(i1,i2,i3);
- }
-}
-const J_INDEX_COUNT=jIndices.length;
+function initJamestellationBuffers(gl) {
+    // ------------------------------------------------------------------------
+    // 1. 80x80 Subdivided Continuous 3D Relief Mesh (6,400 Verts, 12,482 Tris)
+    // ------------------------------------------------------------------------
+    const GRID = 80;
+    const numVerts = GRID * GRID;
+    const faceVerts = new Float32Array(numVerts * 8); // [x, y, z, u, v, reliefW, hairW, seed]
 
-const jFaceVao=gl.createVertexArray();
-gl.bindVertexArray(jFaceVao);
-const attJF=(name,arr,sz)=>{const b=gl.createBuffer(),l=gl.getAttribLocation(pjFace,name);gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,arr,gl.STATIC_DRAW);gl.enableVertexAttribArray(l);gl.vertexAttribPointer(l,sz,gl.FLOAT,false,0,0);};
-attJF('a_pos',J_POS,3);attJF('a_uv',J_UV,2);attJF('a_attr',J_ATTR,3);
-const jIndexBuf=gl.createBuffer();
-gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,jIndexBuf);
-gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,new Uint16Array(jIndices),gl.STATIC_DRAW);
-gl.bindVertexArray(null);
+    function computeReliefZ(u, v) {
+        const dx = (u - 0.481) * 2.0;
+        const dy = (v - 0.460) * 2.0;
+        const r2 = dx * dx + dy * dy * 0.78;
+        const dome = Math.max(0.0, Math.sqrt(Math.max(0.0, 1.0 - r2 * 0.85))) * 38.0;
 
-// Jamestellation 3D Coronal Mass Ejection Particles (4,000 Prominence Flares)
-const J_CME_COUNT=4000;
-const CME_POS=new Float32Array(J_CME_COUNT*3);
-const CME_DIR=new Float32Array(J_CME_COUNT*3);
-const CME_ATTR=new Float32Array(J_CME_COUNT*2);
-for(let i=0;i<J_CME_COUNT;i++){
- const th=Math.random()*Math.PI*2.0;
- const rHead=58.0+Math.random()*14.0;
- const x=1.10+Math.cos(th)*rHead;
- const y=-9.42+Math.sin(th)*rHead*1.25;
- const z=-1850.0+(Math.random()-0.5)*20.0;
- CME_POS.set([x,y,z],i*3);
- const dir=[Math.cos(th)+(Math.random()-0.5)*0.4, Math.sin(th)*1.25+(Math.random()-0.5)*0.4, (Math.random()-0.5)*0.8];
- const len=Math.hypot(...dir);
- CME_DIR.set([dir[0]/len,dir[1]/len,dir[2]/len],i*3);
- CME_ATTR.set([Math.random(),0.32+Math.random()*0.45],i*2);
+        // Sculpted nose bridge & tip
+        const nY = Math.max(0.0, Math.min(1.0, (v - 0.34) / 0.19));
+        const nW = 0.055 + 0.045 * nY * nY;
+        const nose = Math.exp(-(dx * dx) / (nW * nW)) * Math.sin(nY * Math.PI) * 18.5;
+
+        // Gentle cheekbone curves & brow ridge
+        const cheekY = v - 0.47;
+        const cheekX = Math.abs(dx) - 0.24;
+        const cheeks = Math.exp(-(cheekX * cheekX) / 0.035 - (cheekY * cheekY) / 0.025) * 9.5;
+
+        const browY = v - 0.33;
+        const brow  = Math.exp(-(browY * browY) / 0.004 - (dx * dx) / 0.14) * 7.0;
+
+        // Eye sockets subtle contour
+        const eyeX = Math.abs(dx) - 0.16;
+        const eyeY = v - 0.385;
+        const eyes = -Math.exp(-(eyeX * eyeX) / 0.012 - (eyeY * eyeY) / 0.005) * 4.2;
+
+        // Chin & warm smile contour
+        const lipY = v - 0.585;
+        const lips = Math.exp(-(dx * dx) / 0.032 - (lipY * lipY) / 0.004) * 6.5;
+
+        return dome + nose + cheeks + brow + eyes + lips;
+    }
+
+    const ajnaBaseZ = computeReliefZ(0.481, 0.359);
+    let vPtr = 0;
+
+    for (let iy = 0; iy < GRID; iy++) {
+        const v = iy / (GRID - 1);
+        for (let ix = 0; ix < GRID; ix++) {
+            const u = ix / (GRID - 1);
+
+            // Pin UV [0.481, 0.359] exactly to [-1.94, 21.6, -1850.0]
+            const wx = -1.94 + (u - 0.481) * 124.0;
+            const wy =  21.6 - (v - 0.359) * 142.0;
+            const wz = -1850.0 + (computeReliefZ(u, v) - ajnaBaseZ);
+
+            // Radial distance from facial center for hairWeight gating
+            const cUx = u - 0.485;
+            const cUy = (v - 0.460) * 0.76;
+            const dAnat = Math.sqrt(cUx * cUx + cUy * cUy);
+
+            // Central face (dAnat < 0.23) has hairWeight = 0 to preserve 100% still/video likeness
+            const outerMask = Math.max(0.0, Math.min(1.0, (dAnat - 0.23) / (0.44 - 0.23)));
+            const hairWeight = outerMask * outerMask * (3.0 - 2.0 * outerMask);
+
+            const idx = iy * GRID + ix;
+            const rawSeed = Math.sin(idx * 12.9898 + 78.233) * 43758.5453;
+            const seed = rawSeed - Math.floor(rawSeed);
+
+            faceVerts[vPtr++] = wx;
+            faceVerts[vPtr++] = wy;
+            faceVerts[vPtr++] = wz;
+            faceVerts[vPtr++] = u;
+            faceVerts[vPtr++] = v;
+            faceVerts[vPtr++] = Math.max(0.0, 1.0 - dAnat * 2.0);
+            faceVerts[vPtr++] = hairWeight;
+            faceVerts[vPtr++] = seed;
+        }
+    }
+
+    // 12,482 Triangles (79 * 79 * 2 = 12,482 tris -> 37,446 indices)
+    const numQuads = (GRID - 1) * (GRID - 1);
+    const faceIndices = new Uint16Array(numQuads * 6);
+    let iPtr = 0;
+    for (let iy = 0; iy < GRID - 1; iy++) {
+        for (let ix = 0; ix < GRID - 1; ix++) {
+            const i00 = iy * GRID + ix;
+            const i10 = i00 + 1;
+            const i01 = (iy + 1) * GRID + ix;
+            const i11 = i01 + 1;
+
+            faceIndices[iPtr++] = i00;
+            faceIndices[iPtr++] = i01;
+            faceIndices[iPtr++] = i10;
+
+            faceIndices[iPtr++] = i10;
+            faceIndices[iPtr++] = i01;
+            faceIndices[iPtr++] = i11;
+        }
+    }
+
+    jFaceIndexCount = faceIndices.length;
+    jFaceVAO = gl.createVertexArray();
+    gl.bindVertexArray(jFaceVAO);
+
+    const faceVBO = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, faceVBO);
+    gl.bufferData(gl.ARRAY_BUFFER, faceVerts, gl.STATIC_DRAW);
+
+    const faceEBO = gl.createBuffer();
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, faceEBO);
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, faceIndices, gl.STATIC_DRAW);
+
+    const STRIDE_FACE = 8 * 4;
+    const locPos  = gl.getAttribLocation(pjFace, 'a_pos');
+    const locUv   = gl.getAttribLocation(pjFace, 'a_uv');
+    const locAttr = gl.getAttribLocation(pjFace, 'a_attr');
+
+    if (locPos >= 0) {
+        gl.enableVertexAttribArray(locPos);
+        gl.vertexAttribPointer(locPos, 3, gl.FLOAT, false, STRIDE_FACE, 0);
+    }
+    if (locUv >= 0) {
+        gl.enableVertexAttribArray(locUv);
+        gl.vertexAttribPointer(locUv, 2, gl.FLOAT, false, STRIDE_FACE, 3 * 4);
+    }
+    if (locAttr >= 0) {
+        gl.enableVertexAttribArray(locAttr);
+        gl.vertexAttribPointer(locAttr, 3, gl.FLOAT, false, STRIDE_FACE, 5 * 4);
+    }
+
+    // ------------------------------------------------------------------------
+    // 2. 4,000 Coronal Prominence Streamer Particles (r in [56, 80] LY)
+    // ------------------------------------------------------------------------
+    const NUM_CME = 4000;
+    const cmeData = new Float32Array(NUM_CME * 6); // [angle, radius, phase, span, altitude, seed]
+    let cPtr = 0;
+
+    for (let i = 0; i < NUM_CME; i++) {
+        const s1 = (Math.sin(i * 19.19 + 11.7) * 43758.5453) % 1;
+        const s2 = (Math.sin(i * 73.37 + 29.3) * 23421.6312) % 1;
+        const s3 = (Math.sin(i * 41.83 + 53.9) * 65432.1234) % 1;
+        const r1 = s1 < 0 ? s1 + 1.0 : s1;
+        const r2 = s2 < 0 ? s2 + 1.0 : s2;
+        const r3 = s3 < 0 ? s3 + 1.0 : s3;
+
+        // Organize into 24 coherent magnetic flux streamer bundles around the hair crown
+        const bundleIdx = i % 24;
+        const bundleAngle = (bundleIdx / 24.0) * Math.PI * 2.0;
+        const crownAngle = bundleAngle + (r1 - 0.5) * 0.22;
+        const crownRadius = 56.0 + r2 * 24.0; // Strictly within r in [56, 80] LY
+        const streamPhase = (i / NUM_CME + r3 * 0.35) % 1.0;
+
+        const archSpan = 0.28 + 0.34 * ((bundleIdx % 5) / 4.0);
+        const archAlt  = 14.0 + 24.0 * Math.abs(Math.sin(bundleIdx * 1.7 + r1 * 0.5));
+
+        cmeData[cPtr++] = crownAngle;
+        cmeData[cPtr++] = crownRadius;
+        cmeData[cPtr++] = streamPhase;
+        cmeData[cPtr++] = archSpan;
+        cmeData[cPtr++] = archAlt;
+        cmeData[cPtr++] = r3;
+    }
+
+    jCMEParticleCount = NUM_CME;
+    jCMEVAO = gl.createVertexArray();
+    gl.bindVertexArray(jCMEVAO);
+
+    const cmeVBO = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, cmeVBO);
+    gl.bufferData(gl.ARRAY_BUFFER, cmeData, gl.STATIC_DRAW);
+
+    const STRIDE_CME = 6 * 4;
+    gl.enableVertexAttribArray(0);
+    gl.vertexAttribPointer(0, 3, gl.FLOAT, false, STRIDE_CME, 0);
+    gl.enableVertexAttribArray(1);
+    gl.vertexAttribPointer(1, 3, gl.FLOAT, false, STRIDE_CME, 3 * 4);
+
+    gl.bindVertexArray(null);
 }
-const jCmeVao=gl.createVertexArray();
-gl.bindVertexArray(jCmeVao);
-const attC=(name,arr,sz)=>{const b=gl.createBuffer(),l=gl.getAttribLocation(pjCME,name);gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,arr,gl.STATIC_DRAW);gl.enableVertexAttribArray(l);gl.vertexAttribPointer(l,sz,gl.FLOAT,false,0,0);};
-attC('cme_pos',CME_POS,3);attC('cme_dir',CME_DIR,3);attC('cme_attr',CME_ATTR,2);
-gl.bindVertexArray(null);
+initJamestellationBuffers(gl);
 
 // 3D Neural Connectome Network Generation (Living Dendritic Arborization across Front Sanctuary & Void)
 const SOMA_HUBS=[
@@ -1542,30 +1864,38 @@ function drawVoid(t){if(!vao||VD.gain<=0.001)return;gl.useProgram(pv);gl.bindVer
   gl.drawArrays(gl.POINTS,0,SOMA_VERT_COUNT);
  }
 
- // Render Continuous High-Resolution Jamestellation Face & 3D Coronal Mass Ejections
- if(jReady){
+ // Render Continuous High-Resolution Jamestellation Face & 3D Coronal Mass Ejections (Argon Masterpiece)
+ if(jReady && jFaceVAO && jCMEVAO){
   if(jVid.readyState>=jVid.HAVE_CURRENT_DATA){gl.activeTexture(gl.TEXTURE1);gl.bindTexture(gl.TEXTURE_2D,jTexVideo);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,jVid)}
-  gl.useProgram(pjFace);gl.bindVertexArray(jFaceVao);
+  const proxLaugh=sstep(-1550,-1680,VD.pos[2]);
+  const activeLaugh=Math.max(typeof window.coeLaughOverride!=='undefined'?window.coeLaughOverride:0.0,proxLaugh);
+  const activeIntegrity=window.coeJamestellationIntegrity!==undefined?window.coeJamestellationIntegrity:1.0;
+
+  gl.enable(gl.BLEND);
+  gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+  gl.useProgram(pjFace);
+  gl.bindVertexArray(jFaceVAO);
   gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,jTexStill);
   gl.activeTexture(gl.TEXTURE1);gl.bindTexture(gl.TEXTURE_2D,jTexVideo);
   const JF=n=>gl.getUniformLocation(pjFace,n);
   gl.uniformMatrix3fv(JF('rot'),false,colm);gl.uniform3fv(JF('cp'),VD.pos);
   gl.uniform1f(JF('t'),vt);gl.uniform1f(JF('asp'),aspect);gl.uniform1f(JF('gain'),VD.gain);gl.uniform1f(JF('fb'),VD.fb);gl.uniform1f(JF('uWarp'),VD.warp||0);
-  const proxLaugh=sstep(-1550,-1680,VD.pos[2]);
-  const activeLaugh=Math.max(typeof window.coeLaughOverride!=='undefined'?window.coeLaughOverride:0.0,proxLaugh);
   gl.uniform1f(JF('uLaugh'),activeLaugh);
-  gl.uniform1f(JF('uIntegrity'),window.coeJamestellationIntegrity!==undefined?window.coeJamestellationIntegrity:1.0);
+  gl.uniform1f(JF('uIntegrity'),activeIntegrity);
   gl.uniform1i(JF('uTexStill'),0);gl.uniform1i(JF('uTexVideo'),1);
-  gl.drawElements(gl.TRIANGLES,J_INDEX_COUNT,gl.UNSIGNED_SHORT,0);
+  gl.drawElements(gl.TRIANGLES,jFaceIndexCount,gl.UNSIGNED_SHORT,0);
 
-  // Render Living 3D CME Flares in Space
-  gl.useProgram(pjCME);gl.bindVertexArray(jCmeVao);
+  // Render Living 3D CME Flares in Space (4,000 Particles)
+  gl.blendFunc(gl.ONE, gl.ONE);
+  gl.useProgram(pjCME);gl.bindVertexArray(jCMEVAO);
   const JC=n=>gl.getUniformLocation(pjCME,n);
   gl.uniformMatrix3fv(JC('rot'),false,colm);gl.uniform3fv(JC('cp'),VD.pos);
   gl.uniform1f(JC('t'),vt);gl.uniform1f(JC('asp'),aspect);gl.uniform1f(JC('hpx'),cv.height/2);
   gl.uniform1f(JC('gain'),VD.gain);gl.uniform1f(JC('fb'),VD.fb);gl.uniform1f(JC('uWarp'),VD.warp||0);
-  gl.uniform1f(JC('uIntegrity'),window.coeJamestellationIntegrity!==undefined?window.coeJamestellationIntegrity:1.0);
-  gl.drawArrays(gl.POINTS,0,J_CME_COUNT);
+  gl.uniform1f(JC('uLaugh'),activeLaugh);
+  gl.uniform1f(JC('uIntegrity'),activeIntegrity);
+  gl.drawArrays(gl.POINTS,0,jCMEParticleCount);
+  gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
  }
  gl.bindVertexArray(null);gl.useProgram(pr);
 
