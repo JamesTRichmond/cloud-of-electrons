@@ -69,6 +69,7 @@ html,body{margin:0;height:100%;background:#05070D;overflow:hidden;user-select:no
 <script src="events.js"></script>
 <script type="module">
 import {poemTimeline,nextGap,shuffleBag,SECTIONS} from './motion.js';
+import {mountMapTouch} from './map-touch.js';
 const FILL=(window.COE_FILL||[
  {name:'near',count:12000,inner:.15,outer:.8,size:1.6,brightness:.6,swirl:.4},
  {name:'mid',count:90000,inner:.8,outer:2.2,size:1.0,brightness:1.6,swirl:1.0},
@@ -1328,6 +1329,7 @@ const NMS_MAP={
 
 const getAllDestinations=()=>[...VOID_WELLS,{id:'jamestellation',name:'Jamestellation Deep Void Portal',pos:[-1.94,21.6,-1850],radius:45,isPortal:true}];
 
+let mapTouch=null;
 function initNmsMapCanvas(){
  if(NMS_MAP.cv)return;
  NMS_MAP.cv=document.getElementById('nms-galactic-map-c');
@@ -1335,6 +1337,11 @@ function initNmsMapCanvas(){
  NMS_MAP.ctx=NMS_MAP.cv.getContext('2d');
  
  const cv=NMS_MAP.cv;
+ mapTouch=mountMapTouch(cv,(dx,dy)=>{
+  if(!NMS_MAP.open||!cv.clientWidth||!cv.clientHeight)return;
+  NMS_MAP.az+=(dx/cv.clientWidth)*2.8;
+  NMS_MAP.el=Math.max(-1.45,Math.min(-0.15,NMS_MAP.el-(dy/cv.clientHeight)*2.2));
+ });
  cv.addEventListener('mousedown',e=>{
   if(e.button===0){NMS_MAP.drag=true;NMS_MAP.lx=e.clientX;NMS_MAP.ly=e.clientY;}
  });
@@ -1581,6 +1588,7 @@ function renderNmsMapFrame(){
 }
 
 const closeMap=()=>{
+ mapTouch?.cancel();
  mapModal.classList.remove('open');
  NMS_MAP.open=false;
  if(NMS_MAP.rafId)cancelAnimationFrame(NMS_MAP.rafId);
