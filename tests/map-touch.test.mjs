@@ -152,3 +152,39 @@ test('closing the actual map clears an unfinished touch gesture', () => {
   assert.equal(cancelled, 1);
   assert.equal(state.open, false);
 });
+
+test('existing HUD map row opens the map by click, Enter or Space without double-toggling the global shortcut', () => {
+  const begin = html.indexOf("const mapControl=document.getElementById('hr-map');");
+  assert.ok(begin >= 0);
+  const end = html.indexOf('const AUTOPILOT=', begin);
+  const control = { attributes: {}, setAttribute(key, value) { this.attributes[key] = value; } };
+  const state = { mode: 'fly' };
+  let opened = 0, closed = 0;
+  const mapState = { open: false };
+  vm.runInNewContext(html.slice(begin, end), {
+    document: { getElementById: id => { assert.equal(id, 'hr-map'); return control; } },
+    VD: state, NMS_MAP: mapState, openMap() { opened++; mapState.open = true; },
+    closeMap() { closed++; mapState.open = false; },
+  });
+  assert.equal(control.attributes.role, 'button');
+  assert.equal(control.attributes['aria-label'], 'Open celestial map');
+  assert.equal(control.tabIndex, 0);
+  control.onclick();
+  assert.equal(opened, 1);
+  for (const key of ['Enter', ' ']) {
+    let prevented = false, stopped = false;
+    control.onkeydown({ key, preventDefault() { prevented = true; }, stopPropagation() { stopped = true; } });
+    assert.equal(prevented, true);
+    assert.equal(stopped, true);
+  }
+  assert.equal(opened, 2);
+  assert.equal(closed, 1);
+  control.onkeydown({ key: ' ', repeat: true, preventDefault() {}, stopPropagation() {} });
+  assert.equal(opened, 2);
+  assert.equal(closed, 1);
+  control.onkeydown({ key: 'ArrowDown' });
+  assert.equal(opened, 2);
+  state.mode = 'orbit';
+  control.onclick();
+  assert.equal(opened, 2);
+});

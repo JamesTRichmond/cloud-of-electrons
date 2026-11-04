@@ -1603,6 +1603,12 @@ const openMap=()=>{
 document.getElementById('vmap-close-btn').onclick=closeMap;
 window.coeOpenMap=openMap;
 window.coeCloseMap=closeMap;
+const mapControl=document.getElementById('hr-map');
+mapControl.setAttribute('role','button');mapControl.tabIndex=0;mapControl.setAttribute('aria-label','Open celestial map');
+mapControl.onclick=()=>{if(VD.mode==='fly'){if(NMS_MAP.open)closeMap();else openMap();}};
+mapControl.onkeydown=e=>{
+ if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();if(!e.repeat)mapControl.onclick();}
+};
 
 const AUTOPILOT={active:false,targetPos:null,targetGalaxy:null,phase:'steer'};
 function engageAutopilot(target){
