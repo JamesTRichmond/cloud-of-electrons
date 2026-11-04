@@ -14,7 +14,10 @@ export function mountMapTouch(canvas, onDrag) {
       blocked = true;
       return;
     }
-    if (blocked || touch) return;
+    if (touch) return;
+    // A new single-touch start also recovers from an outside finger's
+    // touchend, which does not bubble through this canvas.
+    blocked = false;
     const point = event.touches[0];
     dragged = false;
     touch = { id: point.identifier, x: point.clientX, y: point.clientY };

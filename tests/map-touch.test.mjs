@@ -61,6 +61,26 @@ test('an extra finger cancels map rotation until every finger is lifted', () => 
   assert.deepEqual(f.deltas, [[10, 12]]);
 });
 
+test('a fresh gesture recovers when the outside finger ends without a canvas event', () => {
+  for (const dragFirst of [false, true]) {
+    const f = fixture();
+    f.send('touchstart', [point(0, 0)]);
+    if (dragFirst) f.send('touchmove', [point(20, 20)]);
+    // An outside finger is visible in touches, but its own events do not
+    // bubble through the canvas. The canvas finger lifts first.
+    f.send('touchmove', [point(20, 20), point(40, 40, 2)]);
+    f.send('touchend', [point(40, 40, 2)]);
+    // No canvas touchend arrives when the outside finger lifts.
+    const before = f.deltas.length;
+    f.send('touchstart', [point(0, 0, 3)]);
+    f.send('touchmove', [point(12, 14, 3)]);
+    assert.deepEqual(f.deltas.slice(before), [[12, 14]]);
+    assert.equal(f.send('touchend').defaultPrevented, true);
+    f.send('touchstart', [point(50, 50, 4)]);
+    assert.equal(f.send('touchend').defaultPrevented, false);
+  }
+});
+
 test('a drag remains consumed when a second finger arrives before lift', () => {
   const f = fixture();
   f.send('touchstart', [point(0, 0)]);
