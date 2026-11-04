@@ -1626,6 +1626,9 @@ const KEYS={ArrowUp:0,ArrowDown:0,ArrowLeft:0,ArrowRight:0,ShiftLeft:0,ShiftRigh
 let lastTapXTime=0,lightspeedEngaged=false;
 
 addEventListener('keydown',e=>{
+ if(e.defaultPrevented)return;
+ if(e.target?.closest?.('input,textarea,select,[contenteditable]:not([contenteditable="false"])'))return;
+ if((e.code==='Enter'||e.code==='Space')&&e.target?.closest?.('button,a[href],[role="button"],[role="radio"],[role="link"]'))return;
  if(e.key==='Meta'||e.key==='Control')KEYS.Meta=1;
  if(e.code in KEYS){KEYS[e.code]=1;hudShow();}
 
