@@ -1,5 +1,12 @@
 # Cloud of Electrons
 
+<!-- portfolio summary -->
+> **Portfolio summary.** The source of my personal site, **[jamestrichmond.com](https://jamestrichmond.com)**: a WebGL particle cloud where my published poems condense out of the swirl one at a time, then scatter back.
+>
+> **Stack:** WebGL · vanilla JavaScript · Python build tools (glyph sampling, standalone single-file packer)
+>
+> **Notable engineering:** poems become particle targets through a glyph-sampling pipeline; a packer emits one self-contained HTML file that runs from disk; a publish filter guarantees only poems marked `public: true` ever reach the repo.
+
 A WebGL particle cloud where J R's public poems form out of the swirl, one at a time, then scatter back into it.
 
 - `site/` is the static page. Serve it from any static host; open `index.html` through a web server, not from disk.
