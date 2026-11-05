@@ -176,7 +176,7 @@ test('closing the actual map clears an unfinished touch gesture', () => {
 test('existing HUD map row opens the map by click, Enter or Space without double-toggling the global shortcut', () => {
   const begin = html.indexOf("const mapControl=document.getElementById('hr-map');");
   assert.ok(begin >= 0);
-  const end = html.indexOf('const AUTOPILOT=', begin);
+  const end = html.indexOf('// HUD access follows', begin);
   const control = { attributes: {}, setAttribute(key, value) { this.attributes[key] = value; } };
   const state = { mode: 'fly' };
   let opened = 0, closed = 0;
@@ -188,7 +188,8 @@ test('existing HUD map row opens the map by click, Enter or Space without double
   });
   assert.equal(control.attributes.role, 'button');
   assert.equal(control.attributes['aria-label'], 'Open celestial map');
-  assert.equal(control.tabIndex, 0);
+  assert.equal(control.tabIndex, -1);
+  assert.equal(control.inert, true);
   control.onclick();
   assert.equal(opened, 1);
   for (const key of ['Enter', ' ']) {
