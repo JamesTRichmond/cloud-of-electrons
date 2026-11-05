@@ -1261,9 +1261,18 @@ const hudEl=document.createElement('div');hudEl.id='void-hud';
 hudEl.innerHTML=`<div class="hud-top"><span class="hud-callsign">ASTRONAV · SCI-FI FLIGHT DECK</span><span id="hud-warp-badge" class="hud-badge">SUBLIGHT</span></div><div class="hud-body"><div class="hud-row" id="hr-pitch"><span class="k">↑ · ↓</span><span class="v">Climb / Dive</span></div><div class="hud-row" id="hr-yaw"><span class="k">← · →</span><span class="v">Rotate Left / Right</span></div><div class="hud-row" id="hr-strafe"><span class="k">L-SHIFT · R-SHIFT</span><span class="v">Lateral Strafe</span></div><div class="hud-row" id="hr-rev"><span class="k">CMD + ↓</span><span class="v">Reverse Thrust</span></div><div class="hud-row" id="hr-accel"><span class="k">X</span><span class="v">Forward Acceleration</span></div><div class="hud-row" id="hr-warp"><span class="k">X, X (DOUBLE-TAP)</span><span class="v">Lightspeed Warp (1.0 c)</span></div><div class="hud-row" id="hr-stop"><span class="k">CMD + X</span><span class="v">Full Stop / Inertial Brake</span></div><div class="hud-row" id="hr-map"><span class="k">ENTER</span><span class="v">Celestial Map & Autopilot</span></div><div class="hud-row" id="hr-orbit"><span class="k">CLICK GALAXY</span><span class="v">Enter Orbit</span></div></div><div class="hud-meter"><div class="hud-meter-label"><span>VELOCITY</span><span id="hud-vel-val">0.00 c</span></div><div class="hud-bar"><div id="hud-bar-fill" class="hud-bar-fill"></div></div></div>`;
 hudEl.onmouseenter=()=>{VD.hudHover=true;hudShow();};hudEl.onmouseleave=()=>{VD.hudHover=false;};
 document.body.appendChild(hudEl);
+// Hidden flight controls must not retain focus or intercept activation keys.
+function setFlightControlAvailable(control,available){
+ if(!available&&control.contains(document.activeElement)){
+  cv.tabIndex=-1;cv.focus({preventScroll:true});
+ }
+ if(control.inert!==!available)control.inert=!available;
+ const tabIndex=available?0:-1;if(control.tabIndex!==tabIndex)control.tabIndex=tabIndex;
+}
 const obBanner=document.createElement('div');obBanner.id='orbit-banner';
 obBanner.innerHTML=`<div class="ob-kicker">ORBITAL OBSERVATORY</div><div id="ob-title" class="ob-title"></div><button id="ob-eject" class="ob-eject" onclick="window.coeBreakOrbit()">Break Orbit (Space / Esc)</button>`;
 document.body.appendChild(obBanner);
+setFlightControlAvailable(document.getElementById('ob-eject'),false);
 const gpEl=document.createElement('div');gpEl.id='galaxy-prompt';
 gpEl.innerHTML=`<span class="gp-tag">✦ GALAXY IN RANGE</span><span id="gp-name" class="gp-name"></span><span class="gp-action">CLICK OR TAP TO ENTER ORBIT</span>`;
 gpEl.onclick=()=>{if(VD.targetedGalaxy)enterOrbit(VD.targetedGalaxy);};
@@ -1607,10 +1616,12 @@ window.coeAutopilot=engageAutopilot;
 window.coeAutopilotState=AUTOPILOT;
 
 const hudShow=()=>{VD.hudTimer=4.0;hudEl.classList.add('active');};
-const labels=VOID_WELLS.map(W=>{const R=REGB[REGION_FOR[W.id]||W.id]||(W.id==='preincarnation'?{kicker:'',name:W.name}:null);if(!R)return null;const b=document.createElement('button');b.className='vlabel';b.innerHTML=`<small></small><span></span><div class="vorbit-tag">✦ ENTER ORBIT</div>`;b.querySelector('small').textContent=R.kicker;b.querySelector('span').textContent=R.name;b.onclick=()=>enterOrbit(W);b.onmouseenter=()=>{VD.hoverId=W.id;hudShow();};b.onmouseleave=()=>{if(VD.hoverId===W.id)VD.hoverId=null;};document.body.appendChild(b);return b});
+const labels=VOID_WELLS.map(W=>{const R=REGB[REGION_FOR[W.id]||W.id]||(W.id==='preincarnation'?{kicker:'',name:W.name}:null);if(!R)return null;const b=document.createElement('button');b.className='vlabel';setFlightControlAvailable(b,false);b.innerHTML=`<small></small><span></span><div class="vorbit-tag">✦ ENTER ORBIT</div>`;b.querySelector('small').textContent=R.kicker;b.querySelector('span').textContent=R.name;b.onclick=()=>enterOrbit(W);b.onmouseenter=()=>{VD.hoverId=W.id;hudShow();};b.onmouseleave=()=>{if(VD.hoverId===W.id)VD.hoverId=null;};document.body.appendChild(b);return b});
 function enterOrbit(W){if(!W)return;
  AUTOPILOT.active=false;VD.orbitTarget=W;VD.orbitAngle=Math.atan2(VD.pos[2]-W.pos[2],VD.pos[0]-W.pos[0]);
  VD.orbitRadius=W.radius*1.55;VD.orbitT0=performance.now()/1000;VD.mode='orbit';
+ labels.forEach(b=>{if(b)setFlightControlAvailable(b,false);});
+ setFlightControlAvailable(document.getElementById('ob-eject'),true);
  const toX=W.pos[0]-VD.pos[0],toY=W.pos[1]-VD.pos[1],toZ=W.pos[2]-VD.pos[2];
  const distH=Math.hypot(toX,toZ);
  VD.yaw=Math.atan2(toX,-toZ);
@@ -1618,7 +1629,7 @@ function enterOrbit(W){if(!W)return;
  const ob=document.getElementById('orbit-banner');if(ob){document.getElementById('ob-title').textContent=W.name;ob.classList.add('on');}
  const promptEl=document.getElementById('galaxy-prompt');if(promptEl)promptEl.classList.remove('active');
  window.COE_EVENTS?.dispatch('coe:orbit-enter',{galaxyId:W.id,name:W.name,pos:W.pos,radius:W.radius});}
-function breakOrbit(){if(VD.mode==='orbit'){VD.mode='fly';VD.sp=46;VD.orbitTarget=null;const ob=document.getElementById('orbit-banner');if(ob)ob.classList.remove('on');hudShow();window.COE_EVENTS?.dispatch('coe:orbit-break');}}
+function breakOrbit(){if(VD.mode==='orbit'){VD.mode='fly';VD.sp=46;VD.orbitTarget=null;const ob=document.getElementById('orbit-banner');setFlightControlAvailable(document.getElementById('ob-eject'),false);if(ob)ob.classList.remove('on');hudShow();window.COE_EVENTS?.dispatch('coe:orbit-break');}}
 window.coeBreakOrbit=breakOrbit;window.coeEnterOrbit=enterOrbit;
 
 // Prompter Flight Controls: Arrow Keys, Left/Right Shift, X, Double-Tap X, Cmd+Down, Cmd+X, Enter
@@ -1906,7 +1917,7 @@ function drawVoid(t){if(!vao||VD.gain<=0.001)return;gl.useProgram(pv);gl.bindVer
  labels.forEach((b,i)=>{const W0=VOID_WELLS[i];{const d=[W0.pos[0]-VD.pos[0],W0.pos[1]-VD.pos[1],W0.pos[2]-VD.pos[2]],v=[0,1,2].map(r=>M[r][0]*d[0]+M[r][1]*d[1]+M[r][2]*d[2]);if(v[2]<-1){const sx=(v[0]*2.0503/aspect/(-v[2])*.5+.5)*innerWidth,sy2=(.5-v[1]*2.0503/(-v[2])*.5)*innerHeight,rp=W0.click*2.0503*innerHeight/2/(-v[2]);VD.screen[i]=[sx,sy2,rp];if(Math.hypot(px-sx,py-sy2)<rp&&b&&W0.id!=='preincarnation')hov=W0.id}}if(!b)return;const W=VOID_WELLS[i],d=[W.pos[0]-VD.pos[0],W.pos[1]-VD.pos[1],W.pos[2]-VD.pos[2]];const v=[0,0,0];for(let r=0;r<3;r++)v[r]=M[r][0]*d[0]+M[r][1]*d[1]+M[r][2]*d[2];const L=Math.hypot(...d),dot=-v[2]/L;
   let op=0;if(VD.mode==='fly'&&v[2]<-1&&dot>.4&&L<300){op=Math.min(1-sstep(140,300,L),sstep(.4,.65,dot))*VD.gain}
   if(op>0){const x=(v[0]*2.0503/aspect/(-v[2])*.5+.5)*innerWidth,y=(.5-v[1]*2.0503/(-v[2])*.5)*innerHeight+Math.min(70,((VD.screen[i]&&VD.screen[i][2]*.3)||0))+18;b.style.left=x+'px';b.style.top=y+'px'}
-  b.style.opacity=op.toFixed(3);b.style.pointerEvents=op>.45?'auto':'none'});if(!labels.some((b,i)=>b&&b.matches(':hover')))VD.hoverId=hov;}
+  setFlightControlAvailable(b,op>.45);b.style.opacity=op.toFixed(3);b.style.pointerEvents=op>.45?'auto':'none'});if(!labels.some((b,i)=>b&&b.matches(':hover')))VD.hoverId=hov;}
 const handleGalaxyClick=(mx,my)=>{
  if(VD.mode!=='fly')return;
  if(VD.hoverId){const W=VOID_WELLS.find(w=>w.id===VD.hoverId);if(W){enterOrbit(W);return;}}
