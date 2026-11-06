@@ -1,5 +1,7 @@
 # Cloud of Electrons
 
+[![CI](https://github.com/JamesTRichmond/cloud-of-electrons/actions/workflows/ci.yml/badge.svg)](https://github.com/JamesTRichmond/cloud-of-electrons/actions/workflows/ci.yml)
+
 A WebGL2 particle field where poems condense out of the swirl one at a time, hold long enough to read, then scatter back. It runs at [jamestrichmond.com](https://jamestrichmond.com).
 
 ## What's in it
