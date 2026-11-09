@@ -168,7 +168,7 @@ export function createHabitat(host, options = {}) {
     const k = Math.max(r.width / vb.width, r.height / vb.height);
     return {
       x: (evt.clientX - r.left - (r.width - vb.width * k) / 2) / k,
-      y: (evt.clientY - r.top - (r.height - vb.height * k) / 2) / k,
+      y: (evt.clientY - r.top - (r.height - vb.height * k)) / k,
     };
   };
 
