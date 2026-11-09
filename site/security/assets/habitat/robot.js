@@ -35,9 +35,10 @@ const easeOut = (t) => 1 - Math.pow(1 - t, 3);
 /* ── Particle effects ──────────────────────────────────────────────────── */
 
 class Fx {
-  constructor(layer) { this.layer = layer; this.items = []; }
+  constructor(layer) { this.layer = layer; this.items = []; this.muted = false; }
 
   emit(kind, x, y, opts = {}) {
+    if (this.muted) return;
     if (this.items.length > 70) return;
     let el;
     const spec = { life: 0, x, y, vx: opts.vx ?? 0, vy: opts.vy ?? -40, kind };
@@ -184,6 +185,12 @@ export class Robot {
     this.stateT = 0; this.idleT = 0;
     this.target = null; this.after = null;
     this.reduced = matchMedia("(prefers-reduced-motion: reduce)");
+    // When the preference flips on, settle him into a static pose immediately
+    // rather than waiting for the next motion to be suppressed; when it flips
+    // off, let the clock resume from where it froze.
+    this.reduced.addEventListener?.("change", () => {
+      if (this.reduced.matches) this.fx.clear();
+    });
 
     this.pose = {};
     this.setState("idle");
@@ -321,6 +328,13 @@ export class Robot {
 
   /* -- per-frame -- */
   update(dt, input) {
+    // Honour prefers-reduced-motion for every kind of motion, not just the
+    // autonomous choice below. CSS cannot stop these JS-driven SVG updates, so
+    // we freeze time for scripted activities (a static docent pose), stop
+    // emitting particles, and skip the free-physics integration.
+    const reduced = this.reduced.matches;
+    this.fx.muted = reduced;
+
     this.stateT += dt;
     this.idleT += dt;
 
@@ -338,11 +352,11 @@ export class Robot {
     }
 
     const scripted = Boolean(this.activity);
-    if (!scripted && this.state !== "drag") this.integrate(dt);
+    if (!scripted && this.state !== "drag" && !reduced) this.integrate(dt);
     if (this.state === "drag") this.grounded = false;
 
     // walk phase advances with real speed, so his feet never skate
-    this.phase += (Math.abs(this.vx) / 28) * dt * Math.PI;
+    if (!reduced) this.phase += (Math.abs(this.vx) / 28) * dt * Math.PI;
 
     this.blinkIn -= dt;
     if (this.blinkIn <= 0) { this.blink = 0.16; this.blinkIn = rand(2.4, 6.5); }
@@ -363,19 +377,22 @@ export class Robot {
     p.spinWheels = this.spinWheels.bind(this);
     p.lookAt = this.lookAt.bind(this);
 
+    // Under reduced motion, sample every scripted pose at a fixed instant so it
+    // renders a single still frame instead of animating over time.
+    const poseT = reduced ? 0 : this.stateT;
     if (this.activity) {
-      this.activity.pose(p, this.stateT);
+      this.activity.pose(p, poseT);
       this.x = p.x; this.y = p.y; this.face = p.face;
-      if (this.stateT > this.activity.duration) this.goHome();
+      if (!reduced && this.stateT > this.activity.duration) this.goHome();
     } else {
-      this.poseFree(p, this.stateT);
+      this.poseFree(p, poseT);
     }
 
     this.springs(dt, p);
     this.apply(p);
-    this.fx.update(dt);
+    if (!reduced) this.fx.update(dt);
 
-    if (this.autonomy && !this.reduced.matches &&
+    if (this.autonomy && !reduced &&
         this.state === "idle" && this.idleT > this.boredom) {
       this.idleT = 0;
       const names = Object.keys(this.ACTIVITIES);
