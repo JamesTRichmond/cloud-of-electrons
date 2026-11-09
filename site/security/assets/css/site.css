@@ -653,7 +653,7 @@
   }
 
   /* Everything above the decoration. */
-  .topbar, main, .foot { position: relative; z-index: 1; }
+  main, .foot { position: relative; z-index: 1; }
 }
 
 /* ─────────────────────────── MOTION ─────────────────────────── */
