@@ -180,9 +180,8 @@ export function mount(root) {
     }
 
     verdict.className = "sz-verdict pass";
-    verdict.textContent = r.steps.length
-      ? `Accepted — ${r.steps.length} rule${r.steps.length === 1 ? "" : "s"} changed it`
-      : "Accepted unchanged";
+    const changed = user.value !== user.value.trim() || body.value !== r.note;
+    verdict.textContent = changed ? "Accepted — input sanitized" : "Accepted unchanged";
 
     for (const [rule, from, to] of r.steps) {
       const li = document.createElement("li");
