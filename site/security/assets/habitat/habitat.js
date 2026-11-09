@@ -129,11 +129,27 @@ export function createHabitat(host, options = {}) {
     host.appendChild(statusEl);
   }
 
-  if (!host.hasAttribute("tabindex")) host.tabIndex = 0;
-  if (!host.hasAttribute("role")) host.setAttribute("role", "application");
-  if (!host.hasAttribute("aria-label")) {
+  // Only advertise what is actually wired up. On pages that pass keyboard:false
+  // (the subject docents), registering no key handlers while still claiming
+  // role="application" and announcing arrow keys would point keyboard and
+  // screen-reader users at controls that do nothing.
+  if (!host.hasAttribute("role") && !host.hasAttribute("aria-label")) {
+    const controls = [];
+    if (keyboard) controls.push("Arrow keys to walk, space to jump");
+    if (pointer) controls.push("drag him to pick him up");
+
+    if (keyboard) {
+      // The application role is only honest when keyboard handling exists.
+      if (!host.hasAttribute("tabindex")) host.tabIndex = 0;
+      host.setAttribute("role", "application");
+    } else if (pointer) {
+      if (!host.hasAttribute("tabindex")) host.tabIndex = 0;
+    }
+
     host.setAttribute("aria-label",
-      "A robot habitat. Arrow keys to walk, space to jump, drag him to pick him up.");
+      controls.length
+        ? `A robot habitat. ${controls.join(", ")}.`
+        : "A decorative robot habitat animation.");
   }
 
   const robot = new Robot({
