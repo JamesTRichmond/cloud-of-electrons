@@ -69,6 +69,7 @@ html,body{margin:0;height:100%;background:#05070D;overflow:hidden;user-select:no
 <script src="events.js"></script>
 <script type="module">
 import {poemTimeline,nextGap,shuffleBag,SECTIONS} from './motion.js';
+import {mountMapTouch} from './map-touch.js';
 const FILL=(window.COE_FILL||[
  {name:'near',count:12000,inner:.15,outer:.8,size:1.6,brightness:.6,swirl:.4},
  {name:'mid',count:90000,inner:.8,outer:2.2,size:1.0,brightness:1.6,swirl:1.0},
@@ -1328,6 +1329,7 @@ const NMS_MAP={
 
 const getAllDestinations=()=>[...VOID_WELLS,{id:'jamestellation',name:'Jamestellation Deep Void Portal',pos:[-1.94,21.6,-1850],radius:45,isPortal:true}];
 
+let mapTouch=null;
 function initNmsMapCanvas(){
  if(NMS_MAP.cv)return;
  NMS_MAP.cv=document.getElementById('nms-galactic-map-c');
@@ -1335,6 +1337,11 @@ function initNmsMapCanvas(){
  NMS_MAP.ctx=NMS_MAP.cv.getContext('2d');
  
  const cv=NMS_MAP.cv;
+ mapTouch=mountMapTouch(cv,(dx,dy)=>{
+  if(!NMS_MAP.open||!cv.clientWidth||!cv.clientHeight)return;
+  NMS_MAP.az+=(dx/cv.clientWidth)*2.8;
+  NMS_MAP.el=Math.max(-1.45,Math.min(-0.15,NMS_MAP.el-(dy/cv.clientHeight)*2.2));
+ });
  cv.addEventListener('mousedown',e=>{
   if(e.button===0){NMS_MAP.drag=true;NMS_MAP.lx=e.clientX;NMS_MAP.ly=e.clientY;}
  });
@@ -1581,6 +1588,7 @@ function renderNmsMapFrame(){
 }
 
 const closeMap=()=>{
+ mapTouch?.cancel();
  mapModal.classList.remove('open');
  NMS_MAP.open=false;
  if(NMS_MAP.rafId)cancelAnimationFrame(NMS_MAP.rafId);
@@ -1595,6 +1603,33 @@ const openMap=()=>{
 document.getElementById('vmap-close-btn').onclick=closeMap;
 window.coeOpenMap=openMap;
 window.coeCloseMap=closeMap;
+const mapControl=document.getElementById('hr-map');
+mapControl.setAttribute('role','button');mapControl.tabIndex=-1;mapControl.inert=true;mapControl.setAttribute('aria-disabled','true');mapControl.setAttribute('aria-label','Open celestial map');
+mapControl.onclick=()=>{if(VD.mode==='fly'){if(NMS_MAP.open)closeMap();else openMap();}};
+mapControl.onkeydown=e=>{
+ if(VD.mode==='fly'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();e.stopPropagation();if(!e.repeat)mapControl.onclick();}
+};
+
+// HUD access follows its existing flight visibility, never opacity alone.
+function updateHudAccess(dt){
+ const focused=hudEl.contains(document.activeElement);
+ if(VD.mode==='fly'){
+  if(VD.hudTimer>0&&!focused)VD.hudTimer=Math.max(0,VD.hudTimer-dt);
+  hudEl.classList.toggle('active',VD.hudTimer>0||VD.hudHover||focused);
+ }
+ const available=VD.mode==='fly'&&hudEl.classList.contains('active');
+ if(!available&&mapControl.contains(document.activeElement)){
+  cv.tabIndex=-1;cv.focus({preventScroll:true});
+ }
+ if(mapControl.inert!==!available){
+  mapControl.inert=!available;mapControl.tabIndex=available?0:-1;
+  mapControl.setAttribute('aria-disabled',String(!available));
+ }
+}
+hudEl.addEventListener('focusin',()=>{if(VD.mode==='fly')hudShow();});
+cv.addEventListener('pointerdown',e=>{
+ if(e.pointerType==='touch'&&VD.mode==='fly')hudShow();
+});
 
 const AUTOPILOT={active:false,targetPos:null,targetGalaxy:null,phase:'steer'};
 function engageAutopilot(target){
@@ -1683,7 +1718,7 @@ const vsetVol=d=>{if(!BN.playing)return;const base=+document.getElementById('of-
 {const q=new URLSearchParams(location.search).get('void');if(q)setTimeout(()=>{const t=performance.now()/1000;if(q==='start')startFall();else{door.style.display='none';enterVoid(t);if(q==='mid'){VD.pos=[-48,23,-795];VD.gain=1;VD.sp=16}if(q==='end'||q==='jamestellation'){VD.pos=[0,0,-1740];VD.gain=1;VD.sp=14;playJamestellation()}if(q==='funnel'){VD.pos=[0,0,-1850];VD.gain=1;VD.mode='close';VD.t0=t-.9}if(q==='return'){VD.gain=1;VD.mode='open';VD.t0=t-1.45;VD.frontGain=0;borrowReturn()}}},400)}
 window.coeVoidStart=startFall;
 // per-frame. returns true if the front cloud should be skipped entirely
-function voidTick(t,dt){const m=VD.mode;if(m==='front'){VD.frontGain=Math.min(1,VD.frontGain+dt/1.5);VD.bg=lerp3(VD.bg,BG0,Math.min(1,dt*2));VD.yawF*=Math.max(0,1-dt*2);VD.stream*=Math.max(0,1-dt*2);VD.thin*=Math.max(0,1-dt*2);door.style.display=VD.frontGain>.99?'':'none';const hud=document.getElementById('void-hud'),ob=document.getElementById('orbit-banner'),gp=document.getElementById('galaxy-prompt');if(hud)hud.classList.remove('active');if(ob)ob.classList.remove('on');if(gp){gp.classList.remove('active');gp.style.display='none';}VD.targetedGalaxy=null;return false}
+function voidTick(t,dt){updateHudAccess(dt);const m=VD.mode;if(m==='front'){VD.frontGain=Math.min(1,VD.frontGain+dt/1.5);VD.bg=lerp3(VD.bg,BG0,Math.min(1,dt*2));VD.yawF*=Math.max(0,1-dt*2);VD.stream*=Math.max(0,1-dt*2);VD.thin*=Math.max(0,1-dt*2);door.style.display=VD.frontGain>.99?'':'none';const hud=document.getElementById('void-hud'),ob=document.getElementById('orbit-banner'),gp=document.getElementById('galaxy-prompt');if(hud)hud.classList.remove('active');if(ob)ob.classList.remove('on');if(gp){gp.classList.remove('active');gp.style.display='none';}VD.targetedGalaxy=null;return false}
  const e=t-VD.t0;
  if(m==='fall'){const gp=document.getElementById('galaxy-prompt');if(gp){gp.classList.remove('active');gp.style.display='none';}VD.targetedGalaxy=null;if(reduced){const u=Math.min(1,e/1);VD.frontGain=1-u;VD.yawF=0;VD.stream=0;VD.thin=0;VD.bg=lerp3(BG0,[0,0,0],u);if(e>=1){enterVoid(t);VD.gain=0}return false}
   VD.yawF=-.55*eio(Math.min(1,e/2));VD.thin=sstep(0,2,e)*.75;VD.stream=sstep(0,2,e);VD.bg=lerp3(BG0,[0,0,0],Math.min(1,e/3));VD.frontGain=1-sstep(2,3,e);if(e>=3){enterVoid(t)}return false}
@@ -1699,7 +1734,6 @@ function voidTick(t,dt){const m=VD.mode;if(m==='front'){VD.frontGain=Math.min(1,
   VD.pitch=Math.atan2(toY,Math.hypot(toX,toZ));
   return true}
  if(m==='fly'){VD.gain=Math.min(1,VD.gain+dt/1.2);VD.bg=[0,0,0];
-  if(VD.hudTimer>0){VD.hudTimer-=dt;const hud=document.getElementById('void-hud');if(hud)hud.classList.toggle('active',VD.hudTimer>0||VD.hudHover);}
 
   // Prompter Exact Flight Physics & Autopilot
   const isCmdDown=(KEYS.ArrowDown&&(KEYS.Meta||KEYS.KeyS));
