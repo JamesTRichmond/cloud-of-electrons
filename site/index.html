@@ -104,7 +104,7 @@ const camW=(a,c)=>[c[0]*Math.cos(a)+c[2]*Math.sin(a),c[1],-c[0]*Math.sin(a)+c[2]
   TRACTS.push({a:pA,b:pB,mid,destHub:pB});
  }
  window.coeTracts=TRACTS;
-const EVEN_LAYOUT=QS.get('layout')==='even',R3G=1.2207440846057596,R3A=[1/R3G,1/(R3G*R3G),1/(R3G*R3G*R3G)],R3O=FILL.map(()=>[Math.random(),Math.random(),Math.random()]);
+const EVEN_LAYOUT=QS.get('layout')==='even',R3G=1.2207440846057596,R3A=[1/R3G,1/(R3G*R3G),1/(R3G*R3G*R3G)],R3O=EVEN_LAYOUT?FILL.map(()=>[Math.random(),Math.random(),Math.random()]):null;
 const R3J=FILL.map(L=>.75/Math.cbrt(L.count));/* jitter of 3/4 cell breaks the visible R3 lattice while keeping most of the even spacing */
 const evenAt=(k,li)=>{const o=R3O[li],j=R3J[li],w=v=>((v%1)+1)%1;return [w(o[0]+(k+1)*R3A[0]+(Math.random()-.5)*j),w(o[1]+(k+1)*R3A[1]+(Math.random()-.5)*j),w(o[2]+(k+1)*R3A[2]+(Math.random()-.5)*j)]};
  FILL.forEach((L,li)=>{
