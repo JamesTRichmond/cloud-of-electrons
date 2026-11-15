@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Prototype: electric-field cursor (Motion lane, not the live site)</title>
+<style>
+html,body{margin:0;height:100%;background:#05070d;color:#EDE6D6;font:13px/1.45 Georgia,serif;overflow:hidden}
+canvas{display:block;width:100vw;height:100vh;touch-action:none}
+#hud{position:fixed;left:14px;top:14px;background:rgba(5,7,13,.78);border:1px solid rgba(237,230,214,.18);border-radius:10px;padding:10px 12px;max-width:300px}
+#hud h1{font-size:13px;margin:0 0 6px;font-weight:normal;letter-spacing:.04em;opacity:.8}
+#hud button{background:rgba(237,230,214,.08);color:#EDE6D6;border:1px solid rgba(237,230,214,.25);border-radius:7px;padding:4px 9px;font:12px Georgia,serif;cursor:pointer;margin:2px 2px 2px 0}
+#hud button[aria-pressed="true"]{border-color:#fad685;color:#fad685}
+#hud pre{margin:6px 0 0;font:11px/1.4 ui-monospace,monospace;opacity:.85;white-space:pre-wrap}
+</style>
+</head>
+<body>
+<canvas id="c" aria-label="Particle cloud prototype. Move the pointer to push electrons; scroll or use the level buttons to change energy level."></canvas>
+<div id="hud" role="region" aria-label="Prototype controls">
+  <h1>Electric-field cursor · prototype</h1>
+  <button id="b-down" aria-label="Lower energy level (emits a photon pulse)">Level −</button>
+  <button id="b-up" aria-label="Raise energy level">Level +</button>
+  <button id="b-red" aria-pressed="false">Reduced motion</button>
+  <button id="b-read" aria-pressed="false">Simulate reading</button>
+  <pre id="stat" aria-live="off"></pre>
+</div>
+<script type="module">
+import { FIELD, LEVELS, PULSE, springStep, strengthStep, createLevels, requestLevel, wheelToLevel,
+  levelUniforms, createPulseGate, tryPulse, pulseState } from './field.mjs';
+
+const QS = new URLSearchParams(location.search);
+const cv = document.getElementById('c'), gl = cv.getContext('webgl2', { antialias: false, alpha: false });
+let reduced = matchMedia('(prefers-reduced-motion: reduce)').matches || QS.get('reduced') === '1';
+let reading = QS.get('reading') === '1';
+const COUNT = +(QS.get('n') || 120000);
+
+// ---- particles: idle cloud (te=0) + a text block (te=1) sampled from a canvas ----
+function rnd(seed){ let s = seed >>> 0; return () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296); }
+const R = rnd(7);
+const textPts = (() => {
+  const c = document.createElement('canvas'), W = 900, H = 120; c.width = W; c.height = H;
+  const x = c.getContext('2d'); x.fillStyle = '#fff'; x.font = '84px Georgia, serif'; x.textAlign = 'center'; x.textBaseline = 'middle';
+  x.fillText('cloud of electrons', W / 2, H / 2);
+  const d = x.getImageData(0, 0, W, H).data, out = [];
+  for (let y = 0; y < H; y += 2) for (let xx = 0; xx < W; xx += 2) if (d[(y * W + xx) * 4 + 3] > 128) out.push((xx - W / 2) / W * 2.4, -(y - H / 2) / W * 2.4);
+  return out;
+})();
+const NT = textPts.length / 2, NTOT = COUNT + NT;
+const pos = new Float32Array(NTOT * 3), te = new Float32Array(NTOT);
+for (let i = 0; i < COUNT; i++) {
+  const u = R() * 2 - 1, th = R() * 6.2832, q = Math.sqrt(1 - u * u);
+  const r = 0.25 + Math.pow(R(), 0.6) * 0.95;            // dense core, soft edge
+  pos[i * 3] = Math.cos(th) * q * r; pos[i * 3 + 1] = u * r * 0.85; pos[i * 3 + 2] = Math.sin(th) * q * r;
+}
+for (let k = 0; k < NT; k++) { const i = COUNT + k; pos[i * 3] = textPts[k * 2]; pos[i * 3 + 1] = textPts[k * 2 + 1]; pos[i * 3 + 2] = 0; te[i] = 1; }
+let tMaxX = 0, tMaxY = 0; for (let k = 0; k < NT; k++) { tMaxX = Math.max(tMaxX, Math.abs(textPts[k * 2])); tMaxY = Math.max(tMaxY, Math.abs(textPts[k * 2 + 1])); }
+
+// ---- shaders: the field runs per vertex; the CPU only updates uniforms ----
+const VS = `#version 300 es
+in vec3 p; in float te;
+uniform float uRot, asp, pxu, uScale, uBright, uGain, uRead, uPulseR, uPulseG;
+uniform vec2 uPtr; uniform vec4 uRect;
+out vec3 vc; out float va;
+const float K=${FIELD.K.toFixed(6)}, EPS=${FIELD.EPS.toFixed(4)}, RC=${FIELD.R_CUT.toFixed(4)}, MAXD=${FIELD.MAX_DISP.toFixed(4)}, PW=${PULSE.WIDTH.toFixed(4)};
+float tanh1(float x){ float e=exp(-2.0*x); return (1.0-e)/(1.0+e); }
+void main(){
+  vec3 w = p;
+  if (te < 0.5) { w *= uScale; float c=cos(uRot), s=sin(uRot); w = vec3(w.x*c + w.z*s, w.y, -w.x*s + w.z*c); }
+  vec3 v = w - vec3(0.0, 0.0, 3.5);
+  float f = 1.7320508; // 1/tan(30 deg)
+  gl_Position = vec4(v.x*f/asp, v.y*f, 0.0, -v.z);
+  vec2 ndc = gl_Position.xy / gl_Position.w;
+  // reading guard: zero field inside the text rect and a 0.15 margin (field.mjs textGuard)
+  vec2 q = abs(ndc - uRect.xy) - uRect.zw;
+  float sd = length(max(q, 0.0)) + min(max(q.x, q.y), 0.0);
+  float guard = mix(1.0, smoothstep(0.0, 0.15, sd), uRead);
+  // softened Coulomb, smooth window to 0 at RC, tanh cap (field.mjs fieldDisplacement)
+  vec2 d = vec2((ndc.x - uPtr.x) * asp, ndc.y - uPtr.y); float r = length(d);
+  if (uGain > 0.0 && r < RC && r > 1e-6) {
+    float win = 1.0 - (r*r)/(RC*RC);
+    float m = MAXD * tanh1((K/(r*r + EPS*EPS)) * win*win / MAXD) * uGain * (1.0 - te) * guard;
+    gl_Position.xy += vec2(d.x/r*m/asp, d.y/r*m) * gl_Position.w;
+  }
+  // photon pulse: one screen-space ring from the cloud centre (projected to ndc 0,0 here)
+  float ring = uPulseG > 0.0 ? uPulseG * exp(-pow((length(vec2(ndc.x*asp, ndc.y)) - uPulseR)/PW, 2.0)) * (1.0 - te) : 0.0;
+  vec3 base = vec3(0.42, 0.60, 1.0) * uBright;
+  vc = mix(mix(base, vec3(0.96,0.97,1.0), clamp(ring, 0.0, 1.0)), vec3(0.957, 0.882, 0.737), te);
+  va = te > 0.5 ? 0.55 * uRead : 0.28 * (1.0 + ring);
+  gl_PointSize = (te > 0.5 ? 2.2 : 1.6) * pxu;
+}`;
+const FS = `#version 300 es
+precision mediump float; in vec3 vc; in float va; out vec4 o;
+void main(){ vec2 c = gl_PointCoord*2.0-1.0; float a = smoothstep(1.0, 0.3, dot(c,c)); o = vec4(vc*va*a, 1.0); }`;
+function sh(t, s){ const o = gl.createShader(t); gl.shaderSource(o, s); gl.compileShader(o); if (!gl.getShaderParameter(o, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(o)); return o; }
+const pr = gl.createProgram(); gl.attachShader(pr, sh(gl.VERTEX_SHADER, VS)); gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, FS)); gl.linkProgram(pr);
+if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(pr));
+gl.useProgram(pr);
+const vao = gl.createVertexArray(); gl.bindVertexArray(vao);
+for (const [name, data, size] of [['p', pos, 3], ['te', te, 1]]) {
+  const b = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, b); gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
+  const loc = gl.getAttribLocation(pr, name); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, size, gl.FLOAT, false, 0, 0);
+}
+const U = {}; for (const n of ['uRot','asp','pxu','uScale','uBright','uGain','uRead','uPulseR','uPulseG','uPtr','uRect']) U[n] = gl.getUniformLocation(pr, n);
+gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE);
+
+let aspect = 1;
+function resize(){ const d = Math.min(2, devicePixelRatio); cv.width = innerWidth * d; cv.height = innerHeight * d; gl.viewport(0, 0, cv.width, cv.height); aspect = innerWidth / innerHeight; }
+resize(); addEventListener('resize', resize);
+
+// ---- input ----
+const ptr = { tx: 0, ty: 0, x: { x: 0, v: 0 }, y: { x: 0, v: 0 }, on: false, touchDown: false };
+const toNdc = e => [e.clientX / innerWidth * 2 - 1, -(e.clientY / innerHeight * 2 - 1)];
+let strength = { x: 0, v: 0 };
+cv.addEventListener('pointermove', e => {
+  [ptr.tx, ptr.ty] = toNdc(e);
+  if (e.pointerType === 'mouse') ptr.on = true;           // mouse: field whenever over the canvas
+  if (strength.x < 0.01) { ptr.x = { x: ptr.tx, v: 0 }; ptr.y = { x: ptr.ty, v: 0 }; } // no sweep from the old spot
+});
+cv.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') ptr.on = false; });
+let swipe = null;
+cv.addEventListener('pointerdown', e => {
+  [ptr.tx, ptr.ty] = toNdc(e);
+  if (e.pointerType !== 'mouse') { ptr.on = true; ptr.touchDown = true; swipe = { y: e.clientY, t: performance.now() }; cv.setPointerCapture(e.pointerId); }
+  if (strength.x < 0.01) { ptr.x = { x: ptr.tx, v: 0 }; ptr.y = { x: ptr.ty, v: 0 }; }
+});
+const lift = e => {
+  if (e.pointerType === 'mouse') return;
+  ptr.on = false; ptr.touchDown = false;                  // touch: field only while the finger is down
+  if (swipe && performance.now() - swipe.t < 350 && Math.abs(e.clientY - swipe.y) > 80) step(e.clientY < swipe.y ? +1 : -1); // flick up = climb
+  swipe = null;
+};
+cv.addEventListener('pointerup', lift); cv.addEventListener('pointercancel', lift);
+addEventListener('wheel', e => { e.preventDefault(); onLevel(wheelToLevel(levels, e.deltaY, e.deltaMode, st, innerHeight)); }, { passive: false });
+addEventListener('keydown', e => {
+  if (e.target.tagName === 'BUTTON' && (e.key === ' ' || e.key === 'Enter')) return;
+  if (e.key === 'ArrowDown' || e.key === 'PageDown') { e.preventDefault(); step(+1); }
+  if (e.key === 'ArrowUp' || e.key === 'PageUp') { e.preventDefault(); step(-1); }
+});
+
+// ---- levels + pulse ----
+let st = 0, levels = createLevels(reduced), gate = createPulseGate(), pulses = 0, readGuard = { x: reading ? 1 : 0, v: 0 };
+function onLevel(kind){ if (kind === 'down' && tryPulse(gate, st, { reduced, reading })) pulses++; }
+function step(dir){ onLevel(requestLevel(levels, dir, st)); }
+document.getElementById('b-up').onclick = () => step(+1);
+document.getElementById('b-down').onclick = () => step(-1);
+const bRed = document.getElementById('b-red'), bRead = document.getElementById('b-read');
+function setReduced(v){ reduced = v; const n = levels.to; levels = createLevels(reduced); levels.n = levels.from = levels.to = n; bRed.setAttribute('aria-pressed', String(v)); }
+function setReading(v){ reading = v; bRead.setAttribute('aria-pressed', String(v)); }
+bRed.onclick = () => setReduced(!reduced); bRead.onclick = () => setReading(!reading);
+setReduced(reduced); setReading(reading);
+
+// ---- frame ----
+let pinPulse = null; // evidence only: pin the pulse at a fixed elapsed time so a still can be captured
+const frameMs = []; let last = performance.now(), rot = 0;
+const stat = document.getElementById('stat');
+function frame(now){
+  const raw = (now - last) / 1000, dt = Math.min(FIELD.DT_MAX, raw); last = now; st += dt;
+  frameMs.push(raw * 1000); if (frameMs.length > 600) frameMs.shift();
+  if (!reduced) rot += 0.04 * dt;                          // same idle rotation rate as the site; none when reduced
+  strength = strengthStep(strength, ptr.on && !reduced, dt);
+  readGuard = springStep(readGuard, reading ? 1 : 0, FIELD.W_ON, dt);
+  ptr.x = springStep(ptr.x, ptr.tx, FIELD.W_POS, dt); ptr.y = springStep(ptr.y, ptr.ty, FIELD.W_POS, dt);
+  const lv = levelUniforms(levels, st), ps = reduced ? { radius: 0, gain: 0 } : pulseState(gate, pinPulse === null ? st : gate.t0 + pinPulse);
+  const f = 1.7320508, rect = [0, 0, tMaxX * f / 3.5 / aspect + 0.01, tMaxY * f / 3.5 + 0.01];
+  gl.clearColor(0.02, 0.027, 0.05, 1); gl.clear(gl.COLOR_BUFFER_BIT);
+  gl.uniform1f(U.uRot, rot); gl.uniform1f(U.asp, aspect); gl.uniform1f(U.pxu, Math.min(2, devicePixelRatio));
+  gl.uniform1f(U.uScale, lv.scale); gl.uniform1f(U.uBright, lv.bright);
+  gl.uniform1f(U.uGain, reduced ? 0 : Math.max(0, strength.x)); gl.uniform1f(U.uRead, Math.min(1, Math.max(0, readGuard.x)));
+  gl.uniform1f(U.uPulseR, ps.radius * lv.scale); gl.uniform1f(U.uPulseG, ps.gain);
+  gl.uniform2f(U.uPtr, ptr.x.x, ptr.y.x); gl.uniform4f(U.uRect, ...rect);
+  gl.drawArrays(gl.POINTS, 0, NTOT);
+  if ((now | 0) % 6 === 0 || frameMs.length < 3) {
+    const avg = frameMs.reduce((a, b) => a + b, 0) / frameMs.length, wait = Math.max(0, PULSE.MIN_GAP_S - (st - gate.lastT));
+    stat.textContent = `level n=${levels.to} (value ${lv.value.toFixed(2)})\nfield gain ${strength.x.toFixed(2)}  reading guard ${readGuard.x.toFixed(2)}\npulses ${pulses}  next pulse allowed in ${wait > 1e6 ? 0 : wait.toFixed(0)} s\nreduced ${reduced}  particles ${NTOT}\nframe ${avg.toFixed(1)} ms avg (last ${frameMs.length})`;
+  }
+  window.__ef = { st, level: levels.to, levelValue: lv.value, scale: lv.scale, bright: lv.bright, gain: strength.x, reduced, reading, pulses, pulse: ps, frameMs: frameMs.slice(), particles: NTOT };
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+window.__efApi = { pinPulse: e => { pinPulse = e; }, step, setReduced, setReading, pointer: (x, y, on) => { ptr.tx = x; ptr.ty = y; ptr.on = on; if (strength.x < 0.01) { ptr.x = { x, v: 0 }; ptr.y = { x: y, v: 0 }; } } };
+</script>
+</body>
+</html>
