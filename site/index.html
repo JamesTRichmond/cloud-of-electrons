@@ -1993,7 +1993,7 @@ if(tl.phase==='done'){if(active.cap)capWait=active.nextAt??t;const wasCut=active
 const ex=active.hw*Math.cos(tlt)+active.hh*Math.abs(Math.sin(tlt)),ey=active.hw*Math.abs(Math.sin(tlt))+active.hh*Math.cos(tlt),mx=Math.max(0,.42*vw-ex),cy0=active.oy-cam[1],myUp=Math.max(0,.42*vh-ey-cy0),myDn=Math.max(0,.42*vh-ey+cy0);
 const tx=reduced?0:Math.max(-mx,Math.min(mx,(tl.offsetX||0)*active.w)),ty=reduced?0:Math.max(-myDn,Math.min(myUp,(tl.offsetY||0)*active.w)),vmax=.015*vw*dt,clampV=v=>Math.max(-vmax,Math.min(vmax,v));
 active.dxs+=clampV(tx-active.dxs);active.dys+=clampV(ty-active.dys);active.dxs=Math.max(-mx,Math.min(mx,active.dxs));active.dys=Math.max(-myDn,Math.min(myUp,active.dys));dx=active.dxs+cam[0]-active.ox*0;dy=active.dys+cam[1];}}
-const ang=active&&active.cap?(reduced?0:t*.04):active?(reduced?0:t*.04):0,ca0=Math.cos(ang),sa0=Math.sin(ang);const k=reduced?.3:1;
+const ang=active&&active.cap?(reduced?0:st*.04):active?(reduced?0:st*.04):0,ca0=Math.cos(ang),sa0=Math.sin(ang);const k=reduced?.3:1;
 cam=camAt(st);const ra=(reduced?0:st)*.04,cw=camW(ra,cam);frameNo++;DRIFT.cw=cw;DRIFT.ra=ra;DRIFT.t=t;const ph=[1,1,1];
 FILL.forEach((L,li)=>{L.acc+=dt;const due=(frameNo+li)%L.per===0;if(due){const ddt=Math.min(.15,L.acc);L.acc=0;L.upd=frameNo;Q.set(P.subarray(L.i0*3,L.i1*3),L.i0*3);{/* ?sub=n: diagnostics only, n smaller sim steps per update */const n=SUBSTEP;for(let q=0;q<n;q++)sim(L,ddt/n,st-ddt*(n-1-q)/n,wt,dx,dy,tlt,ca0,sa0,k,cw,ra)}
 for(const [b,arr,n] of [[bq,Q,3],[bp,P,3],[bc,C,3],[bz,S,1],[be,E,1]])sub(b,arr,n,L.i0,L.i1)}ph[li]=Math.min(1,(frameNo-L.upd+1)/L.per)});
