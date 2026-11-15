@@ -53,7 +53,17 @@ html,body{margin:0;height:100%;background:#05070D;overflow:hidden;user-select:no
 #vroom .vroom-eject:hover{background:rgba(250,214,133,.28);color:#fff;border-color:#fad685;box-shadow:0 0 16px rgba(250,214,133,.4)}
 
 #coe-live{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+/* No-WebGL2 / no-JS message (Art Director look). --coe-text-tint mirrors TEXT_TINT in the module script (#F4E1BC today):
+   change both together if James picks another letter colour. The module stops before TEXT_TINT is defined when WebGL2 is missing, so it can't be read at runtime. */
+:root{--coe-text-tint:#F4E1BC}
+.coe-msg{position:fixed;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:24px;box-sizing:border-box;text-align:center;color:var(--coe-text-tint);background:#05070D;font:17px/1.55 'Source Serif 4',serif;user-select:text;-webkit-user-select:text;z-index:30}
+.coe-msg[hidden]{display:none}
+.coe-msg h1,.coe-msg p{max-width:32ch;margin:0}
+.coe-msg h1{margin-bottom:12px;font-size:20px;font-weight:600}
+.coe-msg p{opacity:.75}
 </style></head><body><canvas id="coe" aria-label="A drifting cloud of particles where lines of poetry form and fade"></canvas>
+<noscript><div class="coe-msg"><h1>Cloud of Electrons</h1><p>It needs JavaScript to run.</p></div></noscript>
+<div id="coe-nogl" class="coe-msg" role="status" hidden><h1>Cloud of Electrons</h1><p>This page is a particle cloud where poems form out of the swirl, hold long enough to read, then scatter back. Your browser can't draw it, because WebGL2 isn't available here. Try a recent version of Chrome, Firefox, Safari or Edge, or turn on hardware acceleration.</p></div>
 <button id="of-btn" aria-expanded="false">Open Field</button>
 <div id="of" role="group" aria-label="Open Field">
 <div id="of-mode" role="radiogroup" aria-label="Mode"><span role="radio" tabindex="0" data-m="poetry" class="sel" aria-checked="true">Poetry</span> <span role="radio" tabindex="0" data-m="meditation" aria-checked="false">Meditation</span></div>
@@ -83,6 +93,8 @@ const QS=new URLSearchParams(location.search);
 const lerp=(a,b,u)=>a+(b-a)*u,lerp3=(a,b,u)=>[lerp(a[0],b[0],u),lerp(a[1],b[1],u),lerp(a[2],b[2],u)],sstep=(a,b,x)=>{const u=Math.min(1,Math.max(0,(x-a)/(b-a)));return u*u*(3-2*u)},eio=u=>u<.5?2*u*u:1-2*(1-u)*(1-u);
 const PER={near:1,mid:2,far:3,deep:4,abyss:5,infinite:6,synapse:1},CAMZ=3.5;let N=0;for(const L of FILL){L.i0=N;N+=L.count;L.i1=N;L.per=PER[L.name]||1;L.last=0;L.upd=0;L.acc=0}
 const DIM=.8,cv=document.getElementById('coe'),gl=cv.getContext('webgl2',{antialias:false,alpha:false});
+/* No WebGL2: show the fallback message and stop setup here. The never-settling top-level await halts this module without an uncaught error. */
+if(!gl){cv.style.display='none';for(const id of ['of-btn','of'])document.getElementById(id)?.setAttribute('hidden','');document.getElementById('coe-nogl').hidden=false;await new Promise(()=>{})}
 const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
 let aspect=1;function rs(){const d=Math.min(2,devicePixelRatio);cv.width=innerWidth*d;cv.height=innerHeight*d;gl.viewport(0,0,cv.width,cv.height);aspect=innerWidth/innerHeight}rs();addEventListener('resize',rs);
 const P=new Float32Array(N*3),Q=new Float32Array(N*3),V=new Float32Array(N*3),T=new Float32Array(N*3),C=new Float32Array(N*3),mark=new Uint8Array(N),S=new Float32Array(N),H=new Float32Array(N),LY=new Float32Array(N),HV=new Float32Array(N*3),E=new Float32Array(N);
