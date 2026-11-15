@@ -83,7 +83,8 @@ const QS=new URLSearchParams(location.search);
 const lerp=(a,b,u)=>a+(b-a)*u,lerp3=(a,b,u)=>[lerp(a[0],b[0],u),lerp(a[1],b[1],u),lerp(a[2],b[2],u)],sstep=(a,b,x)=>{const u=Math.min(1,Math.max(0,(x-a)/(b-a)));return u*u*(3-2*u)},eio=u=>u<.5?2*u*u:1-2*(1-u)*(1-u);
 const PER={near:1,mid:2,far:3,deep:4,abyss:5,infinite:6,synapse:1},CAMZ=3.5;let N=0;for(const L of FILL){L.i0=N;N+=L.count;L.i1=N;L.per=PER[L.name]||1;L.last=0;L.upd=0;L.acc=0}
 const DIM=.8,cv=document.getElementById('coe'),gl=cv.getContext('webgl2',{antialias:false,alpha:false});
-const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+/* prefers-reduced-motion is read live: an OS/browser change applies without a reload (Motion reduced-motion-spec gap 2). */
+const reducedMQ=matchMedia('(prefers-reduced-motion: reduce)');let reduced=reducedMQ.matches;window.coeReduced=reduced;reducedMQ.addEventListener('change',e=>{reduced=e.matches;window.coeReduced=reduced});
 let aspect=1;function rs(){const d=Math.min(2,devicePixelRatio);cv.width=innerWidth*d;cv.height=innerHeight*d;gl.viewport(0,0,cv.width,cv.height);aspect=innerWidth/innerHeight}rs();addEventListener('resize',rs);
 const P=new Float32Array(N*3),Q=new Float32Array(N*3),V=new Float32Array(N*3),T=new Float32Array(N*3),C=new Float32Array(N*3),mark=new Uint8Array(N),S=new Float32Array(N),H=new Float32Array(N),LY=new Float32Array(N),HV=new Float32Array(N*3),E=new Float32Array(N);
 // camera: view = R(a)*world - cam ; cam=(cx,cy,CAMZ) drifts ~0.5% of cloud width per 10 s
@@ -1885,7 +1886,7 @@ function drawVoid(t){if(!vao||VD.gain<=0.001)return;gl.useProgram(pv);gl.bindVer
  const colm=new Float32Array([M[0][0],M[1][0],M[2][0],M[0][1],M[1][1],M[2][1],M[0][2],M[1][2],M[2][2]]);
  const fwd=[-sy*cp,sp,-cy*cp];let focus=72,best=1e9;for(const W of VOID_WELLS){const d=[W.pos[0]-VD.pos[0],W.pos[1]-VD.pos[1],W.pos[2]-VD.pos[2]],L=Math.hypot(...d),dot=(d[0]*fwd[0]+d[1]*fwd[1]+d[2]*fwd[2])/L;if(dot>.25&&L<best){best=L;focus=Math.max(18,Math.min(180,L))}}
  {const d=[-VD.pos[0],-VD.pos[1],RING.center[2]-VD.pos[2]],L=Math.hypot(...d),dot=(d[0]*fwd[0]+d[1]*fwd[1]+d[2]*fwd[2])/L;if(dot>.25&&L<best){best=L;focus=Math.max(18,Math.min(180,L))}}
- const vt=reduced?t*.1:t,U=n=>gl.getUniformLocation(pv,n);gl.uniformMatrix3fv(U('rot'),false,colm);gl.uniform3fv(U('cp'),VD.pos);gl.uniform1f(U('t'),vt);gl.uniform1f(U('asp'),aspect);gl.uniform1f(U('hpx'),cv.height/2);gl.uniform1f(U('focus'),focus);
+ const vt=reduced?0:t,/* reduced motion: void scene held still (spec gap 3; Art Director to judge) */U=n=>gl.getUniformLocation(pv,n);gl.uniformMatrix3fv(U('rot'),false,colm);gl.uniform3fv(U('cp'),VD.pos);gl.uniform1f(U('t'),vt);gl.uniform1f(U('asp'),aspect);gl.uniform1f(U('hpx'),cv.height/2);gl.uniform1f(U('focus'),focus);
  gl.uniform1f(U('fb'),VD.fb);gl.uniform1f(U('fspin'),reduced?0:FUN.spin*t);gl.uniform1f(U('gain'),VD.gain);gl.uniform1f(U('ringA'),0);gl.uniform1f(U('uWarp'),VD.warp||0);
  gl.drawArrays(gl.POINTS,0,VN);
 
@@ -2000,7 +2001,7 @@ for(const [b,arr,n] of [[bq,Q,3],[bp,P,3],[bc,C,3],[bz,S,1],[be,E,1]])sub(b,arr,
 gl.clearColor(...VD.bg,1);gl.clear(gl.COLOR_BUFFER_BIT);gl.useProgram(pr);gl.uniform1f(gl.getUniformLocation(pr,'fg'),VD.frontGain);gl.uniform1f(gl.getUniformLocation(pr,'vyaw'),VD.yawF);gl.uniform1f(gl.getUniformLocation(pr,'vst'),VD.stream);gl.uniform1f(gl.getUniformLocation(pr,'vth'),VD.thin);VD.dA=VD.mode==='front'?Math.min(1,(VD.dA||0)+dt/2.5):Math.max(0,(VD.dA||0)-dt);/* door hover: widen + curl + edge redistribution share one ease: 0.6 s in, 1 s out */{const now=performance.now()/1000,rdt=Math.min(.25,now-(VD.doorT||now));VD.doorT=now;/* real elapsed time (not the 50 ms-clamped sim dt) so timings hold at low fps */VD.dH=Math.max(0,Math.min(1,(VD.dH||0)+(VD.doorHover&&VD.mode==='front'?rdt/.6:-rdt/1)));}gl.uniform1f(gl.getUniformLocation(pr,'dA'),VD.dA*VD.frontGain);gl.uniform1f(gl.getUniformLocation(pr,'dH'),VD.dH*VD.dH*(3-2*VD.dH));window.coeDoorH=VD.dH;
 gl.uniform1f(gl.getUniformLocation(pr,'t'),(rotA=reduced?0:st));gl.uniform1f(gl.getUniformLocation(pr,'asp'),aspect);gl.uniform1f(gl.getUniformLocation(pr,'pxu'),Math.min(2,devicePixelRatio));
 gl.uniform3fv(gl.getUniformLocation(pr,'cam'),cam);{const tp=active?active.ps*TEXT_SIZE_BOOST:2;gl.uniform1f(gl.getUniformLocation(pr,'tps'),tp);/* additive overlap compensation: expected dots covering a text pixel */gl.uniform1f(gl.getUniformLocation(pr,'tk'),1/Math.max(1,TEXT_DENSITY*Math.PI*(tp/2)**2*1.1))}gl.uniform4f(gl.getUniformLocation(pr,'ph'),ph[0],ph[1],ph[2],ph[3]||ph[2]);
-const flashEl=t-(window.coeFlashT||-10),uFlash=flashEl<.25?Math.max(0,1.-flashEl/.25):0;
+const flashEl=t-(window.coeFlashT||-10),uFlash=!reduced&&flashEl<.25?Math.max(0,1.-flashEl/.25):0;window.coeUFlash=uFlash;/* reduced motion: no flash (spec gap 1) */
 let ripRad=0,ripAmp=0;if(window.coeRipple){const el=ac().currentTime-window.coeRipple.t0;if(el<4.2){ripRad=el*3.6;ripAmp=Math.max(0,1.-el/4.2)*window.coeRipple.amp}else{window.coeRipple=null}}
 gl.uniform1f(gl.getUniformLocation(pr,'uFlash'),uFlash);gl.uniform1f(gl.getUniformLocation(pr,'uBreath'),window.coeMed?1.:0.);gl.uniform4f(gl.getUniformLocation(pr,'uRipple'),0,0,ripRad,ripAmp);
 if(!window.coeThoughtT0){window.coeThoughtT0=-20.0;window.coeThoughtNext=2.2;window.coeThoughtTract=0;window.coeThoughtDest=[0,0,0];window.coeThoughtProg=0;}
