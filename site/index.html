@@ -1292,11 +1292,11 @@ mapModal.innerHTML=`
    <span class="nms-pill">VESSEL: <strong id="nms-ship-coord">[0, 0, 110]</strong></span>
    <span class="nms-pill">HEADING: <strong id="nms-ship-heading">000°</strong></span>
    <span class="nms-pill" id="nms-warp-status">STATUS: <strong>SUBLIGHT</strong></span>
-   <button id="vmap-close-btn" class="nms-close-btn" title="Exit Astronav Map (Enter / Esc)">&times;</button>
+   <button id="vmap-close-btn" class="nms-close-btn" title="Exit Astronav Map (Enter / Esc)" aria-label="Close map">&times;</button>
   </div>
  </div>
  <div class="nms-canvas-wrap">
-  <canvas id="nms-galactic-map-c"></canvas>
+  <canvas id="nms-galactic-map-c" role="img" aria-label="Map of the galaxies you can fly to"></canvas>
   <div id="nms-hover-card" class="nms-hover-card hidden">
    <div class="nms-card-kicker">✦ TARGET LOCK ACQUIRED</div>
    <div class="nms-card-title" id="nms-card-name">GALAXY NAME</div>
