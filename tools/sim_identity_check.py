@@ -1,6 +1,7 @@
 # Deterministic headless comparison of two page URLs (e.g. main vs this branch with the flag off).
 # Seeds Math.random, freezes performance.now and drives requestAnimationFrame from a virtual clock, steps FRAMES
-# frames (before the first poem starts at 4 s), then compares screenshots pixel by pixel.
+# frames (before the first poem starts at 4 s), then compares screenshots pixel by pixel. The PRNG is re-seeded on the
+# first stepped frame, so random calls made during async boot (whose order can vary) don't shift the frame sequence.
 # usage: python3 tools/sim_identity_check.py DEVTOOLS_PORT URL_A URL_B [frames] [out_prefix]
 # Needs a headless Chrome already running with --remote-debugging-port=DEVTOOLS_PORT, plus websocket-client, numpy, Pillow.
 import json, sys, time, urllib.request, itertools, base64, io
@@ -11,7 +12,7 @@ frames = int(sys.argv[4]) if len(sys.argv) > 4 else 180
 pre = sys.argv[5] if len(sys.argv) > 5 else None
 INIT = r'''(()=>{let s=0x2545F491;Math.random=()=>{s|=0;s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296};
 let vt=1000;performance.now=()=>vt;const q=[];window.requestAnimationFrame=cb=>{q.push(cb);return q.length};
-window.__vstep=n=>{for(let k=0;k<n;k++){vt+=1000/60;const c=q.splice(0);for(const f of c)f(vt)}return vt};window.__vq=()=>q.length;})();'''
+let seeded=0;window.__vstep=n=>{if(!seeded){seeded=1;s=0x2545F491}for(let k=0;k<n;k++){vt+=1000/60;const c=q.splice(0);for(const f of c)f(vt)}return vt};window.__vq=()=>q.length;})();'''
 def page():
     for _ in range(100):
         try: return [x for x in json.load(urllib.request.urlopen(f'http://127.0.0.1:{port}/json')) if x['type'] == 'page'][0]
