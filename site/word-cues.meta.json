@@ -1,0 +1,284 @@
+{
+ "file": "site/word-cues.json",
+ "version": 1,
+ "built": "2026-11-14",
+ "tool": "tools/build_word_cues.py",
+ "model": "faster-whisper base.en",
+ "decode": "CPU float32, beam 5, temperature 0, word_timestamps, condition_on_previous_text off, no VAD",
+ "method": "full-clip transcript of site/voices/hugh-poems/<id>.mp3, Needleman-Wunsch aligned to the manifest group text (normalised lowercase alphanumerics, fuzzy >= 0.75, one word may absorb two recognised tokens); second Whisper pass on windows with >= 2 dropped words; unmatched words interpolated between matched neighbours and clamped to their group segment.",
+ "shape": "{ \"<poemId>\": { \"groups\": [ { \"words\": [ { \"w\", \"t0\", \"t1\", \"conf\", \"interp?\", \"clamped?\", \"silent?\", \"refill?\" } ] } ] } }",
+ "flags": {
+  "conf": "Whisper word probability (0 for interpolated/silent words)",
+  "interp": "not heard in the transcript; time interpolated between neighbours",
+  "clamped": "start moved forward to the group boundary (Whisper stretched the word over the preceding pause)",
+  "silent": "punctuation / footnote mark with nothing spoken; zero length at previous word end",
+  "refill": "recovered by the second Whisper pass on a short window"
+ },
+ "groups_source": "site/glyphs/manifest.json groups (text = lines.join(\" \").split(/\\s+/), as site/index.html L253)",
+ "segments_source": "site/poem-segments.json (same group order)",
+ "tolerance_s": 0.25,
+ "skipped": {
+  "ttcem-dinosaur-footprints": "excluded: not ruled public by James",
+  "ttcem-halloween-again": "excluded: not ruled public by James"
+ },
+ "poems": {
+  "ttcem-bound-ing": {
+   "title": "The Choice and the Lesson",
+   "dur": 345.313,
+   "groups": 57,
+   "stats": {
+    "words": 806,
+    "silent_tokens": 4,
+    "spoken_words": 802,
+    "matched": 788,
+    "refilled": 3,
+    "match_rate": 0.983,
+    "interp": 14,
+    "interp_pct": 1.7,
+    "recognized_words": 817,
+    "clamped_starts": 4,
+    "mean_p_matched": 0.944,
+    "group_match_in_segments_json": 0.96,
+    "violations": 2
+   },
+   "segment_violations": [
+    {
+     "g": 2,
+     "w": 11,
+     "text": "Two-Mississippi",
+     "start": 19.5,
+     "end": 20.06,
+     "seg": [
+      11.75,
+      18.87
+     ]
+    },
+    {
+     "g": 46,
+     "w": 0,
+     "text": "do",
+     "start": 296.9,
+     "end": 297.28,
+     "seg": [
+      296.8,
+      297.0
+     ]
+    }
+   ]
+  },
+  "ttcem-don-t-shit-in-my-christmas-spirit": {
+   "title": "Don't Shit in My Christmas Spirit",
+   "dur": 23.719,
+   "groups": 6,
+   "stats": {
+    "words": 50,
+    "silent_tokens": 0,
+    "spoken_words": 50,
+    "matched": 50,
+    "refilled": 0,
+    "match_rate": 1.0,
+    "interp": 0,
+    "interp_pct": 0.0,
+    "recognized_words": 50,
+    "clamped_starts": 0,
+    "mean_p_matched": 0.962,
+    "group_match_in_segments_json": 0.96,
+    "violations": 0
+   },
+   "segment_violations": []
+  },
+  "ttcem-fabulous": {
+   "title": "Fabulous",
+   "dur": 45.558,
+   "groups": 5,
+   "stats": {
+    "words": 119,
+    "silent_tokens": 0,
+    "spoken_words": 119,
+    "matched": 117,
+    "refilled": 17,
+    "match_rate": 0.983,
+    "interp": 2,
+    "interp_pct": 1.7,
+    "recognized_words": 102,
+    "clamped_starts": 0,
+    "mean_p_matched": 0.96,
+    "group_match_in_segments_json": 0.85,
+    "violations": 0
+   },
+   "segment_violations": []
+  },
+  "ttcem-flying-around": {
+   "title": "Flying Around",
+   "dur": 107.912,
+   "groups": 13,
+   "stats": {
+    "words": 241,
+    "silent_tokens": 5,
+    "spoken_words": 236,
+    "matched": 234,
+    "refilled": 0,
+    "match_rate": 0.992,
+    "interp": 2,
+    "interp_pct": 0.8,
+    "recognized_words": 242,
+    "clamped_starts": 1,
+    "mean_p_matched": 0.94,
+    "group_match_in_segments_json": 0.97,
+    "violations": 0
+   },
+   "segment_violations": []
+  },
+  "ttcem-jagged-rocks": {
+   "title": "Jagged Rocks",
+   "dur": 66.9,
+   "groups": 11,
+   "stats": {
+    "words": 140,
+    "silent_tokens": 0,
+    "spoken_words": 140,
+    "matched": 136,
+    "refilled": 1,
+    "match_rate": 0.971,
+    "interp": 4,
+    "interp_pct": 2.9,
+    "recognized_words": 137,
+    "clamped_starts": 2,
+    "mean_p_matched": 0.944,
+    "group_match_in_segments_json": 0.95,
+    "violations": 0
+   },
+   "segment_violations": []
+  },
+  "ttcem-machines-are-fighting-for-our-freedom": {
+   "title": "Machines Are Fighting for Our Freedom",
+   "dur": 65.646,
+   "groups": 9,
+   "stats": {
+    "words": 131,
+    "silent_tokens": 0,
+    "spoken_words": 131,
+    "matched": 130,
+    "refilled": 0,
+    "match_rate": 0.992,
+    "interp": 1,
+    "interp_pct": 0.8,
+    "recognized_words": 134,
+    "clamped_starts": 1,
+    "mean_p_matched": 0.942,
+    "group_match_in_segments_json": 0.94,
+    "violations": 6
+   },
+   "segment_violations": [
+    {
+     "g": 6,
+     "w": 0,
+     "text": "Soldiers'",
+     "start": 48.72,
+     "end": 49.18,
+     "seg": [
+      51.56,
+      57.2
+     ]
+    },
+    {
+     "g": 6,
+     "w": 1,
+     "text": "names",
+     "start": 49.44,
+     "end": 49.58,
+     "seg": [
+      51.56,
+      57.2
+     ]
+    },
+    {
+     "g": 6,
+     "w": 2,
+     "text": "sound",
+     "start": 49.58,
+     "end": 50.04,
+     "seg": [
+      51.56,
+      57.2
+     ]
+    },
+    {
+     "g": 6,
+     "w": 3,
+     "text": "so",
+     "start": 50.04,
+     "end": 50.36,
+     "seg": [
+      51.56,
+      57.2
+     ]
+    },
+    {
+     "g": 6,
+     "w": 4,
+     "text": "noble",
+     "start": 50.36,
+     "end": 50.86,
+     "seg": [
+      51.56,
+      57.2
+     ]
+    },
+    {
+     "g": 6,
+     "w": 5,
+     "text": "when",
+     "start": 50.86,
+     "end": 51.46,
+     "seg": [
+      51.56,
+      57.2
+     ]
+    }
+   ]
+  },
+  "ttcem-midnight-orgy": {
+   "title": "Midnight Orgy",
+   "dur": 131.422,
+   "groups": 17,
+   "stats": {
+    "words": 303,
+    "silent_tokens": 0,
+    "spoken_words": 303,
+    "matched": 302,
+    "refilled": 0,
+    "match_rate": 0.997,
+    "interp": 1,
+    "interp_pct": 0.3,
+    "recognized_words": 310,
+    "clamped_starts": 4,
+    "mean_p_matched": 0.942,
+    "group_match_in_segments_json": 0.98,
+    "violations": 0
+   },
+   "segment_violations": []
+  },
+  "ttcem-now-i-don-t-throw-dirt-in-people-s-soup": {
+   "title": "Now I Don't Throw Dirt in People's Soup",
+   "dur": 91.899,
+   "groups": 11,
+   "stats": {
+    "words": 249,
+    "silent_tokens": 0,
+    "spoken_words": 249,
+    "matched": 248,
+    "refilled": 0,
+    "match_rate": 0.996,
+    "interp": 1,
+    "interp_pct": 0.4,
+    "recognized_words": 250,
+    "clamped_starts": 0,
+    "mean_p_matched": 0.956,
+    "group_match_in_segments_json": 0.99,
+    "violations": 0
+   },
+   "segment_violations": []
+  }
+ }
+}
