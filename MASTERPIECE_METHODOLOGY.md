@@ -34,7 +34,7 @@ When choreographing visuals (particles, text, cameras, lighting) to spoken-word 
 ## 2. High-Performance Particle Choreography
 
 ### A. Sub-Millisecond Particle Recruitment ($O(1)$ Spatial Hash)
-Recruiting thousands of dots out of a 240,000-particle cloud must never stall the UI thread:
+Recruiting thousands of dots out of a 297,000-particle cloud must never stall the UI thread:
 - **Perimeter Search ($R \le 4$)**: Use a spatial hash grid (`Map<key, bucket>`) with bucket size $G \approx 0.14$. Restrict ring searching to $R \in [0, 4]$.
 - **Execution Budget**: Keep particle recruitment under $1.5\text{ms}$ per phrase, completely avoiding $O(N \cdot R^2)$ combinatorial traps that freeze rendering frames.
 
