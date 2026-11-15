@@ -7,7 +7,7 @@ A WebGL2 particle field where poems condense out of the swirl one at a time, hol
 ## What's in it
 
 - **Poem forming.** Each public poem is pre-sampled into glyph point clouds (`site/glyphs/`). Particles are attracted to those points, settle into readable lines, then release.
-- **Scale.** About 190,000 particles in near, mid and far shells, plus a 3D spiral galaxy to explore past the cloud.
+- **Scale.** 297,000 particles in seven layers: near, mid, far, deep, abyss and infinite depth shells, plus a synapse layer. A 3D spiral galaxy waits past the cloud. The layer table lives in `site/cloud-fill.js`, and `tests/cloud-fill.test.mjs` keeps it in step with the fallback in `site/index.html`.
 - **Open Field panel.** Pick poetry or meditation, choose a poem, set a timer, volume and brown noise. Everything is reachable by keyboard.
 - **Guided meditation.** Sessions are assembled from a graph of recorded clips. Pacing modes take different paths through it while the scheduler holds the total length, and `test_meditation_scheduler.js` checks the timing.
 - **A restoration puzzle.** Align three anchor nodes to bring a dormant constellation back to full form and reopen the return path.
