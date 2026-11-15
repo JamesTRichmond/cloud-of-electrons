@@ -90,10 +90,16 @@ export function textFromStanzas(stanzas) {
   return stanzas.map(lines => lines.join('\n')).join('\n\n');
 }
 
+const stanzaHtml = lines =>
+  `<p>${lines.map(l => `<span class="l">${escapeHtml(l)}</span>`).join('\n')}</p>`;
+
+/** Poem stanzas, then any trailing stanzas from a "Footnotes" stanza onward, set apart in an aside. */
 export function poemBodyHtml(text) {
-  return stanzaLines(text)
-    .map(lines => `<p>${lines.map(escapeHtml).join('<br>\n')}</p>`)
-    .join('\n');
+  const stanzas = stanzaLines(text);
+  const fi = stanzas.findIndex(lines => lines[0].trim() === 'Footnotes');
+  const body = (fi < 0 ? stanzas : stanzas.slice(0, fi)).map(stanzaHtml).join('\n');
+  if (fi < 0) return body;
+  return `${body}\n<aside class="footnotes">\n${stanzas.slice(fi).map(stanzaHtml).join('\n')}\n</aside>`;
 }
 
 export function fontHref(depth) {
@@ -119,12 +125,15 @@ function headTags({ title, description, canonical, ogType, fontDepth, jsonLd }) 
 <meta name="twitter:title" content="${escapeHtml(title)}">
 <meta name="twitter:description" content="${escapeHtml(description)}">
 <style>
-@font-face{font-family:"Source Serif 4";src:url(${fontHref(fontDepth)})}
+@font-face{font-family:"Source Serif 4";src:url(${fontHref(fontDepth)});font-display:swap}
 html,body{margin:0;background:#05070D;color:#F4E1BC;font:1.05rem/1.55 "Source Serif 4",serif}
 main{max-width:40ch;margin:0 auto;padding:2rem 1.25rem 4rem}
 nav{margin:0 0 1.75rem;font-size:.95rem}
 h1{font-weight:600;font-size:1.65rem;line-height:1.25;margin:0 0 1.25rem}
 article .poem p{margin:0 0 1.15em}
+.poem .l{display:block;padding-left:1.5em;text-indent:-1.5em}
+.footnotes{font-size:.85em;opacity:.7;border-top:1px solid rgba(244,225,188,.35);margin-top:2em;padding-top:1em}
+.footnotes p{margin:0 0 .8em}
 a{color:#F4E1BC}
 a:focus-visible{outline:1px solid #F4E1BC;outline-offset:2px}
 .cloud-link{margin:2rem 0 0}

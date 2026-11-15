@@ -42,9 +42,7 @@ function visiblePoemText(html) {
   const m = html.match(/<div class="poem">([\s\S]*?)<\/div>/);
   assert.ok(m, 'missing .poem');
   const stanzas = [...m[1].matchAll(/<p>([\s\S]*?)<\/p>/g)].map(p =>
-    p[1]
-      .split(/<br\s*\/?>\n?/i)
-      .map(line => decodeHtml(line.replace(/^\n|\n$/g, '')))
+    [...p[1].matchAll(/<span class="l">([\s\S]*?)<\/span>/g)].map(l => decodeHtml(l[1]))
   );
   return textFromStanzas(stanzas);
 }
@@ -168,5 +166,20 @@ test('rebuilding is deterministic', () => {
   for (const path of Object.keys(built.files)) {
     assert.equal(again.files[path], built.files[path], path);
     assert.equal(read(path), built.files[path], path);
+  }
+});
+
+test('footnotes sit in an aside after the poem; lines are hanging-indent blocks; font swaps', () => {
+  for (const poem of published) {
+    const html = read(poemPath(poem.id));
+    assert.ok(!html.includes('<br'), poem.id);
+    assert.match(html, /font-display:swap/, poem.id);
+    const hasFn = /(^|\n\n)Footnotes\n/.test(poem.text);
+    assert.equal(html.includes('<aside class="footnotes">'), hasFn, poem.id);
+    if (hasFn) {
+      const poemDiv = html.match(/<div class="poem">([\s\S]*?)<\/div>/)[1];
+      const before = poemDiv.split('<aside class="footnotes">')[0];
+      assert.ok(!before.includes('>Footnotes<'), poem.id);
+    }
   }
 });
