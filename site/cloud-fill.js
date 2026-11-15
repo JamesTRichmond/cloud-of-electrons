@@ -10,3 +10,15 @@ window.COE_FILL = [
   { name: "infinite", count: 20000,  inner: 350.0, outer: 1600.0, size: 0.85, brightness: 0.9, swirl: 0.08 },
   { name: "synapse",  count: 20000,  inner: 2.5,   outer: 16.0,   size: 0.85, brightness: 1.0, swirl: 0.0 }
 ];
+/* ?near=v235: restore v23.5 near/mid brightness. Flag off: return immediately, values unchanged, no Math.random. */
+(function applyNearV235(){
+  try {
+    if (typeof location === 'undefined' || new URLSearchParams(location.search).get('near') !== 'v235') return;
+  } catch (e) {
+    return;
+  }
+  for (const L of window.COE_FILL) {
+    if (L.name === 'near') L.brightness = 0.35;
+    else if (L.name === 'mid') L.brightness = 0.8;
+  }
+})();
