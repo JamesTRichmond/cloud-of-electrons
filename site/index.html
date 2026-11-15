@@ -70,6 +70,7 @@ html,body{margin:0;height:100%;background:#05070D;overflow:hidden;user-select:no
 <script type="module">
 import {poemTimeline,nextGap,shuffleBag,SECTIONS} from './motion.js';
 import {mountMapTouch} from './map-touch.js';
+import {parseDeepLink,resolveDeepLink,hashForPoem,PUBLIC_POEM_IDS} from './deep-link.js';
 const FILL=(window.COE_FILL||[
  {name:'near',count:12000,inner:.15,outer:.8,size:1.6,brightness:.6,swirl:.4},
  {name:'mid',count:90000,inner:.8,outer:2.2,size:1.0,brightness:1.6,swirl:1.0},
@@ -244,8 +245,8 @@ class BrownNoise {
 
 const OF=await fetch('openfield.json').then(r=>r.json());const BN=new BrownNoise();BN.onChange=on=>{window.coeBrownNoiseOn=on;document.getElementById('of-bn').textContent=on?'Stop brown noise':'Brown noise'};
 const breath=new Audio('forming.mp3');breath.volume=.5;let soundOK=false;const okS=()=>{soundOK=true};addEventListener('pointerdown',okS,{once:true});addEventListener('keydown',okS,{once:true});
-let POEMS_ON=location.hash==='#poem'||new URLSearchParams(location.search).has('poem');window.coePoemsOn=()=>POEMS_ON;let active=null,next=location.hash==='#poem'?0:performance.now()+4000,loading=false;const live=document.getElementById('coe-live');
-let rotA=0;const calmAt=(x,y,z)=>{if(!active||!active.box)return 0;const ra=rotA*.04,qx=x*Math.cos(ra)-z*Math.sin(ra),qz=x*Math.sin(ra)+z*Math.cos(ra)-cam[2],sc=CAMZ/Math.max(.3,-qz),px=(qx-cam[0])*sc+cam[0],py=(y-cam[1])*sc+cam[1],B=active.box,L=active.lh,r=Math.hypot((px-(B[0]+B[1])/2)/((B[1]-B[0])/2+L),(py-(B[2]+B[3])/2)/((B[3]-B[2])/2+L)),u=Math.min(1,Math.max(0,(r-1)/CALM_EDGE)),h=1-u*u*(3-2*u);return h};const SLOW=1,KC_CLOUD=.006,KR_DEPTH=6,RK=new Float32Array(N),PM=new Uint8Array(N),CALM_EDGE=.06;/* CALM_EDGE: falloff beyond the text block, ~12 px at 1280 wide */async function start(now){{const PS0=window.coePoetrySeq;if(PS0&&PS0.on&&PS0.p&&PS0.gi>=PS0.p.groups.length){stopPoetry();return}}/* reading finished: no repeat, back to the pre-Begin state */const ra=rotA*.04+.1,ca=Math.cos(ra),sa=Math.sin(ra);loading=true;const QP=new URLSearchParams(location.search),PS=window.coePoetrySeq,seqOn=!!(PS&&PS.on),p=seqOn?PS.p:(QP.has("poem")?byId[QP.get("poem")]||byId[pick()]:byId[pick()]),gi=seqOn?PS.gi++:(QP.has("poem")?+(QP.get("group")||0):Math.random()*p.groups.length|0),g=p.groups[gi]||p.groups[0];
+const bootDeep=parseDeepLink(location.hash,location.search);let pendingDeep=resolveDeepLink(bootDeep,byId);const syncPoemHash=(id,gi)=>{if(!PUBLIC_POEM_IDS.includes(id))return;const h=hashForPoem(id,gi);if(location.hash!==h)history.replaceState(null,'',location.pathname+location.search+h)};let POEMS_ON=!!pendingDeep||(bootDeep.flag&&!bootDeep.poem)||bootDeep.fromQuery;window.coePoemsOn=()=>POEMS_ON;let active=null,next=POEMS_ON?0:performance.now()+4000,loading=false;const live=document.getElementById('coe-live');
+let rotA=0;const calmAt=(x,y,z)=>{if(!active||!active.box)return 0;const ra=rotA*.04,qx=x*Math.cos(ra)-z*Math.sin(ra),qz=x*Math.sin(ra)+z*Math.cos(ra)-cam[2],sc=CAMZ/Math.max(.3,-qz),px=(qx-cam[0])*sc+cam[0],py=(y-cam[1])*sc+cam[1],B=active.box,L=active.lh,r=Math.hypot((px-(B[0]+B[1])/2)/((B[1]-B[0])/2+L),(py-(B[2]+B[3])/2)/((B[3]-B[2])/2+L)),u=Math.min(1,Math.max(0,(r-1)/CALM_EDGE)),h=1-u*u*(3-2*u);return h};const SLOW=1,KC_CLOUD=.006,KR_DEPTH=6,RK=new Float32Array(N),PM=new Uint8Array(N),CALM_EDGE=.06;/* CALM_EDGE: falloff beyond the text block, ~12 px at 1280 wide */async function start(now){{const PS0=window.coePoetrySeq;if(PS0&&PS0.on&&PS0.p&&PS0.gi>=PS0.p.groups.length){stopPoetry();return}}/* reading finished: no repeat, back to the pre-Begin state */const ra=rotA*.04+.1,ca=Math.cos(ra),sa=Math.sin(ra);loading=true;const PS=window.coePoetrySeq,seqOn=!!(PS&&PS.on),req=pendingDeep;pendingDeep=null;const p=seqOn?PS.p:(req?req.p:byId[pick()]),gi=seqOn?PS.gi++:(req?req.gi:Math.random()*p.groups.length|0),g=p.groups[gi]||p.groups[0];syncPoemHash(p.id,gi);
 let ox=0,oy=0;for(let tr=0;tr<40;tr++){ox=(Math.random()-.5)*Math.max(.1,3.6-(g.w||2));oy=(Math.random()-.5)*.8;if(A.every(a=>Math.hypot(a.pos[0]-ox*ca,a.pos[1]-oy,a.pos[2]+ox*sa)>1.2*a.radius))break}
 const dimIds=new Set(A.filter(a=>Math.hypot(a.pos[0]-ox*ca,a.pos[1]-oy,a.pos[2]+ox*sa)<2*a.radius+.6).map(a=>a.id)),idx=[];mark.fill(0);let x0=1e9,x1=-1e9,y0=1e9,y1=-1e9;
 ox=0;oy=0;const tt=textTargets(g.lines,.6,'left',null,capPx(p));x0=tt.box[0];x1=tt.box[1];y0=tt.box[2];y1=tt.box[3];{const R=recruit(tt.pts,0,0);R.forEach((i,k)=>{idx.push(i);T[i*3]=tt.pts[k][0];T[i*3+1]=tt.pts[k][1];T[i*3+2]=0})}
@@ -2189,7 +2190,9 @@ window.coeHughSeg=(id,gi,A)=>{
 const stopPoetry=()=>{window.coePoetrySeq.on=false;window.coePoetrySeq.p=null;hughStop();if(!POEMS_ON)return;POEMS_ON=false;$('of-go').textContent='Begin';if(active&&!active.cap&&active.scatterAt===null)active.scatterAt=performance.now()/1000};
 setMode('poetry');window.coeMode=()=>MODE;
 const KEEP=[["ttcem-bound-ing", "The Choice and the Lesson"], ["ttcem-midnight-orgy", "Midnight Orgy"], ["ttcem-jagged-rocks", "Jagged Rocks"], ["ttcem-machines-are-fighting-for-our-freedom", "Machines Are Fighting for Our Freedom"], ["ttcem-dinosaur-footprints", "Dinosaur Footprints"], ["ttcem-don-t-shit-in-my-christmas-spirit", "Don't Shit in My Christmas Spirit"], ["ttcem-flying-around", "Flying Around"], ["ttcem-fabulous", "Fabulous"], ["ttcem-now-i-don-t-throw-dirt-in-people-s-soup", "Now I Don't Throw Dirt in People's Soup"], ["ttcem-halloween-again", "Halloween Again"]],poemSel=$('of-poem');KEEP.forEach(([id,t])=>byId[id]&&poemSel.add(new Option(t,id)));
+if(pendingDeep&&[...poemSel.options].some(o=>o.value===pendingDeep.id))poemSel.value=pendingDeep.id;
 if(poemSel&&poemSel.value)getPoemAudio(poemSel.value);
+addEventListener('hashchange',()=>{const req=resolveDeepLink(parseDeepLink(location.hash,location.search),byId);if(!req)return;pendingDeep=req;if(poemSel&&[...poemSel.options].some(o=>o.value===req.id))poemSel.value=req.id;POEMS_ON=true;next=0;if(active&&!active.cap){active.cut=1;active.scatterAt=performance.now()/1000;active.fd=.35}});
 const fadeOut=(au,ms)=>new Promise(res=>{if(!au||au.paused){res();return}const v0=au.volume,t0=performance.now();const st=()=>{const k=Math.min(1,(performance.now()-t0)/ms);au.volume=v0*(1-k);if(k<1)requestAnimationFrame(st);else{au.pause();au.volume=v0;window.coeFadeLog.push({ms:performance.now()-t0});res()}};st()});window.coeFadeLog=[];
 const cutPoem=()=>{if(active&&!active.cap&&!active.cut){active.cut=1;active.scatterAt=performance.now()/1000;active.fd=.35;}};
 const beginPoem=async()=>{
@@ -2199,10 +2202,13 @@ const beginPoem=async()=>{
  }
  hughStop();
  POEMS_ON=true;
- const pId=poemSel.value;
+ const req=pendingDeep||resolveDeepLink(parseDeepLink(location.hash,location.search),byId);
+ pendingDeep=null;
+ const pId=req?req.id:poemSel.value;
  const p=byId[pId];
  if(!p)return;
- window.coePoetrySeq={on:true,p,gi:0,sel:pId};
+ if(req&&[...poemSel.options].some(o=>o.value===pId))poemSel.value=pId;
+ window.coePoetrySeq={on:true,p,gi:req?req.gi:0,sel:pId};
  $('of-go').textContent='End';
  await playHughPoem(pId);
  next=performance.now();
@@ -2214,7 +2220,7 @@ const ofTip=(()=>{const d=document.createElement('div');d.id='of-tip';d.setAttri
 const hide=()=>{clearTimeout(tm);d.style.transition='none';d.style.opacity=0;d.style.display='none'};
 const cut=sel=>{const o=sel.options[sel.selectedIndex];if(!o)return false;const cs=getComputedStyle(sel);cv.font=cs.font;const pad=parseFloat(cs.paddingLeft)+parseFloat(cs.paddingRight)+parseFloat(cs.borderLeftWidth)+parseFloat(cs.borderRightWidth)+20;/* 20px: arrow */return cv.measureText(o.textContent).width>sel.getBoundingClientRect().width-pad};
 [poemSel,med].forEach(sel=>{sel.addEventListener('pointerenter',e=>{hide();if(e.pointerType==='touch'||!cut(sel))return;tm=setTimeout(()=>{const r=sel.getBoundingClientRect();d.textContent=sel.options[sel.selectedIndex].textContent;d.style.display='block';d.style.opacity=0;d.offsetWidth;d.style.transition=reduced?'none':'opacity 150ms';d.style.opacity=1;d.style.left=r.left+'px';d.style.top=(r.top-d.offsetHeight-4)+'px';window.coeTipShownAt=performance.now()},1000)});['pointerleave','change','mousedown','keydown','blur'].forEach(ev=>sel.addEventListener(ev,hide))});return{hide,cut}})();window.coeTip=ofTip;
-$('of-go').onclick=()=>{if(MODE==='poetry'){if(POEMS_ON){stopPoetry();return}beginPoem();return}if(window.coeMed){stopMed();return}medStart(OF[+med.value]);$('of-go').textContent='End'};
+$('of-go').onclick=()=>{if(MODE==='poetry'){if(POEMS_ON&&window.coePoetrySeq.on){stopPoetry();return}beginPoem();return}if(window.coeMed){stopMed();return}medStart(OF[+med.value]);$('of-go').textContent='End'};
 // On open: only swirl + brown noise (volume slider at 50%). Browsers block audio until a user gesture, so we try now
 // and, if the AudioContext is suspended, resume on the first pointer/key/touch.
 {const ctx=ac();window.coeAudioState=()=>ctx.state;if(!BN.playing)BN.start(ctx,+$('of-vol').value);window.coeAutoplay=ctx.state==='running'?'autoplayed':'blocked-until-gesture';
