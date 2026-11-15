@@ -1,0 +1,4248 @@
+{
+  "version": 1,
+  "generatedBy": "tools/build-mirror-timing.mjs",
+  "clock": {
+    "name": "group-t0",
+    "unit": "seconds after active.t0",
+    "t0": "active.t0 = performance.now()/1000 in start() (site/index.html:253)",
+    "phaseEval": "frame(nowMs) sets t = nowMs/1000 (site/index.html:1984) and calls segTL(t) when active.seg is set, else poemTimeline(...) (site/index.html:1989). segTL is site/index.html:295.",
+    "phases": "formStart = 0 (gather begins). legible = gatherD (phase becomes read; letters are settled, wt=1). scatter = gatherD + readD (phase becomes scatter).",
+    "audio": "audioSlice [s,e] is Hugh-clip currentTime from site/poem-segments.json (loaded at site/index.html:2138 into window.coeHughSegs). This is not the phase clock.",
+    "hiddenTab": "Poem phases use wall-clock t (rAF nowMs/1000), not the clamped scene clock window.__ST (site/index.html:1984). A hidden tab pauses rAF; on return, t - active.t0 can jump and skip phases in one frame."
+  },
+  "constants": {
+    "segGatherD": 0.5,
+    "segScatterD": 0.35,
+    "segReadDMin": 0.4,
+    "source": "site/index.html:2184-2186 window.coeHughSeg"
+  },
+  "drift": {
+    "inManifestNotPublic": [
+      "ttcem-dinosaur-footprints",
+      "ttcem-halloween-again"
+    ],
+    "publicNotInManifest": [
+      "ttcem-i-love-my-dog",
+      "ttcem-the-day-the-cat-got-lost",
+      "ttcem-metta-in-vermont",
+      "ttcem-sunshine",
+      "ttcem-goliath",
+      "ttcem-dragon-camp",
+      "ttcem-the-mothership",
+      "ttcem-on-guard",
+      "ttcem-suicide-party",
+      "ttcem-damien-s-public-gournal-1",
+      "ttcem-i-loved-my-country-and-you-loved-your-cat"
+    ],
+    "inSegmentsNotPublic": [
+      "ttcem-dinosaur-footprints",
+      "ttcem-halloween-again"
+    ],
+    "note": "site/glyphs/manifest.json, site/poem-segments.json, site/voices/hugh-poems/, and the KEEP list at site/index.html:2191 include ttcem-dinosaur-footprints (Dinosaur Footprints) and ttcem-halloween-again (Halloween Again). Those two are not in story/poems.public.json and are excluded from this map. Eleven public poems have glyph .bin files but are omitted from the live manifest, so the page never starts them."
+  },
+  "poems": [
+    {
+      "id": "ttcem-flying-around",
+      "title": "Flying Around",
+      "section": "What Passes Through",
+      "public": true,
+      "onPage": true,
+      "grouping": "site/glyphs/manifest.json groups; each line equals a non-blank line of story/poems.public.json",
+      "groups": [
+        {
+          "index": 0,
+          "lines": [
+            "The things that try to kill me:",
+            "Flashing zippy gut splatterers,",
+            "sticky spiral graveyards,",
+            "plain old dehydration, and"
+          ],
+          "text": "The things that try to kill me:\nFlashing zippy gut splatterers,\nsticky spiral graveyards,\nplain old dehydration, and",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 9.27,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 8.77,
+          "scatterD": 0.35,
+          "audioSlice": [
+            0,
+            9.12
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 1,
+          "lines": [
+            "a lumbering beast who guards their slop,",
+            "infuriated with me and the air around me.",
+            "They swing slowly and wide."
+          ],
+          "text": "a lumbering beast who guards their slop,\ninfuriated with me and the air around me.\nThey swing slowly and wide.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 8.91,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 8.41,
+          "scatterD": 0.35,
+          "audioSlice": [
+            8.92,
+            17.68
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 2,
+          "lines": [
+            "While jumping, while climbing.",
+            "The stench calls to me.",
+            "From lamp to cupboard to ceiling,"
+          ],
+          "text": "While jumping, while climbing.\nThe stench calls to me.\nFrom lamp to cupboard to ceiling,",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 6.14,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 5.64,
+          "scatterD": 0.35,
+          "audioSlice": [
+            17.48,
+            23.47
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 3,
+          "lines": [
+            "back to lamp and to ceiling again — hide in a shadow.",
+            "SWAT!",
+            "A lousy swing.",
+            "CRACK!"
+          ],
+          "text": "back to lamp and to ceiling again — hide in a shadow.\nSWAT!\nA lousy swing.\nCRACK!",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 7.72,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 7.22,
+          "scatterD": 0.35,
+          "audioSlice": [
+            23.27,
+            30.84
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 4,
+          "lines": [
+            "The room goes quiet.",
+            "I land on the nicest pile of shit.",
+            "A pixelated buffet begging for my barf.¹",
+            "Oh fuck! My labella ignites with pleasure."
+          ],
+          "text": "The room goes quiet.\nI land on the nicest pile of shit.\nA pixelated buffet begging for my barf.¹\nOh fuck! My labella ignites with pleasure.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 12.16,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 11.66,
+          "scatterD": 0.35,
+          "audioSlice": [
+            30.64,
+            42.65
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 5,
+          "lines": [
+            "I ate, I drank,",
+            "and in the warmth of it all,",
+            "I laid there,",
+            "no hurry, buzzing."
+          ],
+          "text": "I ate, I drank,\nand in the warmth of it all,\nI laid there,\nno hurry, buzzing.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 6.98,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 6.48,
+          "scatterD": 0.35,
+          "audioSlice": [
+            42.45,
+            49.28
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 6,
+          "lines": [
+            "The swatting ended cold, and",
+            "nothing crashed against me."
+          ],
+          "text": "The swatting ended cold, and\nnothing crashed against me.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 4.82,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 4.32,
+          "scatterD": 0.35,
+          "audioSlice": [
+            49.08,
+            53.75
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 7,
+          "lines": [
+            "A light reached out,",
+            "lured me up from the shit,",
+            "i threw myself against its warmth,",
+            "hard, and for so long I forgot why I began to try."
+          ],
+          "text": "A light reached out,\nlured me up from the shit,\ni threw myself against its warmth,\nhard, and for so long I forgot why I began to try.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 10.53,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 10.03,
+          "scatterD": 0.35,
+          "audioSlice": [
+            53.55,
+            63.93
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 8,
+          "lines": [
+            "A pungent stench, loud as life,",
+            "the rot of the world,",
+            "stole my attention from the warmth.²",
+            "My sweets will eat a feast."
+          ],
+          "text": "A pungent stench, loud as life,\nthe rot of the world,\nstole my attention from the warmth.²\nMy sweets will eat a feast.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 10.87,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 10.37,
+          "scatterD": 0.35,
+          "audioSlice": [
+            63.73,
+            74.45
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 9,
+          "lines": [
+            "Dried up a heartbeat later,",
+            "revolting but unaware,",
+            "ready to fly around again."
+          ],
+          "text": "Dried up a heartbeat later,\nrevolting but unaware,\nready to fly around again.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 6.65,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 6.15,
+          "scatterD": 0.35,
+          "audioSlice": [
+            74.25,
+            80.75
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 10,
+          "lines": [
+            "Footnotes",
+            "¹ \"Never keep it down, thass what I say. Get it up while it's fresh on your stomach, like.\" — George Orwell, 1984"
+          ],
+          "text": "Footnotes\n¹ \"Never keep it down, thass what I say. Get it up while it's fresh on your stomach, like.\" — George Orwell, 1984",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 12.32,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 11.82,
+          "scatterD": 0.35,
+          "audioSlice": [
+            80.55,
+            92.72
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 11,
+          "lines": [
+            "² \"And first he will see the shadows best, next the reflections of men and other objects in the water,"
+          ],
+          "text": "² \"And first he will see the shadows best, next the reflections of men and other objects in the water,",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 8.25,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 7.75,
+          "scatterD": 0.35,
+          "audioSlice": [
+            92.52,
+            100.62
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 12,
+          "lines": [
+            "and then the objects themselves…\" — Plato, Allegory of the Cave"
+          ],
+          "text": "and then the objects themselves…\" — Plato, Allegory of the Cave",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 7.27,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 6.77,
+          "scatterD": 0.35,
+          "audioSlice": [
+            100.42,
+            107.54
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        }
+      ]
+    },
+    {
+      "id": "ttcem-midnight-orgy",
+      "title": "Midnight Orgy",
+      "section": "What Passes Through",
+      "public": true,
+      "onPage": true,
+      "grouping": "site/glyphs/manifest.json groups; each line equals a non-blank line of story/poems.public.json",
+      "groups": [
+        {
+          "index": 0,
+          "lines": [
+            "The real orgy begins after midnight",
+            "as crickets rub the ridges of their wings together.",
+            "The air is filled with white noise"
+          ],
+          "text": "The real orgy begins after midnight\nas crickets rub the ridges of their wings together.\nThe air is filled with white noise",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 10.61,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 10.11,
+          "scatterD": 0.35,
+          "audioSlice": [
+            0,
+            10.46
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 1,
+          "lines": [
+            "like the buzzing in my ears when it's past late and I'm buried in the pillows."
+          ],
+          "text": "like the buzzing in my ears when it's past late and I'm buried in the pillows.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 6.27,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 5.77,
+          "scatterD": 0.35,
+          "audioSlice": [
+            10.26,
+            16.38
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 2,
+          "lines": [
+            "A choir of crickets call to their counterparts",
+            "scattered amongst the weeds,",
+            "their siren song harping out a fuck-me chorus:"
+          ],
+          "text": "A choir of crickets call to their counterparts\nscattered amongst the weeds,\ntheir siren song harping out a fuck-me chorus:",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 9.63,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 9.13,
+          "scatterD": 0.35,
+          "audioSlice": [
+            16.18,
+            25.66
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 3,
+          "lines": [
+            "Let's do this dirty cricket dance, my love!",
+            "Let's fuck each other in the open!",
+            "Let's not give two shits about who's watching"
+          ],
+          "text": "Let's do this dirty cricket dance, my love!\nLet's fuck each other in the open!\nLet's not give two shits about who's watching",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 10.63,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 10.13,
+          "scatterD": 0.35,
+          "audioSlice": [
+            25.46,
+            35.94
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 4,
+          "lines": [
+            "and conceive a swarm of locusts to devour the fields!"
+          ],
+          "text": "and conceive a swarm of locusts to devour the fields!",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 4.76,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 4.26,
+          "scatterD": 0.35,
+          "audioSlice": [
+            35.74,
+            40.35
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 5,
+          "lines": [
+            "A cat wails loudly,",
+            "piercing the night with her shrill cry.",
+            "Her resounding echo reminds me to bury my head",
+            "deeper in the down."
+          ],
+          "text": "A cat wails loudly,\npiercing the night with her shrill cry.\nHer resounding echo reminds me to bury my head\ndeeper in the down.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 10.43,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 9.93,
+          "scatterD": 0.35,
+          "audioSlice": [
+            40.15,
+            50.43
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 6,
+          "lines": [
+            "She tiptoes along a fencepost",
+            "peering cautiously into an empty lot.",
+            "She emboldens the tomcats with the cooing",
+            "of her promissory note"
+          ],
+          "text": "She tiptoes along a fencepost\npeering cautiously into an empty lot.\nShe emboldens the tomcats with the cooing\nof her promissory note",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 10.06,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 9.56,
+          "scatterD": 0.35,
+          "audioSlice": [
+            50.23,
+            60.14
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 7,
+          "lines": [
+            "beckoning them from their foraging grounds:"
+          ],
+          "text": "beckoning them from their foraging grounds:",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 2.98,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 2.48,
+          "scatterD": 0.35,
+          "audioSlice": [
+            59.94,
+            62.77
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 8,
+          "lines": [
+            "Take me on this fencepost!",
+            "Take me on the lid of this garbage can!",
+            "Take me in the middle of this cold night or I'll cry into the morning!"
+          ],
+          "text": "Take me on this fencepost!\nTake me on the lid of this garbage can!\nTake me in the middle of this cold night or I'll cry into the morning!",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 11.01,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 10.51,
+          "scatterD": 0.35,
+          "audioSlice": [
+            62.57,
+            73.43
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 9,
+          "lines": [
+            "I want to conceive eight kittens in this forsaken place!"
+          ],
+          "text": "I want to conceive eight kittens in this forsaken place!",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 4.58,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 4.08,
+          "scatterD": 0.35,
+          "audioSlice": [
+            73.23,
+            77.66
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 10,
+          "lines": [
+            "The moon sits low above a row of twisted pines,",
+            "a spotlight igniting the knick-knacks on my dresser.",
+            "A mockingbird perched high in a tree"
+          ],
+          "text": "The moon sits low above a row of twisted pines,\na spotlight igniting the knick-knacks on my dresser.\nA mockingbird perched high in a tree",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 10.85,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 10.35,
+          "scatterD": 0.35,
+          "audioSlice": [
+            77.46,
+            88.16
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 11,
+          "lines": [
+            "warbles out a lonely solo.",
+            "He sings to the wild of the night,",
+            "a desperate birdy bootycall when",
+            "he really should be sleeping:"
+          ],
+          "text": "warbles out a lonely solo.\nHe sings to the wild of the night,\na desperate birdy bootycall when\nhe really should be sleeping:",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 9.75,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 9.25,
+          "scatterD": 0.35,
+          "audioSlice": [
+            87.96,
+            97.56
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 12,
+          "lines": [
+            "If you're awake come over!",
+            "There's room for three or even more!",
+            "My plumage is preened and I'm full of songs I've memorized!"
+          ],
+          "text": "If you're awake come over!\nThere's room for three or even more!\nMy plumage is preened and I'm full of songs I've memorized!",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 10.92,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 10.42,
+          "scatterD": 0.35,
+          "audioSlice": [
+            97.36,
+            108.13
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 13,
+          "lines": [
+            "Come nest with me and we'll fluff each other's feathers!"
+          ],
+          "text": "Come nest with me and we'll fluff each other's feathers!",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 4.31,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 3.81,
+          "scatterD": 0.35,
+          "audioSlice": [
+            107.93,
+            112.09
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 14,
+          "lines": [
+            "A pulse of white ignites the sky",
+            "like the strike of my lighter",
+            "in the backseat of a car,",
+            "a brief intermission"
+          ],
+          "text": "A pulse of white ignites the sky\nlike the strike of my lighter\nin the backseat of a car,\na brief intermission",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 8.7,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 8.2,
+          "scatterD": 0.35,
+          "audioSlice": [
+            111.89,
+            120.44
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 15,
+          "lines": [
+            "before the orgy continues."
+          ],
+          "text": "before the orgy continues.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 3.12,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 2.62,
+          "scatterD": 0.35,
+          "audioSlice": [
+            120.24,
+            123.21
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 16,
+          "lines": [
+            "Sunrise raindrops skydive into puddles",
+            "and bounce back out",
+            "briefly",
+            "before a final cannonball."
+          ],
+          "text": "Sunrise raindrops skydive into puddles\nand bounce back out\nbriefly\nbefore a final cannonball.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 8.32,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 7.82,
+          "scatterD": 0.35,
+          "audioSlice": [
+            123.01,
+            131.18
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        }
+      ]
+    },
+    {
+      "id": "ttcem-don-t-shit-in-my-christmas-spirit",
+      "title": "Don't Shit in My Christmas Spirit",
+      "section": "What Passes Through",
+      "public": true,
+      "onPage": true,
+      "grouping": "site/glyphs/manifest.json groups; each line equals a non-blank line of story/poems.public.json",
+      "groups": [
+        {
+          "index": 0,
+          "lines": [
+            "Shrouded in darkness,",
+            "the blankets crept",
+            "to the top of the bed,",
+            "over the head"
+          ],
+          "text": "Shrouded in darkness,\nthe blankets crept\nto the top of the bed,\nover the head",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 5.77,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 5.27,
+          "scatterD": 0.35,
+          "audioSlice": [
+            0,
+            5.62
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 1,
+          "lines": [
+            "of the innocent."
+          ],
+          "text": "of the innocent.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 1.96,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 1.46,
+          "scatterD": 0.35,
+          "audioSlice": [
+            5.42,
+            7.23
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 2,
+          "lines": [
+            "Shrouded in darkness,",
+            "the Anus expelled the fart,",
+            "filling the blanket",
+            "to its bitter brim"
+          ],
+          "text": "Shrouded in darkness,\nthe Anus expelled the fart,\nfilling the blanket\nto its bitter brim",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 7.44,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 6.94,
+          "scatterD": 0.35,
+          "audioSlice": [
+            7.03,
+            14.32
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 3,
+          "lines": [
+            "of capacity."
+          ],
+          "text": "of capacity.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 1.81,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 1.31,
+          "scatterD": 0.35,
+          "audioSlice": [
+            14.12,
+            15.78
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 4,
+          "lines": [
+            "Shrouded In Darkness!",
+            "the innocent",
+            "was smothered,",
+            "snuffed out"
+          ],
+          "text": "Shrouded In Darkness!\nthe innocent\nwas smothered,\nsnuffed out",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 6.11,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 5.61,
+          "scatterD": 0.35,
+          "audioSlice": [
+            15.58,
+            21.54
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 5,
+          "lines": [
+            "by an Anus",
+            "and a fart."
+          ],
+          "text": "by an Anus\nand a fart.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 2.23,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 1.73,
+          "scatterD": 0.35,
+          "audioSlice": [
+            21.34,
+            23.42
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        }
+      ]
+    },
+    {
+      "id": "ttcem-i-love-my-dog",
+      "title": "i love my dog",
+      "section": "What Passes Through",
+      "public": true,
+      "onPage": false,
+      "grouping": "tools/make_glyphs.py stanza split, max 4 lines (poem is not on the live page; timings are null)",
+      "groups": [
+        {
+          "index": 0,
+          "lines": [
+            "Sometimes I have to beg the daemons",
+            "to keep their whispers to themselves",
+            "not now",
+            "not as I've finally settled down"
+          ],
+          "text": "Sometimes I have to beg the daemons\nto keep their whispers to themselves\nnot now\nnot as I've finally settled down",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 1,
+          "lines": [
+            "not while I'm thinking of my dog",
+            "and the breeze is gently blowing",
+            "intently through my hair",
+            "do I have to hear your voices"
+          ],
+          "text": "not while I'm thinking of my dog\nand the breeze is gently blowing\nintently through my hair\ndo I have to hear your voices",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 2,
+          "lines": [
+            "can't it wait until the morning",
+            "why not when the coffee's brewing",
+            "when the bagel and the lox",
+            "are married to the schmear"
+          ],
+          "text": "can't it wait until the morning\nwhy not when the coffee's brewing\nwhen the bagel and the lox\nare married to the schmear",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 3,
+          "lines": [
+            "Yet the past comes rolling onward",
+            "like a train without a ticket",
+            "rolling coal through autumn nights",
+            "nauseous"
+          ],
+          "text": "Yet the past comes rolling onward\nlike a train without a ticket\nrolling coal through autumn nights\nnauseous",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 4,
+          "lines": [
+            "in the thick of it",
+            "halting cars with eager drivers",
+            "intent on lying down",
+            "once lost in calculations"
+          ],
+          "text": "in the thick of it\nhalting cars with eager drivers\nintent on lying down\nonce lost in calculations",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 5,
+          "lines": [
+            "now trapped behind the wheel"
+          ],
+          "text": "now trapped behind the wheel",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 6,
+          "lines": [
+            "Alone with thoughts again",
+            "I should've pushed my chances",
+            "before the guard came down",
+            "a joyride magnum opus"
+          ],
+          "text": "Alone with thoughts again\nI should've pushed my chances\nbefore the guard came down\na joyride magnum opus",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 7,
+          "lines": [
+            "I've never seen it in the real",
+            "no doubt I'd feel the rapture",
+            "at worst I'd be derailed",
+            "either way I'd make it home"
+          ],
+          "text": "I've never seen it in the real\nno doubt I'd feel the rapture\nat worst I'd be derailed\neither way I'd make it home",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 8,
+          "lines": [
+            "far from the other side"
+          ],
+          "text": "far from the other side",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 9,
+          "lines": [
+            "I could be half way there now",
+            "cuddled with my dog"
+          ],
+          "text": "I could be half way there now\ncuddled with my dog",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        }
+      ]
+    },
+    {
+      "id": "ttcem-the-day-the-cat-got-lost",
+      "title": "the day the cat got lost",
+      "section": "What Passes Through",
+      "public": true,
+      "onPage": false,
+      "grouping": "tools/make_glyphs.py stanza split, max 4 lines (poem is not on the live page; timings are null)",
+      "groups": [
+        {
+          "index": 0,
+          "lines": [
+            "this is a haiku",
+            "about a fucking lost cat",
+            "where you at kitty"
+          ],
+          "text": "this is a haiku\nabout a fucking lost cat\nwhere you at kitty",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 1,
+          "lines": [
+            "SweetPea my darling",
+            "you precious little ho bag",
+            "i've got a question"
+          ],
+          "text": "SweetPea my darling\nyou precious little ho bag\ni've got a question",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 2,
+          "lines": [
+            "where the fuck are you",
+            "if you are somewhere nearby",
+            "please give me a sign"
+          ],
+          "text": "where the fuck are you\nif you are somewhere nearby\nplease give me a sign",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 3,
+          "lines": [
+            "meow meow meow meow meow",
+            "meow meow meow meow meow meow meow",
+            "meow meow meow meow meow"
+          ],
+          "text": "meow meow meow meow meow\nmeow meow meow meow meow meow meow\nmeow meow meow meow meow",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        }
+      ]
+    },
+    {
+      "id": "ttcem-metta-in-vermont",
+      "title": "Metta in Vermont",
+      "section": "What Passes Through",
+      "public": true,
+      "onPage": false,
+      "grouping": "tools/make_glyphs.py stanza split, max 4 lines (poem is not on the live page; timings are null)",
+      "groups": [
+        {
+          "index": 0,
+          "lines": [
+            "There's a zen meditation center in my little town,",
+            "and I joined a metta session this afternoon."
+          ],
+          "text": "There's a zen meditation center in my little town,\nand I joined a metta session this afternoon.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 1,
+          "lines": [
+            "The monk is sweet and invites the community to join",
+            "(or to just come and go or do whatever),",
+            "and some people take advantage of that."
+          ],
+          "text": "The monk is sweet and invites the community to join\n(or to just come and go or do whatever),\nand some people take advantage of that.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 2,
+          "lines": [
+            "A group of people came in for the coffee and snacks",
+            "and had a side conversation in the room during the meditation.",
+            "Most of it was incomprehensible, but some of it was loud enough to make out.",
+            "For instance, one of them was describing a person he knew"
+          ],
+          "text": "A group of people came in for the coffee and snacks\nand had a side conversation in the room during the meditation.\nMost of it was incomprehensible, but some of it was loud enough to make out.\nFor instance, one of them was describing a person he knew",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 3,
+          "lines": [
+            "who could catch arrows in mid flight."
+          ],
+          "text": "who could catch arrows in mid flight.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 4,
+          "lines": [
+            "I felt myself getting annoyed,",
+            "but I also had a funny revelation."
+          ],
+          "text": "I felt myself getting annoyed,\nbut I also had a funny revelation.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 5,
+          "lines": [
+            "I've meditated outside before,",
+            "and the birds were chirping much more",
+            "than these people were talking."
+          ],
+          "text": "I've meditated outside before,\nand the birds were chirping much more\nthan these people were talking.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 6,
+          "lines": [
+            "I thought,",
+            "what if I knew what the birds were saying?"
+          ],
+          "text": "I thought,\nwhat if I knew what the birds were saying?",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        }
+      ]
+    },
+    {
+      "id": "ttcem-sunshine",
+      "title": "Sunshine",
+      "section": "What Passes Through",
+      "public": true,
+      "onPage": false,
+      "grouping": "tools/make_glyphs.py stanza split, max 4 lines (poem is not on the live page; timings are null)",
+      "groups": [
+        {
+          "index": 0,
+          "lines": [
+            "i love sunshine.",
+            "i'm going to miss her while she's gone.",
+            "i'll think of her periodically because",
+            "i'll see someone standing on their hands."
+          ],
+          "text": "i love sunshine.\ni'm going to miss her while she's gone.\ni'll think of her periodically because\ni'll see someone standing on their hands.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 1,
+          "lines": [
+            "i'll call her and leave a message",
+            "and i hope she smiles when she hears it."
+          ],
+          "text": "i'll call her and leave a message\nand i hope she smiles when she hears it.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 2,
+          "lines": [
+            "i hope she has a great trip and learns a lot",
+            "and makes a lot of people fall in love with her",
+            "and falls in love a couple times, too",
+            "and experiences nature in a new way"
+          ],
+          "text": "i hope she has a great trip and learns a lot\nand makes a lot of people fall in love with her\nand falls in love a couple times, too\nand experiences nature in a new way",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 3,
+          "lines": [
+            "or at least comes to some new way of thinking about nature."
+          ],
+          "text": "or at least comes to some new way of thinking about nature.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 4,
+          "lines": [
+            "i hope she eats something exotic."
+          ],
+          "text": "i hope she eats something exotic.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 5,
+          "lines": [
+            "i love sunshine.",
+            "i'm going to miss her while she's gone."
+          ],
+          "text": "i love sunshine.\ni'm going to miss her while she's gone.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        }
+      ]
+    },
+    {
+      "id": "ttcem-goliath",
+      "title": "Goliath",
+      "section": "What Sticks Around",
+      "public": true,
+      "onPage": false,
+      "grouping": "tools/make_glyphs.py stanza split, max 4 lines (poem is not on the live page; timings are null)",
+      "groups": [
+        {
+          "index": 0,
+          "lines": [
+            "I'm a goliath in a world of giants."
+          ],
+          "text": "I'm a goliath in a world of giants.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 1,
+          "lines": [
+            "Try as I can it's simply providence",
+            "that I've not been wrenched into an experiment",
+            "of some forensic scientist who thinks I'm a ghastly cadavre."
+          ],
+          "text": "Try as I can it's simply providence\nthat I've not been wrenched into an experiment\nof some forensic scientist who thinks I'm a ghastly cadavre.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 2,
+          "lines": [
+            "Instead I stomp around thinking my footprints are pretty to look at,",
+            "I howl at the moon because it stalks me",
+            "and pokes fun at my fair complexion",
+            "and reminds me that the sun'll come out"
+          ],
+          "text": "Instead I stomp around thinking my footprints are pretty to look at,\nI howl at the moon because it stalks me\nand pokes fun at my fair complexion\nand reminds me that the sun'll come out",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 3,
+          "lines": [
+            "tomorrow."
+          ],
+          "text": "tomorrow.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 4,
+          "lines": [
+            "i eat the locals."
+          ],
+          "text": "i eat the locals.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 5,
+          "lines": [
+            "I make pots of boiling water",
+            "and line them up in two by twos.",
+            "I drop them into my human au jus.",
+            "Their screams are simply air escaping"
+          ],
+          "text": "I make pots of boiling water\nand line them up in two by twos.\nI drop them into my human au jus.\nTheir screams are simply air escaping",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 6,
+          "lines": [
+            "and their dreams are simply retards playing."
+          ],
+          "text": "and their dreams are simply retards playing.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 7,
+          "lines": [
+            "The women taste the best",
+            "since their bones make a special crunch.",
+            "The men are a sordid bunch,",
+            "but their tough-guy personas make for a tastey brunch."
+          ],
+          "text": "The women taste the best\nsince their bones make a special crunch.\nThe men are a sordid bunch,\nbut their tough-guy personas make for a tastey brunch.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        }
+      ]
+    },
+    {
+      "id": "ttcem-dragon-camp",
+      "title": "Dragon Camp",
+      "section": "What Sticks Around",
+      "public": true,
+      "onPage": false,
+      "grouping": "tools/make_glyphs.py stanza split, max 4 lines (poem is not on the live page; timings are null)",
+      "groups": [
+        {
+          "index": 0,
+          "lines": [
+            "Dragons at creationist camp."
+          ],
+          "text": "Dragons at creationist camp.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 1,
+          "lines": [
+            "They're basically saying that because some ancient cultures",
+            "in Asia and Africa have mythical tales about flying beasts that spew fire,",
+            "then the dinosaurs lived at the same time as humans, proving Creationism."
+          ],
+          "text": "They're basically saying that because some ancient cultures\nin Asia and Africa have mythical tales about flying beasts that spew fire,\nthen the dinosaurs lived at the same time as humans, proving Creationism.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 2,
+          "lines": [
+            "They discount scientific claims that dinosaurs went extinct millions of years ago",
+            "because these myths about dragons exist,",
+            "and they believe the dragons are actually dinosaurs,",
+            "proving that humans and dinosaurs lived at the same time,"
+          ],
+          "text": "They discount scientific claims that dinosaurs went extinct millions of years ago\nbecause these myths about dragons exist,\nand they believe the dragons are actually dinosaurs,\nproving that humans and dinosaurs lived at the same time,",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 3,
+          "lines": [
+            "which proves the universe was created by God."
+          ],
+          "text": "which proves the universe was created by God.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 4,
+          "lines": [
+            "It seems there is a line of logic",
+            "anyone can create cognitively",
+            "in order to continue believing in something",
+            "no matter what."
+          ],
+          "text": "It seems there is a line of logic\nanyone can create cognitively\nin order to continue believing in something\nno matter what.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        }
+      ]
+    },
+    {
+      "id": "ttcem-machines-are-fighting-for-our-freedom",
+      "title": "Machines are Fighting for our Freedom",
+      "section": "What Sticks Around",
+      "public": true,
+      "onPage": true,
+      "grouping": "site/glyphs/manifest.json groups; each line equals a non-blank line of story/poems.public.json",
+      "groups": [
+        {
+          "index": 0,
+          "lines": [
+            "Flying at super-sonic speeds,",
+            "it's hard for anyone to see them.",
+            "It's even harder to imagine",
+            "just how anyone could beat them."
+          ],
+          "text": "Flying at super-sonic speeds,\nit's hard for anyone to see them.\nIt's even harder to imagine\njust how anyone could beat them.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 9.85,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 9.35,
+          "scatterD": 0.35,
+          "audioSlice": [
+            0,
+            9.7
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 1,
+          "lines": [
+            "Machines, Machines, Machines",
+            "are Fighting for our Freedom."
+          ],
+          "text": "Machines, Machines, Machines\nare Fighting for our Freedom.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 5.98,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 5.48,
+          "scatterD": 0.35,
+          "audioSlice": [
+            9.5,
+            15.33
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 2,
+          "lines": [
+            "While kids are herding goats,",
+            "a mother goes out to meet them.",
+            "But instead of finding children,",
+            "she finds a missile there to greet them."
+          ],
+          "text": "While kids are herding goats,\na mother goes out to meet them.\nBut instead of finding children,\nshe finds a missile there to greet them.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 10.05,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 9.55,
+          "scatterD": 0.35,
+          "audioSlice": [
+            15.13,
+            25.03
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 3,
+          "lines": [
+            "Machines, Machines, Machines",
+            "are Fighting for our Freedom."
+          ],
+          "text": "Machines, Machines, Machines\nare Fighting for our Freedom.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 6.66,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 6.16,
+          "scatterD": 0.35,
+          "audioSlice": [
+            24.83,
+            31.34
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 4,
+          "lines": [
+            "Bible and flag in his hand,",
+            "the politician swears that we need them.",
+            "\"They're fast, they're effective,",
+            "and we don't even have to feed them!\""
+          ],
+          "text": "Bible and flag in his hand,\nthe politician swears that we need them.\n\"They're fast, they're effective,\nand we don't even have to feed them!\"",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 11.7,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 11.2,
+          "scatterD": 0.35,
+          "audioSlice": [
+            31.14,
+            42.69
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 5,
+          "lines": [
+            "Machines, Machines, Machines",
+            "are Fighting for our Freedom."
+          ],
+          "text": "Machines, Machines, Machines\nare Fighting for our Freedom.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 9.42,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 8.92,
+          "scatterD": 0.35,
+          "audioSlice": [
+            42.49,
+            51.76
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 6,
+          "lines": [
+            "Soldiers' names sound so noble",
+            "when they're dead and politicians read them.",
+            "\"Have no fear, we'll bring them home,"
+          ],
+          "text": "Soldiers' names sound so noble\nwhen they're dead and politicians read them.\n\"Have no fear, we'll bring them home,",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 5.79,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 5.29,
+          "scatterD": 0.35,
+          "audioSlice": [
+            51.56,
+            57.2
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 7,
+          "lines": [
+            "the machine is always here to lead them!\""
+          ],
+          "text": "the machine is always here to lead them!\"",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 3.79,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 3.29,
+          "scatterD": 0.35,
+          "audioSlice": [
+            57,
+            60.64
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 8,
+          "lines": [
+            "Machines, Machines, Machines",
+            "are Fighting for our Freedom."
+          ],
+          "text": "Machines, Machines, Machines\nare Fighting for our Freedom.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 4.97,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 4.47,
+          "scatterD": 0.35,
+          "audioSlice": [
+            60.44,
+            65.26
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        }
+      ]
+    },
+    {
+      "id": "ttcem-the-mothership",
+      "title": "the mothership",
+      "section": "What Sticks Around",
+      "public": true,
+      "onPage": false,
+      "grouping": "tools/make_glyphs.py stanza split, max 4 lines (poem is not on the live page; timings are null)",
+      "groups": [
+        {
+          "index": 0,
+          "lines": [
+            "Someone asked me what I get out of life."
+          ],
+          "text": "Someone asked me what I get out of life.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 1,
+          "lines": [
+            "\"an interesting story to tell.\""
+          ],
+          "text": "\"an interesting story to tell.\"",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 2,
+          "lines": [
+            "They pried and asked what the story is about."
+          ],
+          "text": "They pried and asked what the story is about.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 3,
+          "lines": [
+            "\"a kid who goes out in search of Graceland,",
+            "or the mothership, or something.\""
+          ],
+          "text": "\"a kid who goes out in search of Graceland,\nor the mothership, or something.\"",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 4,
+          "lines": [
+            "Does the kid find the mothership?"
+          ],
+          "text": "Does the kid find the mothership?",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 5,
+          "lines": [
+            "\"no, he turns around and goes back home.\""
+          ],
+          "text": "\"no, he turns around and goes back home.\"",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 6,
+          "lines": [
+            "Why did he stop searching?"
+          ],
+          "text": "Why did he stop searching?",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 7,
+          "lines": [
+            "\"he didn't stop searching,",
+            "he started looking somewhere else.\""
+          ],
+          "text": "\"he didn't stop searching,\nhe started looking somewhere else.\"",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        }
+      ]
+    },
+    {
+      "id": "ttcem-jagged-rocks",
+      "title": "Jagged Rocks",
+      "section": "What Sticks Around",
+      "public": true,
+      "onPage": true,
+      "grouping": "site/glyphs/manifest.json groups; each line equals a non-blank line of story/poems.public.json",
+      "groups": [
+        {
+          "index": 0,
+          "lines": [
+            "You"
+          ],
+          "text": "You",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 0.9,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 0.4,
+          "scatterD": 0.35,
+          "audioSlice": [
+            0,
+            0.26
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 1,
+          "lines": [
+            "should know,"
+          ],
+          "text": "should know,",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 0.9,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 0.4,
+          "scatterD": 0.35,
+          "audioSlice": [
+            0.06,
+            0.74
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 2,
+          "lines": [
+            "I dream of you naked,",
+            "thrashing on a bed of roses.",
+            "Are you smelling all the flowers?",
+            "Are you bleeding from all the thistles?"
+          ],
+          "text": "I dream of you naked,\nthrashing on a bed of roses.\nAre you smelling all the flowers?\nAre you bleeding from all the thistles?",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 10.67,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 10.17,
+          "scatterD": 0.35,
+          "audioSlice": [
+            0.54,
+            11.06
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 3,
+          "lines": [
+            "Are you planted with the bushes in the dirt?"
+          ],
+          "text": "Are you planted with the bushes in the dirt?",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 3.79,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 3.29,
+          "scatterD": 0.35,
+          "audioSlice": [
+            10.86,
+            14.5
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 4,
+          "lines": [
+            "Your smile is borne by your haunting gaze,",
+            "your hair is terra cotta.",
+            "Your bangs fall uneven across your face,",
+            "chaotic as if chopped with a hatchet."
+          ],
+          "text": "Your smile is borne by your haunting gaze,\nyour hair is terra cotta.\nYour bangs fall uneven across your face,\nchaotic as if chopped with a hatchet.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 11.63,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 11.13,
+          "scatterD": 0.35,
+          "audioSlice": [
+            14.3,
+            25.78
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 5,
+          "lines": [
+            "Your eyes are baked crockeries formed from china clay,",
+            "your irises crystal glazed celadon."
+          ],
+          "text": "Your eyes are baked crockeries formed from china clay,\nyour irises crystal glazed celadon.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 8.19,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 7.69,
+          "scatterD": 0.35,
+          "audioSlice": [
+            25.58,
+            33.62
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 6,
+          "lines": [
+            "Art is on your hands, on your fingertips.",
+            "Torn from forming, scabbed from mourning,",
+            "your hands become the art your art creates:"
+          ],
+          "text": "Art is on your hands, on your fingertips.\nTorn from forming, scabbed from mourning,\nyour hands become the art your art creates:",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 9.76,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 9.26,
+          "scatterD": 0.35,
+          "audioSlice": [
+            33.42,
+            43.03
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 7,
+          "lines": [
+            "mended fabric, sewn and worn,",
+            "canvas brushed and spattered, cupcakes iced and sprinkled."
+          ],
+          "text": "mended fabric, sewn and worn,\ncanvas brushed and spattered, cupcakes iced and sprinkled.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 7.78,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 7.28,
+          "scatterD": 0.35,
+          "audioSlice": [
+            42.83,
+            50.46
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 8,
+          "lines": [
+            "Your fingers are figures painted naked and shameless,",
+            "sometimes serious, sometimes playful."
+          ],
+          "text": "Your fingers are figures painted naked and shameless,\nsometimes serious, sometimes playful.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 7.55,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 7.05,
+          "scatterD": 0.35,
+          "audioSlice": [
+            50.26,
+            57.66
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 9,
+          "lines": [
+            "Your freckles are constellations",
+            "used to navigate the body;",
+            "vessels are charting,",
+            "disregarding"
+          ],
+          "text": "Your freckles are constellations\nused to navigate the body;\nvessels are charting,\ndisregarding",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 7.55,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 7.05,
+          "scatterD": 0.35,
+          "audioSlice": [
+            57.46,
+            64.86
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 10,
+          "lines": [
+            "the jagged",
+            "rocks."
+          ],
+          "text": "the jagged\nrocks.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 1.35,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 0.85,
+          "scatterD": 0.35,
+          "audioSlice": [
+            64.66,
+            65.86
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        }
+      ]
+    },
+    {
+      "id": "ttcem-on-guard",
+      "title": "on guard",
+      "section": "What Sticks Around",
+      "public": true,
+      "onPage": false,
+      "grouping": "tools/make_glyphs.py stanza split, max 4 lines (poem is not on the live page; timings are null)",
+      "groups": [
+        {
+          "index": 0,
+          "lines": [
+            "I'm sorry",
+            "Bukowski",
+            "but sometimes the poem doesn't burst forth like you said it should."
+          ],
+          "text": "I'm sorry\nBukowski\nbut sometimes the poem doesn't burst forth like you said it should.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 1,
+          "lines": [
+            "Sometimes it only leaks out",
+            "like a faucet",
+            "an annoying drip",
+            "at 3am."
+          ],
+          "text": "Sometimes it only leaks out\nlike a faucet\nan annoying drip\nat 3am.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 2,
+          "lines": [
+            "And I have to decide if it's worth it",
+            "to get up and turn the nozzle",
+            "or roll over",
+            "and keep dreaming"
+          ],
+          "text": "And I have to decide if it's worth it\nto get up and turn the nozzle\nor roll over\nand keep dreaming",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 3,
+          "lines": [
+            "about that time I left my shotgun in the break room."
+          ],
+          "text": "about that time I left my shotgun in the break room.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        }
+      ]
+    },
+    {
+      "id": "ttcem-bound-ing",
+      "title": "Bound(ing)",
+      "section": "What Sticks Around",
+      "public": true,
+      "onPage": true,
+      "grouping": "site/glyphs/manifest.json groups; each line equals a non-blank line of story/poems.public.json",
+      "groups": [
+        {
+          "index": 0,
+          "lines": [
+            "Searching for equanimity,",
+            "I tip-toed carefully around the graves",
+            "Noting the names of those",
+            "Who sleep below the dirt"
+          ],
+          "text": "Searching for equanimity,\nI tip-toed carefully around the graves\nNoting the names of those\nWho sleep below the dirt",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 7.92,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 7.42,
+          "scatterD": 0.35,
+          "audioSlice": [
+            0,
+            7.77
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 1,
+          "lines": [
+            "That, by my toes and body motion,",
+            "Is gently stirred."
+          ],
+          "text": "That, by my toes and body motion,\nIs gently stirred.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 4.53,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 4.03,
+          "scatterD": 0.35,
+          "audioSlice": [
+            7.57,
+            11.95
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 2,
+          "lines": [
+            "I hummed softly 'til it came...",
+            "FLASH!",
+            "White lightning glowed.",
+            "One-Mississippi, Two-Mississippi"
+          ],
+          "text": "I hummed softly 'til it came...\nFLASH!\nWhite lightning glowed.\nOne-Mississippi, Two-Mississippi",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 7.27,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 6.77,
+          "scatterD": 0.35,
+          "audioSlice": [
+            11.75,
+            18.87
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 3,
+          "lines": [
+            "CRASH!",
+            "Then down below",
+            "The ground was thrashed to and fro.",
+            "Yippee!"
+          ],
+          "text": "CRASH!\nThen down below\nThe ground was thrashed to and fro.\nYippee!",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 7.62,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 7.12,
+          "scatterD": 0.35,
+          "audioSlice": [
+            18.67,
+            26.14
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 4,
+          "lines": [
+            "I asked for rain and now, by Jove",
+            "I've got it!"
+          ],
+          "text": "I asked for rain and now, by Jove\nI've got it!",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 3.9,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 3.4,
+          "scatterD": 0.35,
+          "audioSlice": [
+            25.94,
+            29.69
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 5,
+          "lines": [
+            "The sky, dark and disarranged,",
+            "Slowly freed the water resting at its gates.",
+            "It was time to decide.",
+            "I closed my eyes."
+          ],
+          "text": "The sky, dark and disarranged,\nSlowly freed the water resting at its gates.\nIt was time to decide.\nI closed my eyes.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 9.94,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 9.44,
+          "scatterD": 0.35,
+          "audioSlice": [
+            29.49,
+            39.28
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 6,
+          "lines": [
+            "I doffed my clothes"
+          ],
+          "text": "I doffed my clothes",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 1.94,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 1.44,
+          "scatterD": 0.35,
+          "audioSlice": [
+            39.08,
+            40.87
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 7,
+          "lines": [
+            "I showered in the rain.*"
+          ],
+          "text": "I showered in the rain.*",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 2.05,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 1.55,
+          "scatterD": 0.35,
+          "audioSlice": [
+            40.67,
+            42.57
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 8,
+          "lines": [
+            "Soap in hand I ran,",
+            "Naked, like any other man.",
+            "I was watered down,",
+            "I was soaked, yet without shame."
+          ],
+          "text": "Soap in hand I ran,\nNaked, like any other man.\nI was watered down,\nI was soaked, yet without shame.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 9.14,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 8.64,
+          "scatterD": 0.35,
+          "audioSlice": [
+            42.37,
+            51.36
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 9,
+          "lines": [
+            "With no disguise I hustled;",
+            "Quickstepping across a street",
+            "Shimmying down an ally",
+            "Twisting around a corner"
+          ],
+          "text": "With no disguise I hustled;\nQuickstepping across a street\nShimmying down an ally\nTwisting around a corner",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 7.72,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 7.22,
+          "scatterD": 0.35,
+          "audioSlice": [
+            51.16,
+            58.73
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 10,
+          "lines": [
+            "Stomping up a hill",
+            "limboing beneath lit windows."
+          ],
+          "text": "Stomping up a hill\nlimboing beneath lit windows.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 3.56,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 3.06,
+          "scatterD": 0.35,
+          "audioSlice": [
+            58.53,
+            61.94
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 11,
+          "lines": [
+            "Reeling, I stood in a field where",
+            "A far off lamp was revealed and",
+            "With a loco motion I made my way;",
+            "I arrived at the lamp by cakewalk,"
+          ],
+          "text": "Reeling, I stood in a field where\nA far off lamp was revealed and\nWith a loco motion I made my way;\nI arrived at the lamp by cakewalk,",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 11.74,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 11.24,
+          "scatterD": 0.35,
+          "audioSlice": [
+            61.74,
+            73.33
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 12,
+          "lines": [
+            "by foxtrot,",
+            "by paso doble."
+          ],
+          "text": "by foxtrot,\nby paso doble.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 2.7,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 2.2,
+          "scatterD": 0.35,
+          "audioSlice": [
+            73.13,
+            75.68
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 13,
+          "lines": [
+            "Standing in the fashion you'd expect it to stand, the lamp",
+            "Resided on a bridge painted sarcastically",
+            "With a mural of kid's names"
+          ],
+          "text": "Standing in the fashion you'd expect it to stand, the lamp\nResided on a bridge painted sarcastically\nWith a mural of kid's names",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 10.48,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 9.98,
+          "scatterD": 0.35,
+          "audioSlice": [
+            75.48,
+            85.81
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 14,
+          "lines": [
+            "Sprayed in the most splendid of ways."
+          ],
+          "text": "Sprayed in the most splendid of ways.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 3.42,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 2.92,
+          "scatterD": 0.35,
+          "audioSlice": [
+            85.61,
+            88.88
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 15,
+          "lines": [
+            "The ground was broken glass and fishing string,",
+            "Discarded bait and other things that",
+            "People leave behind when rain-clouds gather."
+          ],
+          "text": "The ground was broken glass and fishing string,\nDiscarded bait and other things that\nPeople leave behind when rain-clouds gather.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 10.28,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 9.78,
+          "scatterD": 0.35,
+          "audioSlice": [
+            88.68,
+            98.81
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 16,
+          "lines": [
+            "Their rainy day, my play date."
+          ],
+          "text": "Their rainy day, my play date.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 3.83,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 3.33,
+          "scatterD": 0.35,
+          "audioSlice": [
+            98.61,
+            102.29
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 17,
+          "lines": [
+            "I lathered my hands, and under the lamp",
+            "I scrubbed away my inhibitions."
+          ],
+          "text": "I lathered my hands, and under the lamp\nI scrubbed away my inhibitions.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 5.99,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 5.49,
+          "scatterD": 0.35,
+          "audioSlice": [
+            102.09,
+            107.93
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 18,
+          "lines": [
+            "I was sudded up from head to butt",
+            "When a dump truck driver sped clumsily up,",
+            "And passed without a wink or even a slight wave."
+          ],
+          "text": "I was sudded up from head to butt\nWhen a dump truck driver sped clumsily up,\nAnd passed without a wink or even a slight wave.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 9.86,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 9.36,
+          "scatterD": 0.35,
+          "audioSlice": [
+            107.73,
+            117.44
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 19,
+          "lines": [
+            "He would have seen me if not for his task",
+            "Of tilting back black cans,",
+            "Gathering together the cities white trash."
+          ],
+          "text": "He would have seen me if not for his task\nOf tilting back black cans,\nGathering together the cities white trash.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 8.87,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 8.37,
+          "scatterD": 0.35,
+          "audioSlice": [
+            117.24,
+            125.96
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 20,
+          "lines": [
+            "I stared back at the street lamp,",
+            "And at my cold breath that, for a second,",
+            "Clouded the view.",
+            "The light was significant, I felt invisible."
+          ],
+          "text": "I stared back at the street lamp,\nAnd at my cold breath that, for a second,\nClouded the view.\nThe light was significant, I felt invisible.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 11.17,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 10.67,
+          "scatterD": 0.35,
+          "audioSlice": [
+            125.76,
+            136.78
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 21,
+          "lines": [
+            "A damp, yellow luminescence",
+            "oil on a black and purple canvas.",
+            "I was painted.†",
+            "The light ruled the moment,"
+          ],
+          "text": "A damp, yellow luminescence\noil on a black and purple canvas.\nI was painted.†\nThe light ruled the moment,",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 9.15,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 8.65,
+          "scatterD": 0.35,
+          "audioSlice": [
+            136.58,
+            145.58
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 22,
+          "lines": [
+            "And no one ruled the light."
+          ],
+          "text": "And no one ruled the light.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 2.19,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 1.69,
+          "scatterD": 0.35,
+          "audioSlice": [
+            145.38,
+            147.42
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 23,
+          "lines": [
+            "Now the rain was pouring down",
+            "Hard, on my crown and brow",
+            "And back and frown, and on",
+            "My hands and toes"
+          ],
+          "text": "Now the rain was pouring down\nHard, on my crown and brow\nAnd back and frown, and on\nMy hands and toes",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 7.91,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 7.41,
+          "scatterD": 0.35,
+          "audioSlice": [
+            147.22,
+            154.98
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 24,
+          "lines": [
+            "And skin and bones,",
+            "So I began to dance."
+          ],
+          "text": "And skin and bones,\nSo I began to dance.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 4.32,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 3.82,
+          "scatterD": 0.35,
+          "audioSlice": [
+            154.78,
+            158.95
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 25,
+          "lines": [
+            "I spun around with my arms aimed out",
+            "I howled loud",
+            "Teach Me Something!",
+            "The raindrops were first to answer."
+          ],
+          "text": "I spun around with my arms aimed out\nI howled loud\nTeach Me Something!\nThe raindrops were first to answer.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 8.93,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 8.43,
+          "scatterD": 0.35,
+          "audioSlice": [
+            158.75,
+            167.53
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 26,
+          "lines": [
+            "I listened closely to every plop.",
+            "With my footfall timed to every drop."
+          ],
+          "text": "I listened closely to every plop.\nWith my footfall timed to every drop.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 5.58,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 5.08,
+          "scatterD": 0.35,
+          "audioSlice": [
+            167.33,
+            172.76
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 27,
+          "lines": [
+            "Shivering I waltzed,",
+            "One big step,          two small steps,",
+            "Daa-  da-  da,         Daa-  da-  da",
+            "Until the splattering clops deafened my thoughts"
+          ],
+          "text": "Shivering I waltzed,\nOne big step,          two small steps,\nDaa-  da-  da,         Daa-  da-  da\nUntil the splattering clops deafened my thoughts",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 11.48,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 10.98,
+          "scatterD": 0.35,
+          "audioSlice": [
+            172.56,
+            183.89
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 28,
+          "lines": [
+            "And I was convinced that my trot was taking me not",
+            "Forward, but back",
+            "To a better dance‡",
+            "When someone wanted my hand."
+          ],
+          "text": "And I was convinced that my trot was taking me not\nForward, but back\nTo a better dance‡\nWhen someone wanted my hand.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 9.22,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 8.72,
+          "scatterD": 0.35,
+          "audioSlice": [
+            183.69,
+            192.76
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 29,
+          "lines": [
+            "To be held and missed",
+            "To be spun and dipped, funned and kissed."
+          ],
+          "text": "To be held and missed\nTo be spun and dipped, funned and kissed.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 7.08,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 6.58,
+          "scatterD": 0.35,
+          "audioSlice": [
+            192.56,
+            199.49
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 30,
+          "lines": [
+            "I danced through the night to the sound of the rain like",
+            "Nails striking the tops of tin-cans.",
+            "With my eyes closed I waltzed with my friend."
+          ],
+          "text": "I danced through the night to the sound of the rain like\nNails striking the tops of tin-cans.\nWith my eyes closed I waltzed with my friend.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 10.45,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 9.95,
+          "scatterD": 0.35,
+          "audioSlice": [
+            199.29,
+            209.59
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 31,
+          "lines": [
+            "Holding her tight at trunk and palm,",
+            "No one led, we both followed."
+          ],
+          "text": "Holding her tight at trunk and palm,\nNo one led, we both followed.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 5.69,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 5.19,
+          "scatterD": 0.35,
+          "audioSlice": [
+            209.39,
+            214.93
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 32,
+          "lines": [
+            "We waltzed through knee deep puddles,",
+            "On top of speed bumps and down the middle lane.",
+            "I spun her round and she laughed aloud"
+          ],
+          "text": "We waltzed through knee deep puddles,\nOn top of speed bumps and down the middle lane.\nI spun her round and she laughed aloud",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 10.41,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 9.91,
+          "scatterD": 0.35,
+          "audioSlice": [
+            214.73,
+            224.99
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 33,
+          "lines": [
+            "But when I leaned in,",
+            "She bowed out."
+          ],
+          "text": "But when I leaned in,\nShe bowed out.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 3.63,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 3.13,
+          "scatterD": 0.35,
+          "audioSlice": [
+            224.79,
+            228.27
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 34,
+          "lines": [
+            "I knew in that moment,",
+            "The rain had nothing it could teach me."
+          ],
+          "text": "I knew in that moment,\nThe rain had nothing it could teach me.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 5.46,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 4.96,
+          "scatterD": 0.35,
+          "audioSlice": [
+            228.07,
+            233.38
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 35,
+          "lines": [
+            "The dump truck driver came by again.",
+            "This time, much slower.",
+            "He was old; enough so when he cranked his neck",
+            "His jaw was forced to lower."
+          ],
+          "text": "The dump truck driver came by again.\nThis time, much slower.\nHe was old; enough so when he cranked his neck\nHis jaw was forced to lower.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 12.09,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 11.59,
+          "scatterD": 0.35,
+          "audioSlice": [
+            233.18,
+            245.12
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 36,
+          "lines": [
+            "\"A naked man! Covered in soap!",
+            "Dancing alone in the rain at two in the morning!\"",
+            "He was a good man, that driver."
+          ],
+          "text": "\"A naked man! Covered in soap!\nDancing alone in the rain at two in the morning!\"\nHe was a good man, that driver.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 8.67,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 8.17,
+          "scatterD": 0.35,
+          "audioSlice": [
+            244.92,
+            253.44
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 37,
+          "lines": [
+            "He wanted to stop, to ask if I was okay.",
+            "But, not wanting to intrude, he let me dance."
+          ],
+          "text": "He wanted to stop, to ask if I was okay.\nBut, not wanting to intrude, he let me dance.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 6.41,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 5.91,
+          "scatterD": 0.35,
+          "audioSlice": [
+            253.24,
+            259.5
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 38,
+          "lines": [
+            "Again I started trembling,",
+            "Despite my constant stepping.",
+            "One big one, two small ones,",
+            "Daa-da-da, Daa-da-da."
+          ],
+          "text": "Again I started trembling,\nDespite my constant stepping.\nOne big one, two small ones,\nDaa-da-da, Daa-da-da.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 8.89,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 8.39,
+          "scatterD": 0.35,
+          "audioSlice": [
+            259.3,
+            268.04
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 39,
+          "lines": [
+            "I decided to do something else.",
+            "Instead,",
+            "I'll teach myself",
+            "Since the rain won't help."
+          ],
+          "text": "I decided to do something else.\nInstead,\nI'll teach myself\nSince the rain won't help.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 8.67,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 8.17,
+          "scatterD": 0.35,
+          "audioSlice": [
+            267.84,
+            276.36
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 40,
+          "lines": [
+            "I thought to lie in the road",
+            "With my mouth agape and wait",
+            "Until",
+            "it"
+          ],
+          "text": "I thought to lie in the road\nWith my mouth agape and wait\nUntil\nit",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 6.09,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 5.59,
+          "scatterD": 0.35,
+          "audioSlice": [
+            276.16,
+            282.1
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 41,
+          "lines": [
+            "was",
+            "full",
+            "and swallow the pool."
+          ],
+          "text": "was\nfull\nand swallow the pool.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 3.06,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 2.56,
+          "scatterD": 0.35,
+          "audioSlice": [
+            281.9,
+            284.81
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 42,
+          "lines": [
+            "I thought to climb a tree and jump"
+          ],
+          "text": "I thought to climb a tree and jump",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 2.72,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 2.22,
+          "scatterD": 0.35,
+          "audioSlice": [
+            284.61,
+            287.18
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 43,
+          "lines": [
+            "Down"
+          ],
+          "text": "Down",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 0.9,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 0.4,
+          "scatterD": 0.35,
+          "audioSlice": [
+            286.98,
+            287.62
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 44,
+          "lines": [
+            "into a puddle, or run",
+            "And skip in giant bounds,",
+            "Hovering for a second",
+            "Over the ground."
+          ],
+          "text": "into a puddle, or run\nAnd skip in giant bounds,\nHovering for a second\nOver the ground.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 6.67,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 6.17,
+          "scatterD": 0.35,
+          "audioSlice": [
+            287.42,
+            293.94
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 45,
+          "lines": [
+            "And slowly,",
+            "Eventually",
+            "Float",
+            "ing"
+          ],
+          "text": "And slowly,\nEventually\nFloat\ning",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 3.41,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 2.91,
+          "scatterD": 0.35,
+          "audioSlice": [
+            293.74,
+            297
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 46,
+          "lines": [
+            "do",
+            "w",
+            "n",
+            "."
+          ],
+          "text": "do\nw\nn\n.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 0.9,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 0.4,
+          "scatterD": 0.35,
+          "audioSlice": [
+            296.8,
+            297
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 47,
+          "lines": [
+            "and then",
+            "Rebounding",
+            "And Pouncing",
+            "Back to the peak"
+          ],
+          "text": "and then\nRebounding\nAnd Pouncing\nBack to the peak",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 4.61,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 4.11,
+          "scatterD": 0.35,
+          "audioSlice": [
+            296.8,
+            301.26
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 48,
+          "lines": [
+            "Of the previous leap",
+            "Hovering for a second",
+            "Over the ground",
+            "Until gravity"
+          ],
+          "text": "Of the previous leap\nHovering for a second\nOver the ground\nUntil gravity",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 5.91,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 5.41,
+          "scatterD": 0.35,
+          "audioSlice": [
+            301.06,
+            306.82
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 49,
+          "lines": [
+            "Once again",
+            "Drags",
+            "Me",
+            "Do"
+          ],
+          "text": "Once again\nDrags\nMe\nDo",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 3.53,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 3.03,
+          "scatterD": 0.35,
+          "audioSlice": [
+            306.62,
+            310
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 50,
+          "lines": [
+            "w",
+            "n"
+          ],
+          "text": "w\nn",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 0.9,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 0.4,
+          "scatterD": 0.35,
+          "audioSlice": [
+            309.8,
+            310
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 51,
+          "lines": [
+            "I",
+            "know",
+            "now",
+            "I"
+          ],
+          "text": "I\nknow\nnow\nI",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 1.89,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 1.39,
+          "scatterD": 0.35,
+          "audioSlice": [
+            309.8,
+            311.54
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 52,
+          "lines": [
+            "can",
+            "re",
+            "bound.",
+            "but will i remember"
+          ],
+          "text": "can\nre\nbound.\nbut will i remember",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 2.59,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 2.09,
+          "scatterD": 0.35,
+          "audioSlice": [
+            311.34,
+            313.78
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 53,
+          "lines": [
+            "The choice that is difficult to choose,",
+            "The lesson that is easy to lose:",
+            "Whether or not to dance,",
+            "And, weather or not,"
+          ],
+          "text": "The choice that is difficult to choose,\nThe lesson that is easy to lose:\nWhether or not to dance,\nAnd, weather or not,",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 8.41,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 7.91,
+          "scatterD": 0.35,
+          "audioSlice": [
+            313.58,
+            321.84
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 54,
+          "lines": [
+            "To continue."
+          ],
+          "text": "To continue.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 2.74,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 2.24,
+          "scatterD": 0.35,
+          "audioSlice": [
+            321.64,
+            324.23
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 55,
+          "lines": [
+            "Footnotes",
+            "* \"What we do is in our genes, we're simply trying to disguise it.\"",
+            "† \"The trials we face are manifestations of character.\""
+          ],
+          "text": "Footnotes\n* \"What we do is in our genes, we're simply trying to disguise it.\"\n† \"The trials we face are manifestations of character.\"",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 13.72,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 13.22,
+          "scatterD": 0.35,
+          "audioSlice": [
+            324.03,
+            337.6
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 56,
+          "lines": [
+            "‡ \"Anticipation may provide more happiness than actually getting the thing we want.\""
+          ],
+          "text": "‡ \"Anticipation may provide more happiness than actually getting the thing we want.\"",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 7.13,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 6.63,
+          "scatterD": 0.35,
+          "audioSlice": [
+            337.4,
+            344.38
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        }
+      ]
+    },
+    {
+      "id": "ttcem-suicide-party",
+      "title": "Suicide Party",
+      "section": "What Circles Back",
+      "public": true,
+      "onPage": false,
+      "grouping": "tools/make_glyphs.py stanza split, max 4 lines (poem is not on the live page; timings are null)",
+      "groups": [
+        {
+          "index": 0,
+          "lines": [
+            "The protagonist (X) is a manic-depressive who has experienced suicidal thoughts for most of his life.",
+            "He practices meditation,",
+            "but all it has served to do is create space between him and the suicidal scenarios he imagines every day.",
+            "As if he were watching a movie of himself committing suicide."
+          ],
+          "text": "The protagonist (X) is a manic-depressive who has experienced suicidal thoughts for most of his life.\nHe practices meditation,\nbut all it has served to do is create space between him and the suicidal scenarios he imagines every day.\nAs if he were watching a movie of himself committing suicide.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 1,
+          "lines": [
+            "Being aware of the thoughts is advantageous in that at least nowadays the movies are in the third-person.",
+            "X lives an average suburban life tinged with the curse of procrastination and ADD.",
+            "His cluttered apartment and failing health are evidence of his pathetic stage in life.",
+            "In a conversation with his best friend and roommate (Y) he describes an idea wherein he plans his own suicide and uses the money from the life insurance to throw a banger for all his friends and family."
+          ],
+          "text": "Being aware of the thoughts is advantageous in that at least nowadays the movies are in the third-person.\nX lives an average suburban life tinged with the curse of procrastination and ADD.\nHis cluttered apartment and failing health are evidence of his pathetic stage in life.\nIn a conversation with his best friend and roommate (Y) he describes an idea wherein he plans his own suicide and uses the money from the life insurance to throw a banger for all his friends and family.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 2,
+          "lines": [
+            "A few weeks later, Y kills himself,",
+            "and in the will he leaves instructions for his life insurance money to be spent on an elaborate and intricately planned wake.",
+            "X is surprised and confused and a little hurt that his friend stole his idea.",
+            "X tells his girlfriend that he's a little upset at Y for taking his idea."
+          ],
+          "text": "A few weeks later, Y kills himself,\nand in the will he leaves instructions for his life insurance money to be spent on an elaborate and intricately planned wake.\nX is surprised and confused and a little hurt that his friend stole his idea.\nX tells his girlfriend that he's a little upset at Y for taking his idea.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 3,
+          "lines": [
+            "She blames him for planting the idea in Y's mind and breaks up with him, \"I'm tired of this boring roller coaster.\""
+          ],
+          "text": "She blames him for planting the idea in Y's mind and breaks up with him, \"I'm tired of this boring roller coaster.\"",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 4,
+          "lines": [
+            "Y's idea goes viral on social media. Thousands of people kill themselves in the coming week, and one-upmanship ensues."
+          ],
+          "text": "Y's idea goes viral on social media. Thousands of people kill themselves in the coming week, and one-upmanship ensues.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 5,
+          "lines": [
+            "At Y's wake, X catches up with the myriad attendees including some old friends (A, B,",
+            "& C) he hadn't seen in a long time.",
+            "X strikes up awkward conversations regarding suicide and the ethos of celebrating it.",
+            "A says he deals with this shit by dropping acid and gives some to X."
+          ],
+          "text": "At Y's wake, X catches up with the myriad attendees including some old friends (A, B,\n& C) he hadn't seen in a long time.\nX strikes up awkward conversations regarding suicide and the ethos of celebrating it.\nA says he deals with this shit by dropping acid and gives some to X.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 6,
+          "lines": [
+            "X sees his ex-girlfriend at the wake with a new person and tries to ignore them by taking the acid.",
+            "Y's friends and family have a cathartic experience as the wake plays out highlights and reveals secrets from Y's life.",
+            "Overwhelmed, X spends the night in the janitor's closet amused by the simple things."
+          ],
+          "text": "X sees his ex-girlfriend at the wake with a new person and tries to ignore them by taking the acid.\nY's friends and family have a cathartic experience as the wake plays out highlights and reveals secrets from Y's life.\nOverwhelmed, X spends the night in the janitor's closet amused by the simple things.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 7,
+          "lines": [
+            "As society is gripped by the trend, celebrities begin to appropriate it. Shenanigans."
+          ],
+          "text": "As society is gripped by the trend, celebrities begin to appropriate it. Shenanigans.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 8,
+          "lines": [
+            "Inspired by society's new, relaxed stance on suicide, and in order to fully understand Y's decision,",
+            "X decides to follow through with his incessant thoughts and kill himself.",
+            "As he begins to layout the plans for his own wake, X realizes he lacks any motivation to make the plans.",
+            "A simple Internet search reveals Suicide Party."
+          ],
+          "text": "Inspired by society's new, relaxed stance on suicide, and in order to fully understand Y's decision,\nX decides to follow through with his incessant thoughts and kill himself.\nAs he begins to layout the plans for his own wake, X realizes he lacks any motivation to make the plans.\nA simple Internet search reveals Suicide Party.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 9,
+          "lines": [
+            "Suicide Party is a startup company that offers to plan your wake for you.",
+            "SP is funded by health and life insurance companies who have calculated that it would be cheaper to pay the life insurance policies of people than pay their health insurance bills."
+          ],
+          "text": "Suicide Party is a startup company that offers to plan your wake for you.\nSP is funded by health and life insurance companies who have calculated that it would be cheaper to pay the life insurance policies of people than pay their health insurance bills.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 10,
+          "lines": [
+            "The automated process for making an account has not yet been completed, so an in-person interview is scheduled.",
+            "X is required to bring certain documents and affects to help establish the legality as well as the plans.",
+            "Procrastination takes hold again and he throws together a makeshift box of trinkets to bring to the meeting."
+          ],
+          "text": "The automated process for making an account has not yet been completed, so an in-person interview is scheduled.\nX is required to bring certain documents and affects to help establish the legality as well as the plans.\nProcrastination takes hold again and he throws together a makeshift box of trinkets to bring to the meeting.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 11,
+          "lines": [
+            "X arrives at a shabby \"office\" and meets Z, a scatter-brained multi-tasker and the founder and CEO of SP.",
+            "There is an initial attraction, but professionalism quickly prevails and they get down to business.",
+            "They go through the paperwork and X begins to make the connection about the healthcare/life insurance companies' scheme.",
+            "X is distracted by the lies he finds himself weaving for the random items he brought to inspire his wake."
+          ],
+          "text": "X arrives at a shabby \"office\" and meets Z, a scatter-brained multi-tasker and the founder and CEO of SP.\nThere is an initial attraction, but professionalism quickly prevails and they get down to business.\nThey go through the paperwork and X begins to make the connection about the healthcare/life insurance companies' scheme.\nX is distracted by the lies he finds himself weaving for the random items he brought to inspire his wake.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 12,
+          "lines": [
+            "Z seems charmed by some of the weird things.",
+            "They set a tentative date for the suicide.",
+            "Z has one client ahead of X, and says they'll be in touch soon in order to finesse the details."
+          ],
+          "text": "Z seems charmed by some of the weird things.\nThey set a tentative date for the suicide.\nZ has one client ahead of X, and says they'll be in touch soon in order to finesse the details.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 13,
+          "lines": [
+            "X wakes up the next day and feels great.",
+            "He picks up a book and begins reading it, something he'd been unable to manage for years.",
+            "He cooks a splendid lunch, goes for a charming walk, and takes a glorious shower.",
+            "He decides to call A, B, & C, the friends he reconnected with at Y's wake, and they all meet up for drinks that night."
+          ],
+          "text": "X wakes up the next day and feels great.\nHe picks up a book and begins reading it, something he'd been unable to manage for years.\nHe cooks a splendid lunch, goes for a charming walk, and takes a glorious shower.\nHe decides to call A, B, & C, the friends he reconnected with at Y's wake, and they all meet up for drinks that night.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 14,
+          "lines": [
+            "They note X's chipper demeanor.",
+            "X sees Z at a table with a group of friends and they share distant greetings.",
+            "C reveals that they are planning their own wake through a company called \"immOURlation,\" but they can't decide on the details surrounding how to actually die.",
+            "B recommends a company he's been researching called \"YOUicide\" since they have so many more options."
+          ],
+          "text": "They note X's chipper demeanor.\nX sees Z at a table with a group of friends and they share distant greetings.\nC reveals that they are planning their own wake through a company called \"immOURlation,\" but they can't decide on the details surrounding how to actually die.\nB recommends a company he's been researching called \"YOUicide\" since they have so many more options.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 15,
+          "lines": [
+            "X becomes indignant, asking what B or C could possibly be depressed about that they might kill themselves.",
+            "C is offended, reminding X \"the divorce was a really painful experience.\" X is befuddled,",
+            "\"you're still engaged!\" C is referring to his parents' divorce.",
+            "B says he wants to die because he can't stop smoking and doesn't want to die of cancer."
+          ],
+          "text": "X becomes indignant, asking what B or C could possibly be depressed about that they might kill themselves.\nC is offended, reminding X \"the divorce was a really painful experience.\" X is befuddled,\n\"you're still engaged!\" C is referring to his parents' divorce.\nB says he wants to die because he can't stop smoking and doesn't want to die of cancer.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 16,
+          "lines": [
+            "X is quite drunk by this time and is pointing out all the good things his friends have.",
+            "It comes across as condescending, and A rises to his friends' defense.",
+            "X and A have a fist fight, landing A in the hospital and X in jail."
+          ],
+          "text": "X is quite drunk by this time and is pointing out all the good things his friends have.\nIt comes across as condescending, and A rises to his friends' defense.\nX and A have a fist fight, landing A in the hospital and X in jail.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 17,
+          "lines": [
+            "On the TV in jail, X sees a snippet from the news.",
+            "People are now throwing parties in which everyone at the party commits suicide together,",
+            "and in turn they have wakes of their own wherein everyone who goes to that wake commits suicide together."
+          ],
+          "text": "On the TV in jail, X sees a snippet from the news.\nPeople are now throwing parties in which everyone at the party commits suicide together,\nand in turn they have wakes of their own wherein everyone who goes to that wake commits suicide together.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 18,
+          "lines": [
+            "X's brother posts bail.",
+            "They haven't talked in ages.",
+            "\"Yours is the only number I know by heart besides JG Wentworth.\" \"Oh, you've got jokes now?",
+            "Being a criminal has loosened you up, huh?\" X feels bad for hurting his friend,"
+          ],
+          "text": "X's brother posts bail.\nThey haven't talked in ages.\n\"Yours is the only number I know by heart besides JG Wentworth.\" \"Oh, you've got jokes now?\nBeing a criminal has loosened you up, huh?\" X feels bad for hurting his friend,",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 19,
+          "lines": [
+            "but does feel a strange sense of glory and freedom in the experience.",
+            "He's lost his job, bills are past due, electricity is turned off, is estranged from his friends (again),",
+            "and he has a court date for assault and battery."
+          ],
+          "text": "but does feel a strange sense of glory and freedom in the experience.\nHe's lost his job, bills are past due, electricity is turned off, is estranged from his friends (again),\nand he has a court date for assault and battery.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 20,
+          "lines": [
+            "After charging his phone at a nearby hotel's free continental breakfast,",
+            "X notices a voicemail from Z at Suicide Party; \"I saw you in that fight at the bar.",
+            "Is the guy who tripped on the bar stool okay?",
+            "Why did you get arrested?"
+          ],
+          "text": "After charging his phone at a nearby hotel's free continental breakfast,\nX notices a voicemail from Z at Suicide Party; \"I saw you in that fight at the bar.\nIs the guy who tripped on the bar stool okay?\nWhy did you get arrested?",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 21,
+          "lines": [
+            "BTW, convicted felons are not allowed to use the services of SP.",
+            "I hope everything is okay!\""
+          ],
+          "text": "BTW, convicted felons are not allowed to use the services of SP.\nI hope everything is okay!\"",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 22,
+          "lines": [
+            "This happens, and therefore this happens, but this happens, therefore this happens."
+          ],
+          "text": "This happens, and therefore this happens, but this happens, therefore this happens.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        }
+      ]
+    },
+    {
+      "id": "ttcem-damien-s-public-gournal-1",
+      "title": "Damien's Public Gournal 1",
+      "section": "What Circles Back",
+      "public": true,
+      "onPage": false,
+      "grouping": "tools/make_glyphs.py stanza split, max 4 lines (poem is not on the live page; timings are null)",
+      "groups": [
+        {
+          "index": 0,
+          "lines": [
+            "August 3, 2013:",
+            "I packed some grapes and a few cookies in my cargo pockets and took the bus to the Walmart where I intended to investigate what the radio called \"the best contraceptive ever!\" This \"contraceptive\" is a pair of stockings that make a woman's legs look like they are covered in thick,",
+            "coarse hair.",
+            "They are definitely not a contraceptive, but are intended to keep weirdos and perverts at bay."
+          ],
+          "text": "August 3, 2013:\nI packed some grapes and a few cookies in my cargo pockets and took the bus to the Walmart where I intended to investigate what the radio called \"the best contraceptive ever!\" This \"contraceptive\" is a pair of stockings that make a woman's legs look like they are covered in thick,\ncoarse hair.\nThey are definitely not a contraceptive, but are intended to keep weirdos and perverts at bay.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 1,
+          "lines": [
+            "Don't girls know that the most perverted weirdos prefer hairy legs?"
+          ],
+          "text": "Don't girls know that the most perverted weirdos prefer hairy legs?",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 2,
+          "lines": [
+            "As I walked through the parking lot, I noticed a woman parking in the \"expectant mother\" spot.",
+            "I thought, does that mean anyone who is expecting to have a child one day is allowed to park there?",
+            "No, that is not the case; the spot is only for those who are currently pregnant."
+          ],
+          "text": "As I walked through the parking lot, I noticed a woman parking in the \"expectant mother\" spot.\nI thought, does that mean anyone who is expecting to have a child one day is allowed to park there?\nNo, that is not the case; the spot is only for those who are currently pregnant.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 3,
+          "lines": [
+            "The woman parked her car and walked ahead of me into Walmart.",
+            "She was heavyset with red hair and extensive freckles, as if someone threw mud at her through a screen door.",
+            "Her pants were tight on her hips and I could make out the shape of her panties: they were \"grandmother\" panties."
+          ],
+          "text": "The woman parked her car and walked ahead of me into Walmart.\nShe was heavyset with red hair and extensive freckles, as if someone threw mud at her through a screen door.\nHer pants were tight on her hips and I could make out the shape of her panties: they were \"grandmother\" panties.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 4,
+          "lines": [
+            "I thought, what if she isn't pregnant?",
+            "What if she is only fat?",
+            "That's not for me to judge so I decided to let it go.",
+            "But as we entered the store, she walked in the same direction as me, towards the \"female products\"."
+          ],
+          "text": "I thought, what if she isn't pregnant?\nWhat if she is only fat?\nThat's not for me to judge so I decided to let it go.\nBut as we entered the store, she walked in the same direction as me, towards the \"female products\".",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 5,
+          "lines": [
+            "I am only looking for stockings covered in thick hair to see if they are real and if they come in different colors for girls with different colored hair,",
+            "and to see what ingredients are used to make the hair; are they made with real hair?",
+            "I am not following the \"pregnant woman\"."
+          ],
+          "text": "I am only looking for stockings covered in thick hair to see if they are real and if they come in different colors for girls with different colored hair,\nand to see what ingredients are used to make the hair; are they made with real hair?\nI am not following the \"pregnant woman\".",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 6,
+          "lines": [
+            "She turns down an aisle and I walk past her to the \"feminine garments\" section of the store.",
+            "I find the isle where stockings and pantyhose are stocked.",
+            "I do not see any stockings with hair.",
+            "I can't ask for assistance because nobody at Walmart ever shows you where something is,"
+          ],
+          "text": "She turns down an aisle and I walk past her to the \"feminine garments\" section of the store.\nI find the isle where stockings and pantyhose are stocked.\nI do not see any stockings with hair.\nI can't ask for assistance because nobody at Walmart ever shows you where something is,",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 7,
+          "lines": [
+            "they just point and say it's on the isle where you were a minute ago."
+          ],
+          "text": "they just point and say it's on the isle where you were a minute ago.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 8,
+          "lines": [
+            "I walk around to see if they are stocked on an end cap,",
+            "and I see the \"pregnant woman\" looking at some panties that my grandmother would never wear.",
+            "She might know about the stockings, so I walk towards her, but before I have a chance to ask my question,",
+            "I am caught by the contents of her little Walmart basket: tampons!"
+          ],
+          "text": "I walk around to see if they are stocked on an end cap,\nand I see the \"pregnant woman\" looking at some panties that my grandmother would never wear.\nShe might know about the stockings, so I walk towards her, but before I have a chance to ask my question,\nI am caught by the contents of her little Walmart basket: tampons!",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 9,
+          "lines": [
+            "(Pregnant women do not use tampons because they do not have a period because a sperm fertilized their egg,",
+            "and although some women do experience vaginal bleeding during pregnancy,",
+            "they would never use tampons to stop the bleeding because of the possibility of Toxic Shock Syndrome,",
+            "which sounds terrifying)"
+          ],
+          "text": "(Pregnant women do not use tampons because they do not have a period because a sperm fertilized their egg,\nand although some women do experience vaginal bleeding during pregnancy,\nthey would never use tampons to stop the bleeding because of the possibility of Toxic Shock Syndrome,\nwhich sounds terrifying)",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 10,
+          "lines": [
+            "I asked her, \"Are you menstruating?\" She seemed toxically shocked by the question at first,",
+            "but after a few seconds she reluctantly answered and said, \"yes,",
+            "why do you ask?\" \"That means you aren't pregnant!\" I exclaimed.",
+            "She patted me on the head and said, \"that's right, but the lord knows I am trying.\" I hate being patted on the head."
+          ],
+          "text": "I asked her, \"Are you menstruating?\" She seemed toxically shocked by the question at first,\nbut after a few seconds she reluctantly answered and said, \"yes,\nwhy do you ask?\" \"That means you aren't pregnant!\" I exclaimed.\nShe patted me on the head and said, \"that's right, but the lord knows I am trying.\" I hate being patted on the head.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 11,
+          "lines": [
+            "\"Well, you shouldn't've parked in the expectant mother spot if you are not pregnant.\""
+          ],
+          "text": "\"Well, you shouldn't've parked in the expectant mother spot if you are not pregnant.\"",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 12,
+          "lines": [
+            "She was silent for a few more seconds.",
+            "\"Excuse me?",
+            "Expectant mother spot?\" Yes, I saw you park in the expectant mother parking spot.",
+            "Pregnancy is a very serious condition."
+          ],
+          "text": "She was silent for a few more seconds.\n\"Excuse me?\nExpectant mother spot?\" Yes, I saw you park in the expectant mother parking spot.\nPregnancy is a very serious condition.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 13,
+          "lines": [
+            "I won't report you this time, but next time, you better believe I will.\""
+          ],
+          "text": "I won't report you this time, but next time, you better believe I will.\"",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 14,
+          "lines": [
+            "She knelt down and she exhaled a little grunt, which means it was not easy for her to bend down that low.",
+            "She put her face very close to mine and said, \"next time, I will be pregnant.\""
+          ],
+          "text": "She knelt down and she exhaled a little grunt, which means it was not easy for her to bend down that low.\nShe put her face very close to mine and said, \"next time, I will be pregnant.\"",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 15,
+          "lines": [
+            "She grunted again as she stood and put the non-grandmother panties in her basket, and then she walked away."
+          ],
+          "text": "She grunted again as she stood and put the non-grandmother panties in her basket, and then she walked away.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 16,
+          "lines": [
+            "I wish I would've asked her where the hairy stockings were before I asked her if she was menstruating."
+          ],
+          "text": "I wish I would've asked her where the hairy stockings were before I asked her if she was menstruating.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        }
+      ]
+    },
+    {
+      "id": "ttcem-fabulous",
+      "title": "Fabulous",
+      "section": "What Circles Back",
+      "public": true,
+      "onPage": true,
+      "grouping": "site/glyphs/manifest.json groups; each line equals a non-blank line of story/poems.public.json",
+      "groups": [
+        {
+          "index": 0,
+          "lines": [
+            "You bite your nails to the skin and let your leg hair grow",
+            "i say you might be doing it backwards, love",
+            "But what the hell do I know"
+          ],
+          "text": "You bite your nails to the skin and let your leg hair grow\ni say you might be doing it backwards, love\nBut what the hell do I know",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 10.85,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 10.35,
+          "scatterD": 0.35,
+          "audioSlice": [
+            0,
+            10.7
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 1,
+          "lines": [
+            "I don't know much about a lot,",
+            "and even less about the rest,",
+            "I know if you leave before I do,",
+            "I'll keep some of your ashes."
+          ],
+          "text": "I don't know much about a lot,\nand even less about the rest,\nI know if you leave before I do,\nI'll keep some of your ashes.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 10.06,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 9.56,
+          "scatterD": 0.35,
+          "audioSlice": [
+            10.5,
+            20.41
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 2,
+          "lines": [
+            "I imagine that you'd love it if I sprinkled you in the garden.",
+            "I'll only save a little,",
+            "I want to breathe them in,",
+            "I'll want to touch and feel your grit,"
+          ],
+          "text": "I imagine that you'd love it if I sprinkled you in the garden.\nI'll only save a little,\nI want to breathe them in,\nI'll want to touch and feel your grit,",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 12.45,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 11.95,
+          "scatterD": 0.35,
+          "audioSlice": [
+            20.21,
+            32.51
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 3,
+          "lines": [
+            "View you beneath a microscope,",
+            "and even taste a bit."
+          ],
+          "text": "View you beneath a microscope,\nand even taste a bit.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 5.24,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 4.74,
+          "scatterD": 0.35,
+          "audioSlice": [
+            32.31,
+            37.4
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 4,
+          "lines": [
+            "I love you now and I loved you then,",
+            "I'll love you after its all over,",
+            "and when it starts again."
+          ],
+          "text": "I love you now and I loved you then,\nI'll love you after its all over,\nand when it starts again.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 8.31,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 7.81,
+          "scatterD": 0.35,
+          "audioSlice": [
+            37.2,
+            45.36
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        }
+      ]
+    },
+    {
+      "id": "ttcem-i-loved-my-country-and-you-loved-your-cat",
+      "title": "I Loved My Country and You Loved Your Cat",
+      "section": "What Circles Back",
+      "public": true,
+      "onPage": false,
+      "grouping": "tools/make_glyphs.py stanza split, max 4 lines (poem is not on the live page; timings are null)",
+      "groups": [
+        {
+          "index": 0,
+          "lines": [
+            "i'm growing old and that's alright",
+            "i'll see you soon, to all goodnight",
+            "i'm going back to when",
+            "I loved my country and you loved your cat"
+          ],
+          "text": "i'm growing old and that's alright\ni'll see you soon, to all goodnight\ni'm going back to when\nI loved my country and you loved your cat",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 1,
+          "lines": [
+            "True love meant you could fart out loud",
+            "you could burp when you really want",
+            "and i'd tell you honey i was proud",
+            "right in the middle of the rest'rant"
+          ],
+          "text": "True love meant you could fart out loud\nyou could burp when you really want\nand i'd tell you honey i was proud\nright in the middle of the rest'rant",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 2,
+          "lines": [
+            "You'd look at me and gimme that grin",
+            "And i'd tell you you weren't fat",
+            "Our love was free like the wind",
+            "back when"
+          ],
+          "text": "You'd look at me and gimme that grin\nAnd i'd tell you you weren't fat\nOur love was free like the wind\nback when",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 3,
+          "lines": [
+            "I loved my country and you loved your cat"
+          ],
+          "text": "I loved my country and you loved your cat",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        },
+        {
+          "index": 4,
+          "lines": [
+            "but life goes so fast and some finish last",
+            "and i guess that i'm okay with that",
+            "so long as",
+            "I love my country and you love your cat."
+          ],
+          "text": "but life goes so fast and some finish last\nand i guess that i'm okay with that\nso long as\nI love my country and you love your cat.",
+          "formStart": null,
+          "legible": null,
+          "scatter": null,
+          "timingSource": null,
+          "nullReason": "Poem is not in site/glyphs/manifest.json; site/index.html:215 loads only manifest poems (poems=man.poems), so this poem is never started and has no poem-segments.json slices."
+        }
+      ]
+    },
+    {
+      "id": "ttcem-now-i-don-t-throw-dirt-in-people-s-soup",
+      "title": "Now I Don't Throw Dirt in People's Soup",
+      "section": "What Circles Back",
+      "public": true,
+      "onPage": true,
+      "grouping": "site/glyphs/manifest.json groups; each line equals a non-blank line of story/poems.public.json",
+      "groups": [
+        {
+          "index": 0,
+          "lines": [
+            "One day when i was playing outside",
+            "a thought popped into my mind",
+            "what if i threw dirt on my brother's food",
+            "i wonder what he would do"
+          ],
+          "text": "One day when i was playing outside\na thought popped into my mind\nwhat if i threw dirt on my brother's food\ni wonder what he would do",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 11.33,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 10.83,
+          "scatterD": 0.35,
+          "audioSlice": [
+            0,
+            11.18
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 1,
+          "lines": [
+            "i grabbed some sand and brought it inside",
+            "and found a place for me to hide",
+            "when he wasn't looking i dropped it in his soup"
+          ],
+          "text": "i grabbed some sand and brought it inside\nand found a place for me to hide\nwhen he wasn't looking i dropped it in his soup",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 9.39,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 8.89,
+          "scatterD": 0.35,
+          "audioSlice": [
+            10.98,
+            20.22
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 2,
+          "lines": [
+            "he took one bite and then he knew"
+          ],
+          "text": "he took one bite and then he knew",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 3.21,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 2.71,
+          "scatterD": 0.35,
+          "audioSlice": [
+            20.02,
+            23.08
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 3,
+          "lines": [
+            "i tried to run but he kicked me on the ass",
+            "my mom looked up as i flew past",
+            "i flipped through the air and landed on my caboose,"
+          ],
+          "text": "i tried to run but he kicked me on the ass\nmy mom looked up as i flew past\ni flipped through the air and landed on my caboose,",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 9.64,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 9.14,
+          "scatterD": 0.35,
+          "audioSlice": [
+            22.88,
+            32.37
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 4,
+          "lines": [
+            "now i don't throw dirt in people's soup."
+          ],
+          "text": "now i don't throw dirt in people's soup.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 3.7,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 3.2,
+          "scatterD": 0.35,
+          "audioSlice": [
+            32.17,
+            35.72
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 5,
+          "lines": [
+            "when i was a kid i was a little puke",
+            "i threw dirt in peoples soup",
+            "kids don't need a reason why",
+            "we're trying hard just to get by"
+          ],
+          "text": "when i was a kid i was a little puke\ni threw dirt in peoples soup\nkids don't need a reason why\nwe're trying hard just to get by",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 10.23,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 9.73,
+          "scatterD": 0.35,
+          "audioSlice": [
+            35.52,
+            45.6
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 6,
+          "lines": [
+            "Another day when i was playing outside",
+            "a thought popped into my mind",
+            "what if i told my brother to eat some ants"
+          ],
+          "text": "Another day when i was playing outside\na thought popped into my mind\nwhat if i told my brother to eat some ants",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 9.74,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 9.24,
+          "scatterD": 0.35,
+          "audioSlice": [
+            45.4,
+            54.99
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 7,
+          "lines": [
+            "would he do what his brother commands?"
+          ],
+          "text": "would he do what his brother commands?",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 2.75,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 2.25,
+          "scatterD": 0.35,
+          "audioSlice": [
+            54.79,
+            57.39
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 8,
+          "lines": [
+            "i told him when i'm feeling hungry",
+            "i eat ants just like a monkey",
+            "i said to him, here is the goal",
+            "and i pretended to swallow one whole"
+          ],
+          "text": "i told him when i'm feeling hungry\ni eat ants just like a monkey\ni said to him, here is the goal\nand i pretended to swallow one whole",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 11.95,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 11.45,
+          "scatterD": 0.35,
+          "audioSlice": [
+            57.19,
+            68.99
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 9,
+          "lines": [
+            "he said now let me have a go",
+            "and then an ant bit him in the throat",
+            "he looked like he was in a trance",
+            "now i don't tell people to eat ants."
+          ],
+          "text": "he said now let me have a go\nand then an ant bit him in the throat\nhe looked like he was in a trance\nnow i don't tell people to eat ants.",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 11.89,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 11.39,
+          "scatterD": 0.35,
+          "audioSlice": [
+            68.79,
+            80.53
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        },
+        {
+          "index": 10,
+          "lines": [
+            "when i was a kid i was a little puke",
+            "i threw dirt in peoples soup",
+            "kids don't need a reason why",
+            "we're trying hard just to get by"
+          ],
+          "text": "when i was a kid i was a little puke\ni threw dirt in peoples soup\nkids don't need a reason why\nwe're trying hard just to get by",
+          "formStart": 0,
+          "legible": 0.5,
+          "scatter": 11.46,
+          "timingSource": "segTL",
+          "gatherD": 0.5,
+          "readD": 10.96,
+          "scatterD": 0.35,
+          "audioSlice": [
+            80.33,
+            91.64
+          ],
+          "scatterAssumption": "scatter = gatherD + max(0.4, (e-s) - 0.35) with [s,e] from poem-segments.json. Actual readD at runtime is max(0.4, (e - hughAu.currentTime) - 0.35) when the clip is playing (site/index.html:2177-2185). Times are seconds after active.t0, not Hugh-clip currentTime."
+        }
+      ]
+    }
+  ]
+}
